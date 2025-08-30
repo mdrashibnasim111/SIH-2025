@@ -47,7 +47,7 @@ export function NavLinks() {
 
 export function SiteSidebar() {
   return (
-    <aside className="fixed top-0 left-0 z-50 hidden h-screen w-64 flex-col border-r bg-background md:flex">
+    <aside className="fixed top-0 left-0 z-50 hidden h-screen w-56 flex-col border-r bg-background md:flex">
       <div className="flex h-16 items-center border-b px-6">
         <Link href="/" className="flex items-center gap-2 font-bold">
           <HeartPulse className="h-6 w-6 text-primary" />
