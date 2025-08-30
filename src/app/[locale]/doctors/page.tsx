@@ -33,7 +33,7 @@ const doctors = [
     dataAiHint: "woman doctor"
   },
   {
-    name: "Dr. Ramesh Gupta",
+    name: "Dr. Mohammad Yusuf",
     specialization: "General Physician",
     hospital: "Nabha Civil Hospital",
     availability: "Mon - Sat (9 AM - 6 PM)",
