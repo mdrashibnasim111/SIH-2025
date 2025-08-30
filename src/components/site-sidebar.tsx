@@ -28,19 +28,15 @@ export function NavLinks() {
     { name: t("Emergency"), href: "/emergency", icon: Siren },
   ];
 
-  // The first part of the pathname is the locale.
-  const locale = pathname.split("/")[1];
-  const activePath = "/" + pathname.split("/").slice(2).join("/");
+  const locale = pathname.split("/")[1] || "en";
+  const activePath = pathname.substring(locale.length + 1);
+
 
   return (
     <>
       {links.map((link) => {
-        const isActive =
-          link.href === "/"
-            ? activePath === "/"
-            : activePath.startsWith(link.href);
-            
-        const localizedHref = `/${locale}${link.href}`.replace(/\/$/, `/${locale}`);
+        const isActive = activePath === link.href || (activePath === '' && link.href === '/');
+        const localizedHref = `/${locale}${link.href}`;
 
         return (
           <Button
