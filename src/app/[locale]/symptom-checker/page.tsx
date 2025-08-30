@@ -1,14 +1,13 @@
-
 "use client";
 
-import { useActionState, useFormStatus } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
+import { useFormStatus } from "react-dom";
 import { getDiagnosis, getDiagnosisAudio } from "@/app/symptom-checker/actions";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Lightbulb, Sparkles, Loader2, Mic, Volume2 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
 function SubmitButton() {
