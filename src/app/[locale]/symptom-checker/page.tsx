@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useActionState, useFormStatus } from "react-dom";
+import { useActionState, useFormStatus } from "react";
 import { getDiagnosis, getDiagnosisAudio } from "@/app/symptom-checker/actions";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
