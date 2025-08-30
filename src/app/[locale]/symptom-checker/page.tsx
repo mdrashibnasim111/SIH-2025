@@ -1,13 +1,14 @@
 "use client";
 
 import { useFormState, useFormStatus } from "react-dom";
-import { getDiagnosis } from "@/app/symptom-checker/actions";
+import { getDiagnosis, getDiagnosisAudio } from "@/app/symptom-checker/actions";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Lightbulb, Sparkles, Loader2, Mic } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { Lightbulb, Sparkles, Loader2, Mic, Volume2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -32,10 +33,100 @@ export default function SymptomCheckerPage() {
   const initialState = {};
   const [state, formAction] = useFormState(getDiagnosis, initialState);
   const formRef = useRef<HTMLFormElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const [isRecording, setIsRecording] = useState(false);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const { toast } = useToast();
+
+  const [audioState, setAudioState] = useState<{data?: {media: string}, error?: string, fieldErrors?: any}>({});
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+
+  // Handle playing audio response
+  useEffect(() => {
+    if (state.data?.possibleDiseases) {
+      getDiagnosisAudio({symptoms: state.data.possibleDiseases}).then(res => {
+        setAudioState(res);
+      });
+    }
+  }, [state.data]);
+
+  useEffect(() => {
+    if (audioState.data?.media) {
+        if(audioRef.current) {
+            audioRef.current.src = audioState.data.media;
+            audioRef.current.play();
+        }
+    }
+  }, [audioState.data]);
+
+
+  // Initialize speech recognition
+  useEffect(() => {
+    // @ts-ignore
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      toast({
+        variant: "destructive",
+        title: "Browser not supported",
+        description: "Speech recognition is not supported in your browser.",
+      });
+      return;
+    }
+
+    recognitionRef.current = new SpeechRecognition();
+    const recognition = recognitionRef.current;
+    recognition.continuous = true;
+    recognition.interimResults = true;
+
+    recognition.onresult = (event) => {
+      let finalTranscript = textareaRef.current?.value || '';
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+           finalTranscript += event.results[i][0].transcript;
+        }
+      }
+      if (textareaRef.current) {
+        textareaRef.current.value = finalTranscript;
+      }
+    };
+
+    recognition.onend = () => {
+      setIsRecording(false);
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+      toast({
+        variant: "destructive",
+        title: "Speech Recognition Error",
+        description: `An error occurred: ${event.error}`,
+      });
+      setIsRecording(false);
+    };
+
+  }, [toast]);
+
+  const handleMicClick = () => {
+    if (!recognitionRef.current) return;
+
+    if (isRecording) {
+      recognitionRef.current.stop();
+    } else {
+      if (textareaRef.current) {
+        textareaRef.current.value = '';
+      }
+      recognitionRef.current.start();
+    }
+    setIsRecording(!isRecording);
+  };
+
 
   useEffect(() => {
     if (state.data || state.error) {
-      formRef.current?.reset();
+      // Don't reset the form to keep showing the result.
+      // formRef.current?.reset();
     }
   }, [state]);
 
@@ -60,12 +151,13 @@ export default function SymptomCheckerPage() {
         <CardHeader>
           <CardTitle>Describe Your Symptoms</CardTitle>
           <CardDescription>
-            Be as detailed as possible. Include when the symptoms started, their severity, and anything that makes them better or worse.
+            Be as detailed as possible. You can type or use the microphone to speak.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form ref={formRef} action={formAction} className="space-y-4">
             <Textarea
+              ref={textareaRef}
               name="symptoms"
               placeholder="e.g., I have a throbbing headache on one side of my head, sensitivity to light, and have been feeling nauseous for the past 2 days..."
               rows={6}
@@ -76,9 +168,9 @@ export default function SymptomCheckerPage() {
             )}
             <div className="flex flex-col sm:flex-row gap-2">
               <SubmitButton />
-               <Button variant="outline" className="w-full sm:w-auto">
+               <Button variant={isRecording ? "destructive" : "outline"} className="w-full sm:w-auto" onClick={handleMicClick} type="button">
                 <Mic className="mr-2 h-4 w-4" />
-                Speak Symptoms
+                {isRecording ? "Stop Listening" : "Speak Symptoms"}
               </Button>
             </div>
           </form>
@@ -95,9 +187,19 @@ export default function SymptomCheckerPage() {
       {state.data && (
         <Card className="border-primary/50">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-primary" />
-              Potential Conditions
+            <CardTitle className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Sparkles className="h-5 w-5 text-primary" />
+                Potential Conditions
+              </div>
+               {audioState.data?.media && (
+                <audio ref={audioRef} controls />
+              )}
+               {audioState.error && (
+                 <Alert variant="destructive" className="w-fit p-2">
+                   <AlertDescription>{audioState.error}</AlertDescription>
+                 </Alert>
+               )}
             </CardTitle>
             <CardDescription>
               Based on the symptoms you provided, here are some possibilities. Please consult a doctor for an accurate diagnosis.
