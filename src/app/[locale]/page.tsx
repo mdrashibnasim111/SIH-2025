@@ -43,7 +43,7 @@ export default function DashboardPage() {
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {features.map((feature) => (
-          <Card key={feature.href} className="flex flex-col justify-between transition-transform hover:scale-105 hover:shadow-lg">
+          <Card key={feature.href} className="flex flex-col justify-between transition-transform hover:scale-105 hover:shadow-lg bg-green-50/50">
             <CardHeader>
               <div className="flex items-center gap-4">
                 {feature.icon}
