@@ -15,13 +15,13 @@ const doctors = [
     dataAiHint: "man doctor"
   },
   {
-    name: "Dr. Vikram Singh",
+    name: "Dr. Adiba Fatima",
     specialization: "Pediatrician",
     hospital: "Apollo Clinic, Nabha",
     availability: "Tue, Thu (10 AM - 2 PM)",
     status: "Available",
     image: "https://picsum.photos/200/200?random=2",
-    dataAiHint: "man doctor"
+    dataAiHint: "woman doctor"
   },
   {
     name: "Dr. Priya Kaur",
