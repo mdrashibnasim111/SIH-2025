@@ -28,12 +28,17 @@ export function NavLinks() {
     { name: t("Emergency"), href: "/emergency", icon: Siren },
   ];
 
+  // The first part of the pathname is the locale, which we want to ignore.
+  // The rest of the path is what we want to compare against.
+  const activePath = "/" + pathname.split("/").slice(2).join("/");
+
   return (
     <>
       {links.map((link) => {
-        // Remove the locale from the pathname for comparison
-        const activePath = pathname.split('/').slice(2).join('/');
-        const isActive = (link.href === '/' && (activePath === '' || activePath === 'page')) || (link.href !== '/' && activePath.startsWith(link.href.substring(1)));
+        const isActive =
+          link.href === "/"
+            ? activePath === "/"
+            : activePath.startsWith(link.href);
 
         return (
           <Button
