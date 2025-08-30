@@ -29,14 +29,14 @@ export function NavLinks() {
   ];
 
   const locale = pathname.split("/")[1] || "en";
-  const activePath = pathname.substring(locale.length + 1);
+  const activePath = pathname.replace(`/${locale}`, "") || "/";
 
 
   return (
     <>
       {links.map((link) => {
-        const isActive = activePath === link.href || (activePath === '' && link.href === '/');
-        const localizedHref = `/${locale}${link.href}`;
+        const isActive = activePath === link.href;
+        const localizedHref = `/${locale}${link.href === "/" ? "" : link.href}`;
 
         return (
           <Button
