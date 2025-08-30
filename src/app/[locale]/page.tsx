@@ -2,10 +2,11 @@ import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Stethoscope, Pill, FileText, Sparkles, Siren } from 'lucide-react';
-import {useTranslations} from 'next-intl';
+import {useTranslations, useLocale} from 'next-intl';
 
 export default function DashboardPage() {
   const t = useTranslations('Dashboard');
+  const locale = useLocale();
 
   const features = [
     {
@@ -55,7 +56,7 @@ export default function DashboardPage() {
             <CardContent>
               <CardDescription>{feature.description}</CardDescription>
               <Button asChild variant="ghost" className="mt-4 w-full justify-start p-0 h-auto text-green-600 hover:text-green-600 hover:shadow-neon-green rounded-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1">
-                <Link href={feature.href} className='p-2'>
+                <Link href={`/${locale}${feature.href}`} className='p-2'>
                   {t('checkNow')} <ArrowRight className="ml-2 size-4" />
                 </Link>
               </Button>
@@ -80,7 +81,7 @@ export default function DashboardPage() {
         </CardHeader>
         <CardContent>
           <Button asChild variant="outline" className="w-full sm:w-auto bg-green-600 text-white hover:bg-green-700 hover:text-white">
-            <Link href="/emergency">
+            <Link href={`/${locale}/emergency`}>
               {t('emergencyButton')}
             </Link>
           </Button>
