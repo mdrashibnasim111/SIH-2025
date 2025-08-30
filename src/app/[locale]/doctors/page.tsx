@@ -37,7 +37,7 @@ const doctors = [
     dataAiHint: "woman doctor"
   },
   {
-    name: "Dr. Swalin",
+    name: "Dr. Saleheen Manzar",
     specialization: "Dermatologist",
     hospital: "Nabha Skin Center",
     availability: "Mon - Sat (11 AM - 5 PM)",
