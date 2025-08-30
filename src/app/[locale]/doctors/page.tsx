@@ -6,13 +6,13 @@ import Image from "next/image";
 
 const doctors = [
   {
-    name: "Dr. Anjali Sharma",
+    name: "Dr. Md Rashib Nasim",
     specialization: "Cardiologist",
     hospital: "Nabha Civil Hospital",
     availability: "Mon, Wed, Fri (9 AM - 1 PM)",
     status: "Available",
-    image: "https://picsum.photos/200/200?random=1",
-    dataAiHint: "woman doctor"
+    image: "https://picsum.photos/200/200?random=10",
+    dataAiHint: "man doctor"
   },
   {
     name: "Dr. Vikram Singh",
