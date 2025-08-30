@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Siren, PhoneCall, ShieldWarning } from "lucide-react";
+import { Siren, PhoneCall, ShieldAlert } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -34,7 +34,7 @@ export default function EmergencyPage() {
       </div>
 
       <Alert variant="destructive">
-        <ShieldWarning className="h-4 w-4" />
+        <ShieldAlert className="h-4 w-4" />
         <AlertTitle>For Critical Emergencies Only</AlertTitle>
         <AlertDescription>
           This service has limited availability and is reserved for patients
