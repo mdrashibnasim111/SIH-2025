@@ -42,7 +42,7 @@ const doctors = [
     dataAiHint: "doctor smiling"
   },
   {
-    name: "Dr. Sunita Reddy",
+    name: "Dr. Nahid Azim",
     specialization: "Gynecologist",
     hospital: "Reddy Maternity Home",
     availability: "By Appointment",
