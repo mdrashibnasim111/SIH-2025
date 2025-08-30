@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { SiteSidebar } from "@/components/site-sidebar";
 import { SiteHeader } from "@/components/site-header";
+import { LanguageSelector } from "@/components/language-selector";
 
 export const metadata: Metadata = {
   title: "NabhaCare Connect",
@@ -26,9 +27,10 @@ export default function RootLayout({
         />
       </head>
       <body className={cn("font-body antialiased", "min-h-screen bg-background")}>
+        <LanguageSelector />
         <div className="relative flex min-h-screen">
           <SiteSidebar />
-          <div className="flex flex-1 flex-col md:ml-56">
+          <div className="flex flex-1 flex-col md:ml-48">
             <SiteHeader />
             <main className="flex-1 p-4 sm:p-6 lg:p-8">{children}</main>
           </div>
