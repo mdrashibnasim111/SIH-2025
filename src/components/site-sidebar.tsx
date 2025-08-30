@@ -28,8 +28,8 @@ export function NavLinks() {
     { name: t("Emergency"), href: "/emergency", icon: Siren },
   ];
 
-  // The first part of the pathname is the locale, which we want to ignore.
-  // The rest of the path is what we want to compare against.
+  // The first part of the pathname is the locale.
+  const locale = pathname.split("/")[1];
   const activePath = "/" + pathname.split("/").slice(2).join("/");
 
   return (
@@ -39,6 +39,8 @@ export function NavLinks() {
           link.href === "/"
             ? activePath === "/"
             : activePath.startsWith(link.href);
+            
+        const localizedHref = `/${locale}${link.href}`.replace(/\/$/, `/${locale}`);
 
         return (
           <Button
@@ -47,7 +49,7 @@ export function NavLinks() {
             variant={isActive ? "secondary" : "ghost"}
             className="w-full justify-start"
           >
-            <Link href={link.href}>
+            <Link href={localizedHref}>
               <link.icon className="mr-2 h-4 w-4" />
               {link.name}
             </Link>
@@ -59,10 +61,13 @@ export function NavLinks() {
 }
 
 export function SiteSidebar() {
+  const pathname = usePathname();
+  const locale = pathname.split("/")[1] || "en";
+
   return (
     <aside className="fixed top-0 left-0 z-50 hidden h-screen w-48 flex-col border-r bg-background md:flex">
       <div className="flex h-16 items-center border-b px-6">
-        <Link href="/" className="flex items-center gap-2 font-bold">
+        <Link href={`/${locale}`} className="flex items-center gap-2 font-bold">
           <HeartPulse className="h-6 w-6 text-primary" />
           <span className="font-bold">NabhaCare</span>
         </Link>
