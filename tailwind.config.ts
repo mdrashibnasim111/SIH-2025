@@ -11,6 +11,7 @@ export default {
     extend: {
       boxShadow: {
         'neon-primary': '0 0 5px theme(colors.primary.DEFAULT), 0 0 10px theme(colors.primary.DEFAULT)',
+        'neon-green': '0 0 5px #16a34a, 0 0 10px #16a34a',
       },
       fontFamily: {
         body: ['Inter', 'sans-serif'],
