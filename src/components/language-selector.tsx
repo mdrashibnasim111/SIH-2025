@@ -11,6 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Globe } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const indianLanguages = [
   { code: "en", name: "English" },
@@ -30,6 +32,10 @@ const indianLanguages = [
 
 export function LanguageSelector() {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+  const t = useTranslations("LanguageSelector");
+
 
   useEffect(() => {
     const lang = localStorage.getItem("user-language");
@@ -41,8 +47,12 @@ export function LanguageSelector() {
   const handleLanguageSelect = (langCode: string) => {
     localStorage.setItem("user-language", langCode);
     setIsOpen(false);
-    // Here you would typically also reload the page or change the language with a library
-    // For now, we just close the dialog.
+    
+    const newPathname = pathname.startsWith(`/${langCode}`) 
+      ? pathname 
+      : `/${langCode}${pathname.substring(3)}`;
+      
+    router.replace(newPathname);
   };
 
   return (
@@ -50,10 +60,10 @@ export function LanguageSelector() {
       <DialogContent className="sm:max-w-[425px]" hideCloseButton={true}>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Globe /> Select Your Language
+            <Globe /> {t('title')}
           </DialogTitle>
           <DialogDescription>
-            Please choose your preferred language to continue.
+            {t('description')}
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="h-72 w-full">

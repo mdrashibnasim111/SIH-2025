@@ -1,0 +1,30 @@
+{
+  "Dashboard": {
+    "welcome": "Welcome to NabhaCare Connect",
+    "tagline": "Your partner in accessible rural healthcare.",
+    "findDoctor": "Find a Doctor",
+    "findDoctorDescription": "Consult with specialists and general physicians.",
+    "checkMedicines": "Check Medicines",
+    "checkMedicinesDescription": "Find local pharmacy stock and prices.",
+    "aiSymptomChecker": "AI Symptom Checker",
+    "aiSymptomCheckerDescription": "Get potential diagnosis based on your symptoms.",
+    "healthRecords": "Health Records",
+    "healthRecordsDescription": "Access your digital health records anytime.",
+    "checkNow": "Check now",
+    "emergencyTitle": "Emergency?",
+    "emergencyDescription": "In case of a critical emergency, you can request a doctor for a home visit. This service is for urgent situations only.",
+    "emergencyButton": "Request Emergency Visit"
+  },
+  "LanguageSelector": {
+    "title": "Select Your Language",
+    "description": "Please choose your preferred language to continue."
+  },
+  "NavLinks": {
+    "Dashboard": "Dashboard",
+    "Doctors": "Doctors",
+    "Medicines": "Medicines",
+    "SymptomChecker": "Symptom Checker",
+    "HealthRecords": "Health Records",
+    "Emergency": "Emergency"
+  }
+}
