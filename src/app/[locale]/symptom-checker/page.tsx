@@ -1,6 +1,7 @@
+
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState, useFormStatus } from "react-dom";
 import { getDiagnosis, getDiagnosisAudio } from "@/app/symptom-checker/actions";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -31,7 +32,7 @@ function SubmitButton() {
 
 export default function SymptomCheckerPage() {
   const initialState = {};
-  const [state, formAction] = useFormState(getDiagnosis, initialState);
+  const [state, formAction] = useActionState(getDiagnosis, initialState);
   const formRef = useRef<HTMLFormElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
