@@ -64,22 +64,22 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      <Card className="border-destructive bg-destructive/5 transition-colors hover:bg-destructive/10">
+      <Card className="border-green-600/50 bg-green-50/30 transition-colors hover:bg-green-50/80">
         <CardHeader>
           <div className="flex items-start gap-4">
-            <div className="flex-shrink-0 rounded-full bg-destructive/10 p-3">
-              <Siren className="size-8 text-destructive" />
+            <div className="flex-shrink-0 rounded-full bg-green-100 p-3">
+              <Siren className="size-8 text-green-700" />
             </div>
             <div className="flex-1">
-              <CardTitle className="text-destructive">{t('emergencyTitle')}</CardTitle>
-              <CardDescription className="text-destructive/80">
+              <CardTitle className="text-green-800">{t('emergencyTitle')}</CardTitle>
+              <CardDescription className="text-green-700/90">
                 {t('emergencyDescription')}
               </CardDescription>
             </div>
           </div>
         </CardHeader>
         <CardContent>
-          <Button asChild variant="destructive" className="w-full sm:w-auto">
+          <Button asChild variant="outline" className="w-full sm:w-auto bg-green-600 text-white hover:bg-green-700 hover:text-white">
             <Link href="/emergency">
               {t('emergencyButton')}
             </Link>
