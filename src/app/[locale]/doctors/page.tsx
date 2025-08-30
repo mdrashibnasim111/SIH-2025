@@ -1,8 +1,21 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Stethoscope, Hospital, Clock, Video, ShieldAlert } from "lucide-react";
+import { Stethoscope, Hospital, Clock, Video, ShieldAlert, CreditCard, Radio } from "lucide-react";
 import Image from "next/image";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const doctors = [
   {
@@ -103,13 +116,45 @@ export default function DoctorsPage() {
                   {doctor.status}
                 </Badge>
               </div>
-              <Button
-                className="mt-4 w-full"
-                disabled={doctor.status !== "Available"}
-              >
-                <Video className="mr-2 h-4 w-4" />
-                Consult Now
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    className="mt-4 w-full"
+                    disabled={doctor.status !== "Available"}
+                  >
+                    <Video className="mr-2 h-4 w-4" />
+                    Consult Now
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Complete Your Consultation</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      The consultation fee is ₹500. Please select a payment method to proceed.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <div className="py-4">
+                    <RadioGroup defaultValue="upi">
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="upi" id="upi" />
+                        <Label htmlFor="upi">UPI (GPay, PhonePe, etc.)</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="card" id="card" />
+                        <Label htmlFor="card">Credit/Debit Card</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="netbanking" id="netbanking" />
+                        <Label htmlFor="netbanking">Net Banking</Label>
+                      </div>
+                    </RadioGroup>
+                  </div>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction>Pay and Start Call</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </CardContent>
           </Card>
         ))}
