@@ -54,8 +54,8 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <CardDescription>{feature.description}</CardDescription>
-              <Button asChild variant="ghost" className="mt-4 w-full justify-start p-0 h-auto text-primary hover:text-primary">
-                <Link href={feature.href}>
+              <Button asChild variant="ghost" className="mt-4 w-full justify-start p-0 h-auto text-primary hover:text-primary hover:shadow-neon-primary rounded-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1">
+                <Link href={feature.href} className='p-2'>
                   {t('checkNow')} <ArrowRight className="ml-2 size-4" />
                 </Link>
               </Button>

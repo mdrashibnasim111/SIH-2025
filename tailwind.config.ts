@@ -9,6 +9,9 @@ export default {
   ],
   theme: {
     extend: {
+      boxShadow: {
+        'neon-primary': '0 0 5px theme(colors.primary.DEFAULT), 0 0 10px theme(colors.primary.DEFAULT)',
+      },
       fontFamily: {
         body: ['Inter', 'sans-serif'],
         headline: ['Inter', 'sans-serif'],
