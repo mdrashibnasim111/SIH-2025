@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, User, Stethoscope, Calendar, Pill, Clock } from "lucide-react";
+import { Search, User, Stethoscope, Calendar, Pill, Clock, Download, ClipboardList } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
@@ -24,6 +24,10 @@ const mockPrescription = {
       { time: "Morning", medicine: "Paracetamol, Amoxicillin" },
       { time: "Afternoon", medicine: "Paracetamol" },
       { time: "Night", medicine: "Paracetamol, Amoxicillin, Cetirizine" },
+  ],
+  tests: [
+    { name: "Complete Blood Count (CBC)", reportUrl: "#" },
+    { name: "Fasting Blood Sugar", reportUrl: "#" }
   ]
 };
 
@@ -171,6 +175,39 @@ export default function PatientDetailsPage() {
               </Table>
             </CardContent>
           </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2"><ClipboardList className="h-5 w-5" /> Diagnostic Tests</CardTitle>
+              <CardDescription>Tests prescribed by the doctor and their reports.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Test Name</TableHead>
+                      <TableHead className="text-right">Report</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {prescriptionDetails.tests.map((test) => (
+                      <TableRow key={test.name}>
+                        <TableCell className="font-medium">{test.name}</TableCell>
+                        <TableCell className="text-right">
+                          <Button variant="ghost" size="sm" asChild>
+                            <a href={test.reportUrl} target="_blank" rel="noopener noreferrer">
+                              <Download className="mr-2 h-4 w-4" />
+                              View Report
+                            </a>
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+
         </div>
       )}
     </div>
