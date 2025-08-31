@@ -29,7 +29,7 @@ export function NavLinks() {
   ];
 
   const locale = pathname.split("/")[1] || "en";
-  const activePath = pathname.replace(`/${locale}`, "") || "/";
+  const activePath = pathname.substring(pathname.indexOf(locale) + locale.length) || "/";
 
 
   return (
