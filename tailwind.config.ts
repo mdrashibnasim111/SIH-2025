@@ -12,6 +12,7 @@ export default {
       boxShadow: {
         'neon-primary': '0 0 5px theme(colors.primary.DEFAULT), 0 0 10px theme(colors.primary.DEFAULT)',
         'neon-green': '0 0 5px #16a34a, 0 0 10px #16a34a',
+        'neon-destructive': '0 0 8px hsl(var(--destructive)), 0 0 12px hsl(var(--destructive))',
       },
       fontFamily: {
         body: ['Inter', 'sans-serif'],
