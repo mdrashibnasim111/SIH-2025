@@ -31,8 +31,8 @@ const mockPrescription = {
       { time: "Night", medicine: "Paracetamol, Amoxicillin, Cetirizine" },
   ],
   tests: [
-    { name: "Complete Blood Count (CBC)", reportUrl: "#" },
-    { name: "Fasting Blood Sugar", reportUrl: "#" }
+    { name: "Complete Blood Count (CBC)", reportUrl: "#", type: "Blood Test", date: "2024-07-16" },
+    { name: "Fasting Blood Sugar", reportUrl: "#", type: "Blood Test", date: "2024-07-16" }
   ]
 };
 
@@ -199,6 +199,8 @@ export default function PatientDetailsPage() {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Test Name</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Date</TableHead>
                       <TableHead className="text-right">Report</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -206,6 +208,8 @@ export default function PatientDetailsPage() {
                     {prescriptionDetails.tests.map((test) => (
                       <TableRow key={test.name}>
                         <TableCell className="font-medium">{test.name}</TableCell>
+                        <TableCell>{test.type}</TableCell>
+                        <TableCell>{test.date}</TableCell>
                         <TableCell className="text-right">
                           <Button variant="ghost" size="sm" asChild>
                             <a href={test.reportUrl} target="_blank" rel="noopener noreferrer">
