@@ -15,7 +15,11 @@ const mockPrescription = {
   patientName: "John Doe",
   doctorName: "Dr. Md Rashib Nasim",
   doctorSpecialization: "Cardiologist",
-  consultationDate: "2024-07-15",
+  consultationDates: [
+    { label: "First Consultation", date: "2024-07-15" },
+    { label: "Follow-up", date: "2024-07-22" },
+    { label: "Check-up", date: "2024-08-05" },
+  ],
   medicines: [
     { name: "Paracetamol 500mg", dosage: "1 tablet", frequency: "3 times a day", duration: "5 days", timing: "After meals" },
     { name: "Amoxicillin 250mg", dosage: "1 capsule", frequency: "Twice a day", duration: "7 days", timing: "After meals" },
@@ -112,11 +116,18 @@ export default function PatientDetailsPage() {
                     <p className="text-xs text-muted-foreground">{prescriptionDetails.doctorSpecialization}</p>
                   </div>
               </div>
-               <div className="flex items-center gap-3">
-                  <Calendar className="h-5 w-5 text-primary" />
+               <div className="flex items-start gap-3">
+                  <Calendar className="h-5 w-5 text-primary mt-1" />
                   <div>
-                    <p className="text-muted-foreground">Date of Consultation</p>
-                    <p className="font-semibold">{prescriptionDetails.consultationDate}</p>
+                    <p className="text-muted-foreground">Consultation History</p>
+                    <ul className="font-semibold space-y-1">
+                      {prescriptionDetails.consultationDates.map(consultation => (
+                        <li key={consultation.date} className="flex items-center gap-2">
+                            <span>{consultation.label}:</span>
+                            <span>{consultation.date}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
               </div>
             </CardContent>
