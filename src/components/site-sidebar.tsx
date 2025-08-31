@@ -13,6 +13,7 @@ import {
   Siren,
   HeartPulse,
   Map,
+  User,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
@@ -26,6 +27,7 @@ export function NavLinks() {
     { name: t("Medicines"), href: "/medicines", icon: Pill },
     { name: t("SymptomChecker"), href: "/symptom-checker", icon: Sparkles },
     { name: t("HealthRecords"), href: "/records", icon: FileText },
+    { name: t("PatientDetails"), href: "/patient-details", icon: User },
     { name: t("Map"), href: "/map", icon: Map },
     { name: t("Emergency"), href: "/emergency", icon: Siren },
   ];
