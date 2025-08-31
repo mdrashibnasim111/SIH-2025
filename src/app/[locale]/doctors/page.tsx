@@ -25,7 +25,7 @@ const doctors = [
     availability: "Mon, Wed, Fri (9 AM - 1 PM)",
     days: "3 days a week",
     status: "Available",
-    image: "https://picsum.photos/200/200?random=10",
+    image: "https://storage.googleapis.com/maker-studio-5f25b.appspot.com/user-assets/eGVuZXJhdGl2ZS1haS1zdHVkaW8tMTY5/b69uEaKzS0bW8J8J.png",
     dataAiHint: "man doctor"
   },
   {
