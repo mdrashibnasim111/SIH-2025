@@ -1,94 +1,178 @@
+"use client";
+
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { User, Calendar, Phone, Home } from "lucide-react";
+import { Search, User, Stethoscope, Calendar, Pill, Clock } from "lucide-react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+
+// Mock data for prescription details
+const mockPrescription = {
+  id: "PRES12345",
+  patientName: "John Doe",
+  doctorName: "Dr. Md Rashib Nasim",
+  consultationDate: "2024-07-15",
+  medicines: [
+    { name: "Paracetamol 500mg", dosage: "1 tablet", frequency: "3 times a day", duration: "5 days", timing: "After meals" },
+    { name: "Amoxicillin 250mg", dosage: "1 capsule", frequency: "Twice a day", duration: "7 days", timing: "After meals" },
+    { name: "Cetirizine 10mg", dosage: "1 tablet", frequency: "Once at night", duration: "10 days", timing: "Before sleeping" },
+  ],
+  timetable: [
+      { time: "Morning (8 AM)", medicine: "Paracetamol, Amoxicillin" },
+      { time: "Afternoon (1 PM)", medicine: "Paracetamol" },
+      { time: "Night (9 PM)", medicine: "Paracetamol, Amoxicillin, Cetirizine" },
+  ]
+};
+
+type Prescription = typeof mockPrescription | null;
 
 export default function PatientDetailsPage() {
+  const [prescriptionId, setPrescriptionId] = useState("");
+  const [prescriptionDetails, setPrescriptionDetails] = useState<Prescription>(null);
+  const [searched, setSearched] = useState(false);
+
+  const handleSearch = () => {
+    setSearched(true);
+    if (prescriptionId.toUpperCase() === mockPrescription.id) {
+      setPrescriptionDetails(mockPrescription);
+    } else {
+      setPrescriptionDetails(null);
+    }
+  };
+
+
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Patient Details</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Prescription Details</h1>
         <p className="text-muted-foreground">
-          Manage your personal and medical information.
+          Enter your prescription number to view the details.
         </p>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Personal Information</CardTitle>
-          <CardDescription>
-            Please keep your personal details up to date.
-          </CardDescription>
+          <CardTitle>Find Your Prescription</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Label htmlFor="name" className="flex items-center"><User className="mr-2 h-4 w-4" /> Full Name</Label>
-              <Input id="name" defaultValue="John Doe" />
+        <CardContent>
+          <div className="flex w-full items-center space-x-2">
+            <div className="flex-1">
+              <Label htmlFor="prescriptionId" className="sr-only">Prescription Number</Label>
+              <Input 
+                id="prescriptionId" 
+                placeholder="Enter Prescription Number (e.g., PRES12345)"
+                value={prescriptionId}
+                onChange={(e) => setPrescriptionId(e.target.value)} 
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+              />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="dob" className="flex items-center"><Calendar className="mr-2 h-4 w-4" /> Date of Birth</Label>
-              <Input id="dob" type="date" defaultValue="1990-01-01" />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <Label className="flex items-center">Gender</Label>
-            <RadioGroup defaultValue="male" className="flex gap-4">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="male" id="male" />
-                <Label htmlFor="male">Male</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="female" id="female" />
-                <Label htmlFor="female">Female</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="other" id="other" />
-                <Label htmlFor="other">Other</Label>
-              </div>
-            </RadioGroup>
-          </div>
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-             <div className="space-y-2">
-                <Label htmlFor="phone" className="flex items-center"><Phone className="mr-2 h-4 w-4" /> Contact Number</Label>
-                <Input id="phone" type="tel" defaultValue="+91 12345 67890" />
-            </div>
-             <div className="space-y-2">
-                <Label htmlFor="address" className="flex items-center"><Home className="mr-2 h-4 w-4" /> Address</Label>
-                <Input id="address" defaultValue="123, Main Street, Nabha, Punjab" />
-            </div>
+            <Button onClick={handleSearch}>
+              <Search className="mr-2 h-4 w-4" /> Search
+            </Button>
           </div>
         </CardContent>
       </Card>
-      
-      <Card>
-        <CardHeader>
-            <CardTitle>Medical Information</CardTitle>
-            <CardDescription>This information will be shared with your consulting doctor.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="allergies">Allergies</Label>
-              <Textarea id="allergies" placeholder="e.g., Peanuts, Penicillin" />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="medications">Current Medications</Label>
-              <Textarea id="medications" placeholder="e.g., Paracetamol 500mg, twice a day" />
-            </div>
-             <div className="space-y-2">
-              <Label htmlFor="history">Past Medical History</Label>
-              <Textarea id="history" placeholder="e.g., Hypertension diagnosed in 2020" />
-            </div>
-        </CardContent>
-      </Card>
 
-      <div className="flex justify-end">
-          <Button>Save Changes</Button>
-      </div>
+      {searched && !prescriptionDetails && (
+        <Alert variant="destructive">
+          <AlertTitle>Not Found</AlertTitle>
+          <AlertDescription>
+            No prescription found for the number "{prescriptionId}". Please check the number and try again.
+          </AlertDescription>
+        </Alert>
+      )}
 
+      {prescriptionDetails && (
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Consultation Details</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-sm">
+               <div className="flex items-center gap-3">
+                  <User className="h-5 w-5 text-primary" />
+                  <div>
+                    <p className="text-muted-foreground">Patient Name</p>
+                    <p className="font-semibold">{prescriptionDetails.patientName}</p>
+                  </div>
+              </div>
+               <div className="flex items-center gap-3">
+                  <Stethoscope className="h-5 w-5 text-primary" />
+                  <div>
+                    <p className="text-muted-foreground">Consulting Doctor</p>
+                    <p className="font-semibold">{prescriptionDetails.doctorName}</p>
+                  </div>
+              </div>
+               <div className="flex items-center gap-3">
+                  <Calendar className="h-5 w-5 text-primary" />
+                  <div>
+                    <p className="text-muted-foreground">Date of Consultation</p>
+                    <p className="font-semibold">{prescriptionDetails.consultationDate}</p>
+                  </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2"><Pill className="h-5 w-5" /> Prescribed Medicines</CardTitle>
+              <CardDescription>Duration of complete course and instructions for each medicine.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Medicine</TableHead>
+                    <TableHead>Dosage</TableHead>
+                    <TableHead>Frequency</TableHead>
+                    <TableHead>Duration</TableHead>
+                    <TableHead>Timing</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {prescriptionDetails.medicines.map((med) => (
+                    <TableRow key={med.name}>
+                      <TableCell className="font-medium">{med.name}</TableCell>
+                      <TableCell>{med.dosage}</TableCell>
+                      <TableCell>{med.frequency}</TableCell>
+                      <TableCell>{med.duration}</TableCell>
+                      <TableCell>{med.timing}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2"><Clock className="h-5 w-5" /> Medicine Timetable</CardTitle>
+              <CardDescription>Your daily schedule for taking medicines.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Time of Day</TableHead>
+                    <TableHead>Medicines to Take</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {prescriptionDetails.timetable.map((item) => (
+                    <TableRow key={item.time}>
+                      <TableCell className="font-medium">{item.time}</TableCell>
+                      <TableCell>{item.medicine}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }
