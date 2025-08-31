@@ -42,7 +42,7 @@ export function NavLinks() {
           <Button
             key={link.name}
             asChild
-            variant={isActive ? "secondary" : "ghost"}
+            variant={isActive ? "default" : "ghost"}
             className="w-full justify-start"
           >
             <Link href={localizedHref}>
