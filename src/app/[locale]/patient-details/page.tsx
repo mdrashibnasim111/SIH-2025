@@ -14,6 +14,7 @@ const mockPrescription = {
   id: "PRES12345",
   patientName: "John Doe",
   doctorName: "Dr. Md Rashib Nasim",
+  doctorSpecialization: "Cardiologist",
   consultationDate: "2024-07-15",
   medicines: [
     { name: "Paracetamol 500mg", dosage: "1 tablet", frequency: "3 times a day", duration: "5 days", timing: "After meals" },
@@ -108,6 +109,7 @@ export default function PatientDetailsPage() {
                   <div>
                     <p className="text-muted-foreground">Consulting Doctor</p>
                     <p className="font-semibold">{prescriptionDetails.doctorName}</p>
+                    <p className="text-xs text-muted-foreground">{prescriptionDetails.doctorSpecialization}</p>
                   </div>
               </div>
                <div className="flex items-center gap-3">
