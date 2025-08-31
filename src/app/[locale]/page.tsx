@@ -59,7 +59,7 @@ export default function DashboardPage() {
         {features.map(feature => (
           <Card
             key={feature.href}
-            className="flex flex-col justify-between transition-transform hover:scale-105 hover:shadow-lg"
+            className="flex flex-col justify-between transition-transform hover:scale-105 hover:shadow-neon-primary"
           >
             <CardHeader>
               <div className="flex items-center gap-4">
