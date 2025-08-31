@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Stethoscope, Hospital, Clock, Video, ShieldAlert, CreditCard, Radio } from "lucide-react";
+import { Stethoscope, Hospital, Clock, Video, CalendarDays } from "lucide-react";
 import Image from "next/image";
 import {
   AlertDialog,
@@ -23,6 +23,7 @@ const doctors = [
     specialization: "Cardiologist",
     hospital: "Nabha Civil Hospital",
     availability: "Mon, Wed, Fri (9 AM - 1 PM)",
+    days: "3 days a week",
     status: "Available",
     image: "https://picsum.photos/200/200?random=10",
     dataAiHint: "man doctor"
@@ -32,6 +33,7 @@ const doctors = [
     specialization: "Pediatrician",
     hospital: "Apollo Clinic, Nabha",
     availability: "Tue, Thu (10 AM - 2 PM)",
+    days: "2 days a week",
     status: "Available",
     image: "https://picsum.photos/200/200?random=2",
     dataAiHint: "woman doctor"
@@ -41,6 +43,7 @@ const doctors = [
     specialization: "Dermatologist",
     hospital: "Nabha Skin Center",
     availability: "Mon - Sat (11 AM - 5 PM)",
+    days: "6 days a week",
     status: "Unavailable",
     image: "https://picsum.photos/200/200?random=3",
     dataAiHint: "woman doctor"
@@ -50,6 +53,7 @@ const doctors = [
     specialization: "General Physician",
     hospital: "Nabha Civil Hospital",
     availability: "Mon - Sat (9 AM - 6 PM)",
+    days: "6 days a week",
     status: "Available",
     image: "https://picsum.photos/200/200?random=4",
     dataAiHint: "doctor smiling"
@@ -59,6 +63,7 @@ const doctors = [
     specialization: "Gynecologist",
     hospital: "Reddy Maternity Home",
     availability: "By Appointment",
+    days: "On-call",
     status: "Unavailable",
     image: "https://picsum.photos/200/200?random=5",
     dataAiHint: "female doctor"
@@ -108,6 +113,9 @@ export default function DoctorsPage() {
                   </p>
                   <p className="flex items-center gap-2">
                     <Clock className="h-4 w-4 text-primary/70" /> {doctor.availability}
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <CalendarDays className="h-4 w-4 text-primary/70" /> {doctor.days}
                   </p>
                 </div>
                 <Badge variant={doctor.status === "Available" ? "default" : "outline"}>
