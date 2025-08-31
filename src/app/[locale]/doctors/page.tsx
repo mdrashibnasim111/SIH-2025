@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Stethoscope, Hospital, Clock, Video, CalendarDays } from "lucide-react";
+import { Stethoscope, Hospital, Clock, Video, CalendarDays, CheckCircle } from "lucide-react";
 import Image from "next/image";
 import {
   AlertDialog,
@@ -118,9 +118,14 @@ export default function DoctorsPage() {
                     <CalendarDays className="h-4 w-4 text-primary/70" /> {doctor.days}
                   </p>
                 </div>
-                <Badge variant={doctor.status === "Available" ? "default" : "outline"}>
-                  {doctor.status}
-                </Badge>
+                {doctor.status === 'Available' ? (
+                  <Badge className="bg-green-600/10 text-green-700 shadow-neon-green hover:bg-green-600/20">
+                    <CheckCircle className="mr-1 h-3 w-3" />
+                    {doctor.status}
+                  </Badge>
+                ) : (
+                  <Badge variant="outline">{doctor.status}</Badge>
+                )}
               </div>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
