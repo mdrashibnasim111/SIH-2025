@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useActionState, useEffect, useRef, useState, useTransition } from "react";
 import { useFormStatus } from "react-dom";
 import { getDiagnosis, getDiagnosisAudio } from "@/app/symptom-checker/actions";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -41,13 +41,15 @@ export default function SymptomCheckerPage() {
 
   const [audioState, setAudioState] = useState<{data?: {media: string}, error?: string, fieldErrors?: any}>({});
   const audioRef = useRef<HTMLAudioElement>(null);
-
+  const [isAudioPending, startAudioTransition] = useTransition();
 
   // Handle playing audio response
   useEffect(() => {
     if (state.data?.possibleDiseases) {
-      getDiagnosisAudio({symptoms: state.data.possibleDiseases}).then(res => {
-        setAudioState(res);
+      startAudioTransition(() => {
+        getDiagnosisAudio({symptoms: state.data.possibleDiseases}).then(res => {
+          setAudioState(res);
+        });
       });
     }
   }, [state.data]);
@@ -168,7 +170,7 @@ export default function SymptomCheckerPage() {
             )}
             <div className="flex flex-col sm:flex-row gap-2">
               <SubmitButton />
-               <Button variant={isRecording ? "destructive" : "outline"} className="w-full sm:w-auto" onClick={handleMicClick} type="button">
+               <Button variant="outline" className="w-full sm:w-auto" onClick={handleMicClick} type="button">
                 <Mic className="mr-2 h-4 w-4" />
                 {isRecording ? "Stop Listening" : "Speak Symptoms"}
               </Button>
@@ -192,9 +194,13 @@ export default function SymptomCheckerPage() {
                 <Sparkles className="h-5 w-5 text-primary" />
                 Potential Conditions
               </div>
-               {audioState.data?.media && (
-                <audio ref={audioRef} controls />
-              )}
+               {isAudioPending ? (
+                 <Loader2 className="h-5 w-5 animate-spin" />
+               ) : (
+                  audioState.data?.media && (
+                    <audio ref={audioRef} controls />
+                  )
+               )}
                {audioState.error && (
                  <Alert variant="destructive" className="w-fit p-2">
                    <AlertDescription>{audioState.error}</AlertDescription>

@@ -26,8 +26,8 @@ export default function EmergencyPage() {
   return (
     <div className="space-y-8 max-w-2xl mx-auto">
       <div className="text-center">
-        <Siren className="mx-auto h-16 w-16 text-destructive" />
-        <h1 className="mt-4 text-4xl font-bold tracking-tight text-destructive">
+        <Siren className="mx-auto h-16 w-16 text-primary" />
+        <h1 className="mt-4 text-4xl font-bold tracking-tight text-primary">
           Emergency Service
         </h1>
         <p className="mt-2 text-lg text-muted-foreground">
@@ -60,7 +60,7 @@ export default function EmergencyPage() {
 
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button size="lg" className="w-full text-lg py-8 bg-destructive hover:bg-destructive/90">
+          <Button size="lg" className="w-full text-lg py-8">
             <PhoneCall className="mr-4 h-6 w-6" />
             Request Emergency Visit
           </Button>

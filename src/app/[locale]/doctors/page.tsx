@@ -110,9 +110,7 @@ export default function DoctorsPage() {
                     <Clock className="h-4 w-4 text-primary/70" /> {doctor.availability}
                   </p>
                 </div>
-                <Badge variant={doctor.status === "Available" ? "default" : "outline"}
-                    className={doctor.status === "Available" ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-800'}
-                >
+                <Badge variant={doctor.status === "Available" ? "default" : "outline"}>
                   {doctor.status}
                 </Badge>
               </div>
