@@ -21,9 +21,9 @@ const mockPrescription = {
     { name: "Cetirizine 10mg", dosage: "1 tablet", frequency: "Once at night", duration: "10 days", timing: "Before sleeping" },
   ],
   timetable: [
-      { time: "Morning (8 AM)", medicine: "Paracetamol, Amoxicillin" },
-      { time: "Afternoon (1 PM)", medicine: "Paracetamol" },
-      { time: "Night (9 PM)", medicine: "Paracetamol, Amoxicillin, Cetirizine" },
+      { time: "Morning", medicine: "Paracetamol, Amoxicillin" },
+      { time: "Afternoon", medicine: "Paracetamol" },
+      { time: "Night", medicine: "Paracetamol, Amoxicillin, Cetirizine" },
   ]
 };
 
