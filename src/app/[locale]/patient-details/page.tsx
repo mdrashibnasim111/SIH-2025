@@ -96,7 +96,7 @@ export default function PatientDetailsPage() {
 
       {prescriptionDetails && (
         <div className="space-y-6">
-          <Card>
+          <Card className="transition-transform hover:scale-105 hover:shadow-neon-primary">
             <CardHeader>
               <CardTitle>Consultation Details</CardTitle>
             </CardHeader>
@@ -133,7 +133,7 @@ export default function PatientDetailsPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="transition-transform hover:scale-105 hover:shadow-neon-primary">
             <CardHeader>
               <CardTitle className="flex items-center gap-2"><Pill className="h-5 w-5" /> Prescribed Medicines</CardTitle>
               <CardDescription>Duration of complete course and instructions for each medicine.</CardDescription>
@@ -164,7 +164,7 @@ export default function PatientDetailsPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="transition-transform hover:scale-105 hover:shadow-neon-primary">
             <CardHeader>
               <CardTitle className="flex items-center gap-2"><Clock className="h-5 w-5" /> Medicine Timetable</CardTitle>
               <CardDescription>Your daily schedule for taking medicines.</CardDescription>
@@ -189,7 +189,7 @@ export default function PatientDetailsPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="transition-transform hover:scale-105 hover:shadow-neon-primary">
             <CardHeader>
               <CardTitle className="flex items-center gap-2"><ClipboardList className="h-5 w-5" /> Diagnostic Tests</CardTitle>
               <CardDescription>Tests prescribed by the doctor and their reports.</CardDescription>
