@@ -29,6 +29,7 @@ export default function EmergencyPage() {
 
   const handleRequestConfirm = () => {
     toast({
+      variant: "success",
       title: "Emergency Request Confirmed",
       description: "A doctor and ambulance have been dispatched. Estimated arrival time is 15-20 minutes.",
     });
