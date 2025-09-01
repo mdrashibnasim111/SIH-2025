@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const doctors = [
   {
@@ -178,29 +179,32 @@ export default function DoctorsPage() {
         </p>
       </div>
 
-      <div className="space-y-8">
-        <section>
-          <h2 className="flex items-center gap-2 text-2xl font-semibold tracking-tight mb-4">
-            <Building className="h-6 w-6 text-primary/80" /> Government Hospitals
-          </h2>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <Tabs defaultValue="government" className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="government">
+            <Building className="mr-2 h-4 w-4" />
+            Government Hospitals
+          </TabsTrigger>
+          <TabsTrigger value="private">
+            <Building className="mr-2 h-4 w-4" />
+            Private Hospitals & Clinics
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="government">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 pt-4">
             {governmentDoctors.map((doctor) => (
               <DoctorCard key={doctor.name} doctor={doctor} />
             ))}
           </div>
-        </section>
-
-        <section>
-          <h2 className="flex items-center gap-2 text-2xl font-semibold tracking-tight mb-4">
-            <Building className="h-6 w-6 text-primary/80" /> Private Hospitals & Clinics
-          </h2>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        </TabsContent>
+        <TabsContent value="private">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 pt-4">
             {privateDoctors.map((doctor) => (
               <DoctorCard key={doctor.name} doctor={doctor} />
             ))}
           </div>
-        </section>
-      </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
