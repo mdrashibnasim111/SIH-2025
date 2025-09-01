@@ -39,6 +39,8 @@
     "medicinesDescription": "Check the availability of essential medicines at the clinic pharmacies.",
     "testsTitle": "Available Tests",
     "testsDescription": "Get information about the diagnostic tests conducted at the clinics.",
-    "learnMore": "Learn More"
+    "learnMore": "Learn More",
+    "doctorsAtClinicTitle": "Doctors at Aam Aadmi Clinic",
+    "doctorsAtClinicDescription": "Find General Physicians available for consultation at the local Aam Aadmi Clinic."
   }
 }

@@ -12,7 +12,7 @@ export default function AamAadmiClinicPage() {
     {
       title: t('doctorsTitle'),
       description: t('doctorsDescription'),
-      href: `/${locale}/doctors`,
+      href: `/${locale}/aam-aadmi-clinic/doctors`,
       icon: <Stethoscope className="size-8 text-primary" />,
     },
     {
