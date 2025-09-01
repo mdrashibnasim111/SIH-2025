@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Stethoscope, Hospital, Clock, Video, CalendarDays, CheckCircle } from "lucide-react";
+import { Stethoscope, Hospital, Clock, Video, CalendarDays, CheckCircle, Building } from "lucide-react";
 import Image from "next/image";
 import {
   AlertDialog,
@@ -26,7 +26,8 @@ const doctors = [
     days: "3 days a week",
     status: "Available",
     image: "https://picsum.photos/200/200?random=1",
-    dataAiHint: "young doctor"
+    dataAiHint: "young doctor",
+    type: "Government"
   },
   {
     name: "Dr. Adiba Fatima",
@@ -36,7 +37,8 @@ const doctors = [
     days: "2 days a week",
     status: "Available",
     image: "https://picsum.photos/200/200?random=2",
-    dataAiHint: "woman doctor"
+    dataAiHint: "woman doctor",
+    type: "Private"
   },
   {
     name: "Dr. Saleheen Manzar",
@@ -46,7 +48,8 @@ const doctors = [
     days: "6 days a week",
     status: "Unavailable",
     image: "https://picsum.photos/200/200?random=3",
-    dataAiHint: "woman doctor"
+    dataAiHint: "woman doctor",
+    type: "Private"
   },
   {
     name: "Dr. Mohammad Yusuf",
@@ -56,7 +59,8 @@ const doctors = [
     days: "6 days a week",
     status: "Available",
     image: "https://picsum.photos/200/200?random=4",
-    dataAiHint: "doctor smiling"
+    dataAiHint: "doctor smiling",
+    type: "Government"
   },
   {
     name: "Dr. Md Nahid Azim",
@@ -66,15 +70,103 @@ const doctors = [
     days: "On-call",
     status: "Unavailable",
     image: "https://picsum.photos/200/200?random=5",
-    dataAiHint: "female doctor"
+    dataAiHint: "female doctor",
+    type: "Private"
   },
 ];
 
-const sortedDoctors = [...doctors].sort((a, b) => {
+const sortLogic = (a: any, b: any) => {
   if (a.status === "Available" && b.status !== "Available") return -1;
   if (a.status !== "Available" && b.status === "Available") return 1;
   return 0;
-});
+};
+
+const governmentDoctors = doctors.filter(d => d.type === "Government").sort(sortLogic);
+const privateDoctors = doctors.filter(d => d.type === "Private").sort(sortLogic);
+
+const DoctorCard = ({ doctor }: { doctor: typeof doctors[0] }) => (
+  <Card key={doctor.name} className="flex flex-col">
+    <CardHeader className="flex flex-row items-center gap-4">
+      <Image
+        src={doctor.image}
+        alt={`Photo of ${doctor.name}`}
+        width={80}
+        height={80}
+        className="rounded-full"
+        data-ai-hint={doctor.dataAiHint}
+      />
+      <div className="flex-1">
+        <CardTitle>{doctor.name}</CardTitle>
+        <CardDescription className="flex items-center gap-2">
+          <Stethoscope className="h-4 w-4" />
+          {doctor.specialization}
+        </CardDescription>
+      </div>
+    </CardHeader>
+    <CardContent className="flex flex-1 flex-col justify-between">
+      <div>
+        <div className="mb-4 space-y-2 text-sm text-muted-foreground">
+          <p className="flex items-center gap-2">
+            <Hospital className="h-4 w-4 text-primary/70" /> {doctor.hospital}
+          </p>
+          <p className="flex items-center gap-2">
+            <Clock className="h-4 w-4 text-primary/70" /> {doctor.availability}
+          </p>
+          <p className="flex items-center gap-2">
+            <CalendarDays className="h-4 w-4 text-primary/70" /> {doctor.days}
+          </p>
+        </div>
+        {doctor.status === 'Available' ? (
+          <Badge className="bg-green-600/10 text-green-700 shadow-neon-green hover:bg-green-600/20">
+            <CheckCircle className="mr-1 h-3 w-3" />
+            {doctor.status}
+          </Badge>
+        ) : (
+          <Badge variant="outline">{doctor.status}</Badge>
+        )}
+      </div>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button
+            className="mt-4 w-full"
+            disabled={doctor.status !== "Available"}
+          >
+            <Video className="mr-2 h-4 w-4" />
+            Consult Now
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Complete Your Consultation</AlertDialogTitle>
+            <AlertDialogDescription>
+              The consultation fee is ₹500. Please select a payment method to proceed.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="py-4">
+            <RadioGroup defaultValue="upi">
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="upi" id="upi" />
+                <Label htmlFor="upi">UPI (GPay, PhonePe, etc.)</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="card" id="card" />
+                <Label htmlFor="card">Credit/Debit Card</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="netbanking" id="netbanking" />
+                <Label htmlFor="netbanking">Net Banking</Label>
+              </div>
+            </RadioGroup>
+          </div>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction>Pay and Start Call</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </CardContent>
+  </Card>
+)
 
 export default function DoctorsPage() {
   return (
@@ -85,90 +177,29 @@ export default function DoctorsPage() {
           Browse specialists and book video consultations.
         </p>
       </div>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {sortedDoctors.map((doctor) => (
-          <Card key={doctor.name} className="flex flex-col">
-            <CardHeader className="flex flex-row items-center gap-4">
-              <Image
-                src={doctor.image}
-                alt={`Photo of ${doctor.name}`}
-                width={80}
-                height={80}
-                className="rounded-full"
-                data-ai-hint={doctor.dataAiHint}
-              />
-              <div className="flex-1">
-                <CardTitle>{doctor.name}</CardTitle>
-                <CardDescription className="flex items-center gap-2">
-                  <Stethoscope className="h-4 w-4" />
-                  {doctor.specialization}
-                </CardDescription>
-              </div>
-            </CardHeader>
-            <CardContent className="flex flex-1 flex-col justify-between">
-              <div>
-                <div className="mb-4 space-y-2 text-sm text-muted-foreground">
-                  <p className="flex items-center gap-2">
-                    <Hospital className="h-4 w-4 text-primary/70" /> {doctor.hospital}
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-primary/70" /> {doctor.availability}
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <CalendarDays className="h-4 w-4 text-primary/70" /> {doctor.days}
-                  </p>
-                </div>
-                {doctor.status === 'Available' ? (
-                  <Badge className="bg-green-600/10 text-green-700 shadow-neon-green hover:bg-green-600/20">
-                    <CheckCircle className="mr-1 h-3 w-3" />
-                    {doctor.status}
-                  </Badge>
-                ) : (
-                  <Badge variant="outline">{doctor.status}</Badge>
-                )}
-              </div>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button
-                    className="mt-4 w-full"
-                    disabled={doctor.status !== "Available"}
-                  >
-                    <Video className="mr-2 h-4 w-4" />
-                    Consult Now
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Complete Your Consultation</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      The consultation fee is ₹500. Please select a payment method to proceed.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <div className="py-4">
-                    <RadioGroup defaultValue="upi">
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="upi" id="upi" />
-                        <Label htmlFor="upi">UPI (GPay, PhonePe, etc.)</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="card" id="card" />
-                        <Label htmlFor="card">Credit/Debit Card</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="netbanking" id="netbanking" />
-                        <Label htmlFor="netbanking">Net Banking</Label>
-                      </div>
-                    </RadioGroup>
-                  </div>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction>Pay and Start Call</AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </CardContent>
-          </Card>
-        ))}
+
+      <div className="space-y-8">
+        <section>
+          <h2 className="flex items-center gap-2 text-2xl font-semibold tracking-tight mb-4">
+            <Building className="h-6 w-6 text-primary/80" /> Government Hospitals
+          </h2>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {governmentDoctors.map((doctor) => (
+              <DoctorCard key={doctor.name} doctor={doctor} />
+            ))}
+          </div>
+        </section>
+
+        <section>
+          <h2 className="flex items-center gap-2 text-2xl font-semibold tracking-tight mb-4">
+            <Building className="h-6 w-6 text-primary/80" /> Private Hospitals & Clinics
+          </h2>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {privateDoctors.map((doctor) => (
+              <DoctorCard key={doctor.name} doctor={doctor} />
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );
