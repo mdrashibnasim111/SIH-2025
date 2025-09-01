@@ -107,7 +107,7 @@ const DoctorCard = ({ doctor }: { doctor: typeof doctors[0] }) => (
         data-ai-hint={doctor.dataAiHint}
       />
       <div className="flex-1">
-        <CardTitle>{doctor.name}</CardTitle>
+        <CardTitle className="whitespace-normal">{doctor.name}</CardTitle>
         <CardDescription className="flex items-center gap-2">
           <Stethoscope className="h-4 w-4" />
           {doctor.specialization}
