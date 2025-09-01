@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +14,8 @@ import {
   Map,
   User,
   Hospital,
+  ArrowLeft,
+  ArrowRight
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
@@ -62,15 +64,26 @@ export function NavLinks() {
 
 export function SiteSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const locale = pathname.split("/")[1] || "en";
 
   return (
     <aside className="fixed top-0 left-0 z-50 hidden h-screen w-48 flex-col border-r bg-background md:flex">
-      <div className="flex h-16 items-center border-b px-6">
+      <div className="flex h-16 items-center border-b px-4 justify-between">
         <Link href={`/${locale}`} className="flex items-center gap-2 font-bold">
           <HeartPulse className="h-6 w-6 text-primary" />
           <span className="font-bold">NabhaCare</span>
         </Link>
+      </div>
+      <div className="flex items-center justify-between p-2 border-b">
+        <Button variant="ghost" size="icon" onClick={() => router.back()}>
+          <ArrowLeft className="h-4 w-4" />
+          <span className="sr-only">Go back</span>
+        </Button>
+        <Button variant="ghost" size="icon" onClick={() => router.forward()}>
+          <ArrowRight className="h-4 w-4" />
+          <span className="sr-only">Go forward</span>
+        </Button>
       </div>
       <nav className="flex-1 space-y-2 p-4">
         <NavLinks />
