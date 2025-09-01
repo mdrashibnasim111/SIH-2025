@@ -112,7 +112,7 @@ const DoctorCard = ({ doctor }: { doctor: typeof doctors[0] }) => (
           <Stethoscope className="h-4 w-4" />
           {doctor.specialization}
         </CardDescription>
-        <div className="mt-2 flex items-center gap-4 text-sm text-muted-foreground">
+        <div className="mt-2 flex items-center gap-4 text-xs text-muted-foreground">
             <div className="flex items-center gap-1">
                 <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
                 <span className="font-semibold">{doctor.rating}</span>
