@@ -8,6 +8,8 @@
     "checkMedicinesDescription": "स्थानीय फार्मेसी स्टॉक और कीमतें खोजें।",
     "aiSymptomChecker": "एआई लक्षण परीक्षक",
     "aiSymptomCheckerDescription": "अपने लक्षणों के आधार पर संभावित निदान प्राप्त करें।",
+    "bookOfflineVisit": "ऑफलाइन विज़िट बुक करें",
+    "bookOfflineVisitDescription": "व्यक्तिगत डॉक्टर विज़िट के लिए एक टोकन नंबर प्राप्त करें।",
     "checkNow": "अभी जांचें",
     "emergencyTitle": "आपातकालीन?",
     "emergencyDescription": "गंभीर आपात स्थिति में, आप घरेलू दौरे के लिए डॉक्टर से अनुरोध कर सकते हैं। यह सेवा केवल अत्यावश्यक स्थितियों के लिए है।",
@@ -26,6 +28,7 @@
     "Medicines": "दवाइयाँ",
     "SymptomChecker": "लक्षण परीक्षक",
     "PatientDetails": "रोगी विवरण",
+    "OfflineBooking": "ऑफलाइन बुकिंग",
     "Map": "नक्शा",
     "Emergency": "आपातकालीन",
     "AamAadmiClinic": "आम आदमी क्लिनिक"
@@ -42,5 +45,9 @@
     "learnMore": "और जानें",
     "doctorsAtClinicTitle": "आम आदमी क्लिनिक में डॉक्टर",
     "doctorsAtClinicDescription": "स्थानीय आम आदमी क्लिनिक में परामर्श के लिए उपलब्ध सामान्य चिकित्सकों को खोजें।"
+  },
+  "OfflineBooking": {
+    "pageTitle": "ऑफलाइन विज़िट बुक करें",
+    "pageDescription": "किसी डॉक्टर से व्यक्तिगत परामर्श के लिए टोकन नंबर बुक करें।"
   }
 }

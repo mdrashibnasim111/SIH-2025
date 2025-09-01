@@ -8,6 +8,8 @@
     "checkMedicinesDescription": "Find local pharmacy stock and prices.",
     "aiSymptomChecker": "AI Symptom Checker",
     "aiSymptomCheckerDescription": "Get potential diagnosis based on your symptoms.",
+    "bookOfflineVisit": "Book Offline Visit",
+    "bookOfflineVisitDescription": "Get a token number for an in-person doctor visit.",
     "checkNow": "Check now",
     "emergencyTitle": "Emergency?",
     "emergencyDescription": "In case of a critical emergency, you can request a doctor for a home visit. This service is for urgent situations only.",
@@ -26,6 +28,7 @@
     "Medicines": "Medicines",
     "SymptomChecker": "Symptom Checker",
     "PatientDetails": "Patient Details",
+    "OfflineBooking": "Offline Booking",
     "Map": "Map",
     "Emergency": "Emergency",
     "AamAadmiClinic": "Aam Aadmi Clinic"
@@ -42,5 +45,9 @@
     "learnMore": "Learn More",
     "doctorsAtClinicTitle": "Doctors at Aam Aadmi Clinic",
     "doctorsAtClinicDescription": "Find General Physicians available for consultation at the local Aam Aadmi Clinic."
+  },
+  "OfflineBooking": {
+    "pageTitle": "Book Offline Visit",
+    "pageDescription": "Book a token number for an in-person consultation with a doctor."
   }
 }

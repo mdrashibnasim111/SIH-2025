@@ -14,6 +14,7 @@ import {
   Sparkles,
   Siren,
   Hospital,
+  CalendarCheck,
 } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 
@@ -40,6 +41,12 @@ export default function DashboardPage() {
       href: '/symptom-checker',
       icon: <Sparkles className="size-8 text-primary" />,
     },
+    {
+      title: t('bookOfflineVisit'),
+      description: t('bookOfflineVisitDescription'),
+      href: '/offline-booking',
+      icon: <CalendarCheck className="size-8 text-primary" />,
+    }
   ];
 
   return (
@@ -49,7 +56,7 @@ export default function DashboardPage() {
         <p className="text-muted-foreground">{t('tagline')}</p>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
         {features.map(feature => (
           <Card
             key={feature.href}
