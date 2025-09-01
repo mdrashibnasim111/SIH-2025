@@ -13,6 +13,7 @@ import {
   HeartPulse,
   Map,
   User,
+  Hospital,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
@@ -22,6 +23,7 @@ export function NavLinks() {
 
   const links = [
     { name: t("Dashboard"), href: "/", icon: LayoutDashboard },
+    { name: t("AamAadmiClinic"), href: "/aam-aadmi-clinic", icon: Hospital },
     { name: t("Doctors"), href: "/doctors", icon: Stethoscope },
     { name: t("Medicines"), href: "/medicines", icon: Pill },
     { name: t("SymptomChecker"), href: "/symptom-checker", icon: Sparkles },

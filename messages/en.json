@@ -11,7 +11,10 @@
     "checkNow": "Check now",
     "emergencyTitle": "Emergency?",
     "emergencyDescription": "In case of a critical emergency, you can request a doctor for a home visit. This service is for urgent situations only.",
-    "emergencyButton": "Request Emergency Visit"
+    "emergencyButton": "Request Emergency Visit",
+    "aamAadmiClinicTitle": "Aam Aadmi Clinic",
+    "aamAadmiClinicDescription": "Find services offered at Aam Aadmi Clinics, including doctor consultations, medicines, and tests.",
+    "exploreServices": "Explore Services"
   },
   "LanguageSelector": {
     "title": "Select Your Language",
@@ -24,6 +27,18 @@
     "SymptomChecker": "Symptom Checker",
     "PatientDetails": "Patient Details",
     "Map": "Map",
-    "Emergency": "Emergency"
+    "Emergency": "Emergency",
+    "AamAadmiClinic": "Aam Aadmi Clinic"
+  },
+  "AamAadmiClinic": {
+    "pageTitle": "Aam Aadmi Clinic Services",
+    "pageDescription": "Access various healthcare services provided at Aam Aadmi Clinics.",
+    "doctorsTitle": "Find Doctors",
+    "doctorsDescription": "View a list of available doctors and their schedules at the clinics.",
+    "medicinesTitle": "Check Medicines",
+    "medicinesDescription": "Check the availability of essential medicines at the clinic pharmacies.",
+    "testsTitle": "Available Tests",
+    "testsDescription": "Get information about the diagnostic tests conducted at the clinics.",
+    "learnMore": "Learn More"
   }
 }

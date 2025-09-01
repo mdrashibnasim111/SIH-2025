@@ -13,6 +13,7 @@ import {
   Pill,
   Sparkles,
   Siren,
+  Hospital,
 } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 
@@ -77,6 +78,34 @@ export default function DashboardPage() {
           </Card>
         ))}
       </div>
+
+      <Link href={`/${locale}/aam-aadmi-clinic`} className="group">
+        <Card className="border-primary/50 bg-primary/10 transition-all group-hover:bg-primary/20 group-hover:shadow-neon-primary">
+           <CardHeader>
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0 rounded-full bg-primary/10 p-3">
+                <Hospital className="size-8 text-primary" />
+              </div>
+              <div className="flex-1">
+                <CardTitle className="text-primary">
+                  {t('aamAadmiClinicTitle')}
+                </CardTitle>
+                <CardDescription className="text-muted-foreground">
+                  {t('aamAadmiClinicDescription')}
+                </CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <Button asChild>
+              <span className="flex items-center">
+                {t('exploreServices')}
+                <ArrowRight className="ml-2 size-4" />
+              </span>
+            </Button>
+          </CardContent>
+        </Card>
+      </Link>
 
       <Link href={`/${locale}/emergency`} className="group">
         <Card className="border-destructive/50 bg-destructive/10 transition-all group-hover:bg-destructive/20 group-hover:shadow-neon-destructive">
