@@ -38,30 +38,25 @@ export default function AamAadmiClinicPage() {
         </p>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="space-y-4">
         {clinicFeatures.map((feature) => (
-          <Card key={feature.title} className="flex flex-col justify-between transition-transform hover:scale-105 hover:shadow-neon-primary">
-            <CardHeader>
-               <div className="flex items-center gap-4">
-                {feature.icon}
+          <Link href={feature.href} key={feature.title} className="group block">
+            <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:shadow-neon-primary">
+              <div className="flex flex-col sm:flex-row items-start gap-6">
+                <div className="flex-shrink-0">{feature.icon}</div>
                 <div className="flex-1">
-                  <CardTitle>{feature.title}</CardTitle>
+                  <h3 className="text-xl font-semibold">{feature.title}</h3>
+                  <p className="mt-1 text-muted-foreground">
+                    {feature.description}
+                  </p>
+                </div>
+                <div className="flex items-center text-primary transition-transform duration-300 ease-in-out group-hover:translate-x-1">
+                  <span className="font-semibold">{t('learnMore')}</span>
+                  <ArrowRight className="ml-2 size-5" />
                 </div>
               </div>
-            </CardHeader>
-            <CardContent>
-              <CardDescription>{feature.description}</CardDescription>
-               <Button
-                asChild
-                variant="ghost"
-                className="mt-4 w-full justify-start p-0 h-auto text-primary hover:text-primary rounded-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1"
-              >
-                <Link href={feature.href} className="p-2">
-                  {t('learnMore')} <ArrowRight className="ml-2 size-4" />
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
+            </div>
+          </Link>
         ))}
       </div>
     </div>
