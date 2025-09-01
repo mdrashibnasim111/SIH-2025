@@ -157,6 +157,10 @@ const DoctorCard = ({ doctor }: { doctor: typeof doctors[0] }) => (
                 <RadioGroupItem value="netbanking" id="netbanking" />
                 <Label htmlFor="netbanking">Net Banking</Label>
               </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="wallet" id="wallet" />
+                <Label htmlFor="wallet">Pay through wallet</Label>
+              </div>
             </RadioGroup>
           </div>
           <AlertDialogFooter>
