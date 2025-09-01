@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle } from "lucide-react";
+import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle, Loader2 } from "lucide-react";
 import Image from "next/image";
 
 const mockMedicines = [
@@ -22,6 +22,7 @@ export default function MedicinesPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<Medicine[]>([]);
   const [searched, setSearched] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   const handleSearch = () => {
@@ -30,11 +31,16 @@ export default function MedicinesPage() {
       setSearched(false);
       return;
     }
-    const results = mockMedicines.filter((med) =>
-      med.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setSearchResults(results);
-    setSearched(true);
+    setIsLoading(true);
+    setSearched(false);
+    setTimeout(() => {
+      const results = mockMedicines.filter((med) =>
+        med.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setSearchResults(results);
+      setSearched(true);
+      setIsLoading(false);
+    }, 500); // Simulate network delay
   };
 
   const handleNotify = (medicineName: string) => {
@@ -64,9 +70,15 @@ export default function MedicinesPage() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+              disabled={isLoading}
             />
-            <Button onClick={handleSearch}>
-              <Search className="mr-2 h-4 w-4" /> Search
+            <Button onClick={handleSearch} disabled={isLoading}>
+              {isLoading ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Search className="mr-2 h-4 w-4" />
+              )}
+              Search
             </Button>
           </div>
         </TabsContent>

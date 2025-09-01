@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, User, Stethoscope, Calendar, Pill, Clock, Download, ClipboardList } from "lucide-react";
+import { Search, User, Stethoscope, Calendar, Pill, Clock, Download, ClipboardList, Loader2 } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
@@ -42,14 +42,21 @@ export default function PatientDetailsPage() {
   const [prescriptionId, setPrescriptionId] = useState("");
   const [prescriptionDetails, setPrescriptionDetails] = useState<Prescription>(null);
   const [searched, setSearched] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSearch = () => {
-    setSearched(true);
-    if (prescriptionId.toUpperCase() === mockPrescription.id) {
-      setPrescriptionDetails(mockPrescription);
-    } else {
-      setPrescriptionDetails(null);
-    }
+    setIsLoading(true);
+    setSearched(false);
+    setPrescriptionDetails(null);
+    setTimeout(() => {
+      if (prescriptionId.toUpperCase() === mockPrescription.id) {
+        setPrescriptionDetails(mockPrescription);
+      } else {
+        setPrescriptionDetails(null);
+      }
+      setSearched(true);
+      setIsLoading(false);
+    }, 500); // Simulate network delay
   };
 
 
@@ -76,10 +83,16 @@ export default function PatientDetailsPage() {
                 value={prescriptionId}
                 onChange={(e) => setPrescriptionId(e.target.value)} 
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                disabled={isLoading}
               />
             </div>
-            <Button onClick={handleSearch}>
-              <Search className="mr-2 h-4 w-4" /> Search
+            <Button onClick={handleSearch} disabled={isLoading}>
+              {isLoading ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Search className="mr-2 h-4 w-4" />
+              )}
+               Search
             </Button>
           </div>
         </CardContent>
