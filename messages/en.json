@@ -8,8 +8,6 @@
     "checkMedicinesDescription": "Find local pharmacy stock and prices.",
     "aiSymptomChecker": "AI Symptom Checker",
     "aiSymptomCheckerDescription": "Get potential diagnosis based on your symptoms.",
-    "healthRecords": "Health Records",
-    "healthRecordsDescription": "Access your digital health records anytime.",
     "checkNow": "Check now",
     "emergencyTitle": "Emergency?",
     "emergencyDescription": "In case of a critical emergency, you can request a doctor for a home visit. This service is for urgent situations only.",
@@ -24,7 +22,6 @@
     "Doctors": "Doctors",
     "Medicines": "Medicines",
     "SymptomChecker": "Symptom Checker",
-    "HealthRecords": "Health Records",
     "PatientDetails": "Patient Details",
     "Map": "Map",
     "Emergency": "Emergency"

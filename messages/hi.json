@@ -8,8 +8,6 @@
     "checkMedicinesDescription": "स्थानीय फार्मेसी स्टॉक और कीमतें खोजें।",
     "aiSymptomChecker": "एआई लक्षण परीक्षक",
     "aiSymptomCheckerDescription": "अपने लक्षणों के आधार पर संभावित निदान प्राप्त करें।",
-    "healthRecords": "स्वास्थ्य रिकॉर्ड",
-    "healthRecordsDescription": "अपने डिजिटल स्वास्थ्य रिकॉर्ड कभी भी एक्सेस करें।",
     "checkNow": "अभी जांचें",
     "emergencyTitle": "आपातकालीन?",
     "emergencyDescription": "गंभीर आपात स्थिति में, आप घरेलू दौरे के लिए डॉक्टर से अनुरोध कर सकते हैं। यह सेवा केवल अत्यावश्यक स्थितियों के लिए है।",
@@ -24,7 +22,6 @@
     "Doctors": "डॉक्टर",
     "Medicines": "दवाइयाँ",
     "SymptomChecker": "लक्षण परीक्षक",
-    "HealthRecords": "स्वास्थ्य रिकॉर्ड",
     "PatientDetails": "रोगी विवरण",
     "Map": "नक्शा",
     "Emergency": "आपातकालीन"
