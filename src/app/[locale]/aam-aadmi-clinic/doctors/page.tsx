@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Stethoscope, Clock, Video, CalendarDays, CheckCircle } from "lucide-react";
+import { Stethoscope, Clock, Video, CalendarDays, CheckCircle, Star, Check } from "lucide-react";
 import Image from "next/image";
 import {
   AlertDialog,
@@ -28,6 +28,8 @@ const doctors = [
     status: "Available",
     image: "https://picsum.photos/200/200?random=10",
     dataAiHint: "young doctor smiling",
+    rating: 4.7,
+    onlineCheckups: 150,
   },
   {
     name: "Dr. Balwinder Singh",
@@ -37,6 +39,8 @@ const doctors = [
     status: "Available",
     image: "https://picsum.photos/200/200?random=11",
     dataAiHint: "male doctor",
+    rating: 4.6,
+    onlineCheckups: 95,
   },
   {
     name: "Dr. Sunita Sharma",
@@ -46,6 +50,8 @@ const doctors = [
     status: "Unavailable",
     image: "https://picsum.photos/200/200?random=12",
     dataAiHint: "female doctor serious",
+    rating: 4.8,
+    onlineCheckups: 200,
   },
 ];
 
@@ -74,6 +80,17 @@ const DoctorCard = ({ doctor }: { doctor: typeof doctors[0] }) => (
           <Stethoscope className="h-4 w-4" />
           {doctor.specialization}
         </CardDescription>
+        <div className="mt-2 flex items-center gap-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-1">
+                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                <span className="font-semibold">{doctor.rating}</span>
+            </div>
+            <div className="flex items-center gap-1">
+                <Check className="h-4 w-4 text-green-500" />
+                <span className="font-semibold">{doctor.onlineCheckups}+</span>
+                <span className="text-xs">Consultations</span>
+            </div>
+        </div>
       </div>
     </CardHeader>
     <CardContent className="flex flex-1 flex-col justify-between">

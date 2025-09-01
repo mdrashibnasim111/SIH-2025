@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Stethoscope, Hospital, Clock, CalendarDays, CheckCircle, Ticket } from "lucide-react";
+import { Stethoscope, Hospital, Clock, CalendarDays, CheckCircle, Ticket, Star, Check } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
@@ -15,6 +15,8 @@ const doctors = [
     status: "Available",
     image: "https://picsum.photos/200/200?random=1",
     dataAiHint: "young doctor",
+    rating: 4.8,
+    onlineCheckups: 120,
   },
   {
     name: "Dr. Adiba Fatima",
@@ -25,6 +27,8 @@ const doctors = [
     status: "Available",
     image: "https://picsum.photos/200/200?random=2",
     dataAiHint: "woman doctor",
+    rating: 4.9,
+    onlineCheckups: 250,
   },
   {
     name: "Dr. Saleheen Manzar",
@@ -35,6 +39,8 @@ const doctors = [
     status: "Unavailable",
     image: "https://picsum.photos/200/200?random=3",
     dataAiHint: "woman doctor",
+    rating: 4.7,
+    onlineCheckups: 80,
   },
   {
     name: "Dr. Mohammad Yusuf",
@@ -45,6 +51,8 @@ const doctors = [
     status: "Available",
     image: "https://picsum.photos/200/200?random=4",
     dataAiHint: "doctor smiling",
+    rating: 4.6,
+    onlineCheckups: 300,
   },
   {
     name: "Dr. Md Nahid Azim",
@@ -55,6 +63,8 @@ const doctors = [
     status: "Unavailable",
     image: "https://picsum.photos/200/200?random=5",
     dataAiHint: "female doctor",
+    rating: 4.8,
+    onlineCheckups: 150,
   },
 ];
 
@@ -83,6 +93,17 @@ const DoctorCard = ({ doctor }: { doctor: typeof doctors[0] }) => (
           <Stethoscope className="h-4 w-4" />
           {doctor.specialization}
         </CardDescription>
+        <div className="mt-2 flex items-center gap-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-1">
+                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                <span className="font-semibold">{doctor.rating}</span>
+            </div>
+            <div className="flex items-center gap-1">
+                <Check className="h-4 w-4 text-green-500" />
+                <span className="font-semibold">{doctor.onlineCheckups}+</span>
+                <span className="text-xs">Consultations</span>
+            </div>
+        </div>
       </div>
     </CardHeader>
     <CardContent className="flex flex-1 flex-col justify-between">
