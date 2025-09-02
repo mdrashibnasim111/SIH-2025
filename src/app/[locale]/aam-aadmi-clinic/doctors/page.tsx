@@ -103,12 +103,12 @@ const DoctorCard = ({ doctor }: { doctor: typeof doctors[0] }) => {
   };
 
   const handleOpenChange = (open: boolean) => {
+    setIsDialogOpen(open);
     if (!open) {
       // Reset state when dialog is closed manually
       setIsBooked(false);
       setWaitingTime(0);
     }
-    setIsDialogOpen(open);
   }
 
   return (
