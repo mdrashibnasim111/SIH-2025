@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle, Loader2, Store, MapPin, ShoppingCart } from "lucide-react";
+import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle, Loader2, Store, MapPin, ShoppingCart, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale } from "next-intl";
@@ -24,6 +24,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
+import { Separator } from "@/components/ui/separator";
 
 
 const mockMedicines = [
@@ -424,7 +425,7 @@ const mockMedicines = [
 
 type Medicine = typeof mockMedicines[0];
 
-const MedicineCard = ({ med, locale }: { med: Medicine; locale: string; }) => {
+const MedicineCard = ({ med, locale, onAddToCart }: { med: Medicine; locale: string; onAddToCart: (med: Medicine) => void; }) => {
     const { toast } = useToast();
     const isAvailableOverall = med.stores.some(s => s.inStock);
     const totalQuantity = med.stores.reduce((acc, store) => acc + store.quantity, 0);
@@ -436,22 +437,14 @@ const MedicineCard = ({ med, locale }: { med: Medicine; locale: string; }) => {
         });
     };
     
-    const handleDeliveryConfirm = (event: React.FormEvent) => {
+    const handleDeliveryConfirm = (event: React.FormEvent, medicineName: string) => {
         event.preventDefault();
         toast({
             variant: "success",
             title: "Delivery Request Confirmed",
-            description: `Your order for ${med.name} has been placed and will be delivered within 24 hours.`,
+            description: `Your order for ${medicineName} has been placed and will be delivered within 24 hours.`,
         });
     };
-
-    const handleAddToCart = (medicineName: string) => {
-        toast({
-            variant: "success",
-            title: "Added to Cart",
-            description: `${medicineName} has been added to your cart.`,
-        });
-    }
 
     return (
         <Card key={med.name}>
@@ -514,7 +507,7 @@ const MedicineCard = ({ med, locale }: { med: Medicine; locale: string; }) => {
                 <div className="flex flex-wrap gap-2">
                 {isAvailableOverall ? (
                 <>
-                <Button variant="outline" className="flex-grow" onClick={() => handleAddToCart(med.name)}>
+                <Button variant="outline" className="flex-grow" onClick={() => onAddToCart(med)}>
                     <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
                 </Button>
                 <Dialog>
@@ -530,7 +523,7 @@ const MedicineCard = ({ med, locale }: { med: Medicine; locale: string; }) => {
                             Please fill in your details to request home delivery for {med.name}.
                         </DialogDescription>
                         </DialogHeader>
-                        <form onSubmit={handleDeliveryConfirm}>
+                        <form onSubmit={(e) => handleDeliveryConfirm(e, med.name)}>
                             <div className="grid gap-4 py-4">
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label htmlFor="name" className="text-right">
@@ -578,8 +571,10 @@ export default function MedicinesPage() {
   const [searchResults, setSearchResults] = useState<Medicine[]>([]);
   const [searched, setSearched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [cart, setCart] = useState<Medicine[]>([]);
   const locale = useLocale();
   const searchContainerRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -631,6 +626,37 @@ export default function MedicinesPage() {
     handleSearch(suggestion.name);
   };
 
+  const handleAddToCart = (med: Medicine) => {
+    setCart(prevCart => [...prevCart, med]);
+    toast({
+        variant: "success",
+        title: "Added to Cart",
+        description: `${med.name} has been added to your cart.`,
+    });
+  };
+
+  const handleClearCart = () => {
+    setCart([]);
+    toast({
+        title: "Cart Cleared",
+        description: "Your shopping cart has been emptied.",
+    });
+  };
+
+  const handleCartDeliveryConfirm = (event: React.FormEvent) => {
+    event.preventDefault();
+    toast({
+        variant: "success",
+        title: "Delivery Request Confirmed",
+        description: `Your order for ${cart.length} item(s) has been placed and will be delivered within 24 hours.`,
+    });
+    setCart([]); // Clear cart after order
+  };
+
+  const calculateTotalPrice = () => {
+    return cart.reduce((total, item) => total + parseFloat(item.price.replace('₹', '')), 0).toFixed(2);
+  };
+
   return (
     <div className="space-y-8">
       <div>
@@ -638,73 +664,148 @@ export default function MedicinesPage() {
         <p className="text-muted-foreground">Check local pharmacy stock in real-time.</p>
       </div>
 
-      <Tabs defaultValue="search" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="search">Search by Name</TabsTrigger>
-          <TabsTrigger value="upload">Upload Prescription</TabsTrigger>
-        </TabsList>
-        <TabsContent value="search">
-          <div className="relative" ref={searchContainerRef}>
-            <div className="flex w-full items-center space-x-2">
-              <Input
-                type="text"
-                placeholder="e.g., Paracetamol"
-                value={searchTerm}
-                onChange={handleInputChange}
-                onKeyDown={(e) => e.key === 'Enter' && handleSearch(searchTerm)}
-                disabled={isLoading}
-              />
-              <Button onClick={() => handleSearch(searchTerm)} disabled={isLoading}>
-                {isLoading ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <Search className="mr-2 h-4 w-4" />
-                )}
-                Search
-              </Button>
-            </div>
-            {suggestions.length > 0 && (
-              <div className="absolute z-10 w-full mt-1 border bg-background rounded-md shadow-lg">
-                <ul className="py-1">
-                  {suggestions.map((suggestion) => (
-                    <li
-                      key={suggestion.name}
-                      className="px-3 py-2 cursor-pointer hover:bg-accent"
-                      onClick={() => handleSuggestionClick(suggestion)}
-                    >
-                      {suggestion.name}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        </TabsContent>
-        <TabsContent value="upload">
-          <Card>
-            <CardContent className="pt-6">
-              <Button variant="outline" className="w-full">
-                <Upload className="mr-2 h-4 w-4" /> Upload a photo of your prescription
-              </Button>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        <div className="lg:col-span-2 space-y-8">
+            <Tabs defaultValue="search" className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="search">Search by Name</TabsTrigger>
+                <TabsTrigger value="upload">Upload Prescription</TabsTrigger>
+                </TabsList>
+                <TabsContent value="search">
+                <div className="relative" ref={searchContainerRef}>
+                    <div className="flex w-full items-center space-x-2">
+                    <Input
+                        type="text"
+                        placeholder="e.g., Paracetamol"
+                        value={searchTerm}
+                        onChange={handleInputChange}
+                        onKeyDown={(e) => e.key === 'Enter' && handleSearch(searchTerm)}
+                        disabled={isLoading}
+                    />
+                    <Button onClick={() => handleSearch(searchTerm)} disabled={isLoading}>
+                        {isLoading ? (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        ) : (
+                        <Search className="mr-2 h-4 w-4" />
+                        )}
+                        Search
+                    </Button>
+                    </div>
+                    {suggestions.length > 0 && (
+                    <div className="absolute z-10 w-full mt-1 border bg-background rounded-md shadow-lg">
+                        <ul className="py-1">
+                        {suggestions.map((suggestion) => (
+                            <li
+                            key={suggestion.name}
+                            className="px-3 py-2 cursor-pointer hover:bg-accent"
+                            onClick={() => handleSuggestionClick(suggestion)}
+                            >
+                            {suggestion.name}
+                            </li>
+                        ))}
+                        </ul>
+                    </div>
+                    )}
+                </div>
+                </TabsContent>
+                <TabsContent value="upload">
+                <Card>
+                    <CardContent className="pt-6">
+                    <Button variant="outline" className="w-full">
+                        <Upload className="mr-2 h-4 w-4" /> Upload a photo of your prescription
+                    </Button>
+                    </CardContent>
+                </Card>
+                </TabsContent>
+            </Tabs>
 
-      <div className="space-y-4">
-        {searched && searchResults.length === 0 && (
-          <Card className="text-center">
-            <CardContent className="pt-6">
-              <p>No results found for "{searchTerm}".</p>
-            </CardContent>
-          </Card>
+            <div className="space-y-4">
+                {searched && searchResults.length === 0 && (
+                <Card className="text-center">
+                    <CardContent className="pt-6">
+                    <p>No results found for "{searchTerm}".</p>
+                    </CardContent>
+                </Card>
+                )}
+                {searchResults.map((med) => (
+                    <MedicineCard key={med.name} med={med} locale={locale} onAddToCart={handleAddToCart} />
+                ))}
+            </div>
+        </div>
+
+        {cart.length > 0 && (
+            <div className="lg:col-span-1 sticky top-20">
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <ShoppingCart /> Your Cart
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="max-h-60 overflow-y-auto pr-2 space-y-2">
+                            {cart.map((item, index) => (
+                                <div key={index} className="flex justify-between items-center text-sm">
+                                    <span>{item.name}</span>
+                                    <span className="font-semibold">{item.price}</span>
+                                </div>
+                            ))}
+                        </div>
+                        <Separator />
+                        <div className="flex justify-between font-bold text-lg">
+                            <span>Total</span>
+                            <span>₹{calculateTotalPrice()}</span>
+                        </div>
+                        <Separator />
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <Button className="w-full">
+                                    <Truck className="mr-2 h-4 w-4" /> Request Home Delivery for Cart
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-[425px]">
+                                <DialogHeader>
+                                <DialogTitle>Home Delivery Request</DialogTitle>
+                                <DialogDescription>
+                                    Please fill in your details to request home delivery for the items in your cart.
+                                </DialogDescription>
+                                </DialogHeader>
+                                <form onSubmit={handleCartDeliveryConfirm}>
+                                    <div className="grid gap-4 py-4">
+                                        <div className="grid grid-cols-4 items-center gap-4">
+                                            <Label htmlFor="name-cart" className="text-right">
+                                                Full Name
+                                            </Label>
+                                            <Input id="name-cart" required className="col-span-3" />
+                                        </div>
+                                        <div className="grid grid-cols-4 items-center gap-4">
+                                            <Label htmlFor="phone-cart" className="text-right">
+                                                Phone
+                                            </Label>
+                                            <Input id="phone-cart" type="tel" required className="col-span-3" />
+                                        </div>
+                                        <div className="grid grid-cols-4 items-center gap-4">
+                                            <Label htmlFor="address-cart" className="text-right">
+                                                Address
+                                            </Label>
+                                            <Input id="address-cart" required className="col-span-3" />
+                                        </div>
+                                    </div>
+                                    <DialogFooter>
+                                        <DialogClose asChild>
+                                            <Button type="submit">Confirm Delivery</Button>
+                                        </DialogClose>
+                                    </DialogFooter>
+                                </form>
+                            </DialogContent>
+                        </Dialog>
+                        <Button variant="outline" className="w-full" onClick={handleClearCart}>
+                            <Trash2 className="mr-2 h-4 w-4" /> Clear Cart
+                        </Button>
+                    </CardContent>
+                </Card>
+            </div>
         )}
-        {searchResults.map((med) => (
-          <MedicineCard key={med.name} med={med} locale={locale} />
-        ))}
       </div>
     </div>
   );
 }
-
-    
