@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle, Loader2, Store, MapPin, ShoppingCart, Trash2, Plus, Minus, Bike } from "lucide-react";
+import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle, Loader2, Store, MapPin, ShoppingCart, Trash2, Plus, Minus, Bike, LocateFixed, Wallet } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale } from "next-intl";
@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 
 const mockMedicines = [
@@ -810,7 +811,7 @@ export default function MedicinesPage() {
                                     <Truck className="mr-2 h-4 w-4" /> Request Home Delivery for Cart
                                 </Button>
                             </DialogTrigger>
-                            <DialogContent className="sm:max-w-[425px]">
+                            <DialogContent className="sm:max-w-md">
                                 <DialogHeader>
                                 <DialogTitle>Home Delivery Request</DialogTitle>
                                 <DialogDescription>
@@ -831,11 +832,34 @@ export default function MedicinesPage() {
                                             </Label>
                                             <Input id="phone-cart" type="tel" required className="col-span-3" />
                                         </div>
-                                        <div className="grid grid-cols-4 items-center gap-4">
-                                            <Label htmlFor="address-cart" className="text-right">
+                                        <div className="grid grid-cols-4 items-start gap-4">
+                                            <Label htmlFor="address-cart" className="text-right pt-2">
                                                 Address
                                             </Label>
-                                            <Input id="address-cart" required className="col-span-3" />
+                                            <div className="col-span-3 space-y-2">
+                                                <Input id="address-cart" required />
+                                                <Button type="button" variant="outline" size="sm" className="w-full">
+                                                    <LocateFixed className="mr-2 h-4 w-4" /> Use my live location
+                                                </Button>
+                                            </div>
+                                        </div>
+                                        <Separator />
+                                         <div className="grid grid-cols-4 items-start gap-4">
+                                            <Label className="text-right pt-2">
+                                                Payment
+                                            </Label>
+                                            <div className="col-span-3">
+                                                <RadioGroup defaultValue="cod">
+                                                    <div className="flex items-center space-x-2">
+                                                        <RadioGroupItem value="cod" id="cod" />
+                                                        <Label htmlFor="cod">Cash on Delivery (COD)</Label>
+                                                    </div>
+                                                    <div className="flex items-center space-x-2">
+                                                        <RadioGroupItem value="upi" id="upi" />
+                                                        <Label htmlFor="upi">UPI (GPay, PhonePe, etc.)</Label>
+                                                    </div>
+                                                </RadioGroup>
+                                            </div>
                                         </div>
                                     </div>
                                     <DialogFooter>
