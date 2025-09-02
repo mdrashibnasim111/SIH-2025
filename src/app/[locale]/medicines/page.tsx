@@ -659,7 +659,7 @@ export default function MedicinesPage() {
     toast({
         variant: "success",
         title: "Delivery Request Confirmed",
-        description: `Your order for ${cart.length} item(s) has been placed and will be delivered within 24 hours.`,
+        description: `Your order for ${cart.length} item(s) has been placed and will be delivered within 1 hour.`,
     });
     setCart([]); // Clear cart after order
     setDistance(0);
