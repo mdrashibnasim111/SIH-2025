@@ -12,6 +12,18 @@ import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle, Loader2, Store
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale } from "next-intl";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
+
 
 const mockMedicines = [
   // Existing
@@ -422,6 +434,15 @@ const MedicineCard = ({ med, locale }: { med: Medicine; locale: string; }) => {
         description: `We'll notify you when ${medicineName} is back in stock.`,
         });
     };
+    
+    const handleDeliveryConfirm = (event: React.FormEvent) => {
+        event.preventDefault();
+        toast({
+            variant: "success",
+            title: "Delivery Request Confirmed",
+            description: `Your order for ${med.name} has been placed and will be delivered within 24 hours.`,
+        });
+    };
 
     return (
         <Card key={med.name}>
@@ -482,9 +503,48 @@ const MedicineCard = ({ med, locale }: { med: Medicine; locale: string; }) => {
                 </div>
                 
                 {isAvailableOverall ? (
-                <Button className="w-full sm:w-auto">
-                    <Truck className="mr-2 h-4 w-4" /> Request Home Delivery
-                </Button>
+                <Dialog>
+                    <DialogTrigger asChild>
+                         <Button className="w-full sm:w-auto">
+                            <Truck className="mr-2 h-4 w-4" /> Request Home Delivery
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                        <DialogTitle>Home Delivery Request</DialogTitle>
+                        <DialogDescription>
+                            Please fill in your details to request home delivery for {med.name}.
+                        </DialogDescription>
+                        </DialogHeader>
+                        <form onSubmit={handleDeliveryConfirm}>
+                            <div className="grid gap-4 py-4">
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="name" className="text-right">
+                                        Full Name
+                                    </Label>
+                                    <Input id="name" required className="col-span-3" />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="phone" className="text-right">
+                                        Phone
+                                    </Label>
+                                    <Input id="phone" type="tel" required className="col-span-3" />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="address" className="text-right">
+                                        Address
+                                    </Label>
+                                    <Input id="address" required className="col-span-3" />
+                                </div>
+                            </div>
+                            <DialogFooter>
+                                <DialogClose asChild>
+                                    <Button type="submit">Confirm Delivery</Button>
+                                </DialogClose>
+                            </DialogFooter>
+                        </form>
+                    </DialogContent>
+                </Dialog>
                 ) : (
                 <Button variant="outline" className="w-full sm:w-auto" onClick={() => handleNotify(med.name)}>
                     <Bell className="mr-2 h-4 w-4" /> Notify when available
