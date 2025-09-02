@@ -429,7 +429,7 @@ type CartItem = {
     quantity: number;
 }
 
-const MedicineCard = ({ med, locale, onAddToCart, cartQuantity }: { med: Medicine; locale: string; onAddToCart: (med: Medicine) => void; cartQuantity: number; }) => {
+const MedicineCard = ({ med, locale, onAddToCart, cartQuantity, onQuantityChange }: { med: Medicine; locale: string; onAddToCart: (med: Medicine) => void; cartQuantity: number; onQuantityChange: (medicineName: string, delta: number) => void; }) => {
     const { toast } = useToast();
     const isAvailableOverall = med.stores.some(s => s.inStock);
     const totalQuantity = med.stores.reduce((acc, store) => acc + store.quantity, 0);
@@ -502,13 +502,20 @@ const MedicineCard = ({ med, locale, onAddToCart, cartQuantity }: { med: Medicin
                 <div className="flex flex-wrap gap-2">
                 {isAvailableOverall ? (
                   <div className="flex items-center gap-2">
-                    <Button variant="outline" className="flex-grow" onClick={() => onAddToCart(med)}>
-                        <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
-                    </Button>
-                    {cartQuantity > 0 && (
-                        <Badge variant="secondary" className="px-3 py-1 text-base">
-                            {cartQuantity} in cart
-                        </Badge>
+                    {cartQuantity === 0 ? (
+                        <Button variant="outline" className="flex-grow" onClick={() => onAddToCart(med)}>
+                            <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
+                        </Button>
+                    ) : (
+                        <div className="flex items-center gap-2">
+                            <Button variant="outline" size="icon" className="h-9 w-9" onClick={() => onQuantityChange(med.name, -1)}>
+                                <Minus className="h-4 w-4" />
+                            </Button>
+                            <span className="font-semibold text-lg w-5 text-center">{cartQuantity}</span>
+                            <Button variant="outline" size="icon" className="h-9 w-9" onClick={() => onQuantityChange(med.name, 1)}>
+                                <Plus className="h-4 w-4" />
+                            </Button>
+                        </div>
                     )}
                   </div>
                 ) : (
@@ -616,6 +623,19 @@ export default function MedicinesPage() {
 
   const handleQuantityChange = (medicineName: string, delta: number) => {
     setCart(prevCart => {
+        const itemExists = prevCart.some(item => item.medicine.name === medicineName);
+
+        // If item doesn't exist and we're trying to add it (delta > 0), add it to cart.
+        if (!itemExists && delta > 0) {
+             if (cart.length === 0) {
+                setDistance(Math.floor(Math.random() * 10) + 1);
+            }
+            const medicineToAdd = mockMedicines.find(m => m.name === medicineName);
+            if (medicineToAdd) {
+                return [...prevCart, { medicine: medicineToAdd, quantity: 1 }];
+            }
+        }
+        
         return prevCart.map(item =>
             item.medicine.name === medicineName
             ? { ...item, quantity: Math.max(0, item.quantity + delta) }
@@ -732,6 +752,7 @@ export default function MedicinesPage() {
                             locale={locale} 
                             onAddToCart={handleAddToCart}
                             cartQuantity={cartItem ? cartItem.quantity : 0}
+                            onQuantityChange={handleQuantityChange}
                         />
                     )
                 })}
