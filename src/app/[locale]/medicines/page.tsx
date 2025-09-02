@@ -95,7 +95,7 @@ const MedicineCard = ({ med }: { med: Medicine }) => {
                                     <span>{store.name}</span>
                                     {store.inStock ? (
                                         <Badge variant="outline" className="text-green-700 border-green-300">
-                                            <CheckCircle className="mr-1 h-3 w-3" /> In Stock
+                                            <CheckCircle className="mr-1 h-3 w-3" /> In Stock ({store.quantity} left)
                                         </Badge>
                                     ) : (
                                         <Badge variant="destructive" className="bg-red-100 text-red-800">
