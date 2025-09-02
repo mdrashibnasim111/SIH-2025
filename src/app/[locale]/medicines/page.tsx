@@ -579,6 +579,7 @@ export default function MedicinesPage() {
   const [distance, setDistance] = useState(0);
   const locale = useLocale();
   const searchContainerRef = useRef<HTMLDivElement>(null);
+  const cartRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -653,6 +654,10 @@ export default function MedicinesPage() {
         title: "Added to Cart",
         description: `${med.name} has been added to your cart.`,
     });
+    
+    setTimeout(() => {
+        cartRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
   };
 
   const handleQuantityChange = (medicineName: string, delta: number) => {
@@ -771,7 +776,7 @@ export default function MedicinesPage() {
         </div>
 
         {cart.length > 0 && (
-            <div className="lg:col-span-1 sticky top-20">
+            <div className="lg:col-span-1 sticky top-20" ref={cartRef}>
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
