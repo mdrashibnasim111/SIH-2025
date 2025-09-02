@@ -431,7 +431,7 @@ const MedicineCard = ({ med, locale }: { med: Medicine; locale: string; }) => {
     const handleNotify = (medicineName: string) => {
         toast({
         title: "Notification Set!",
-        description: `We'll notify you when ${medicineName} is back in stock.`,
+        description: `We'll notify you via SMS and a call when ${medicineName} is back in stock.`,
         });
     };
     
