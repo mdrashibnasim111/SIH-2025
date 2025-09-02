@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -8,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle, Loader2, Store, MapPin } from "lucide-react";
+import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle, Loader2, Store, MapPin, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale } from "next-intl";
@@ -135,7 +136,7 @@ const mockMedicines = [
     image: 'https://picsum.photos/200/200?random=57',
     stores: [
         { name: "Gupta Pharmacy", inStock: true, quantity: 40, location: "Main Bazaar" },
-        { name: "Janta Medical Store", in_stock: true, quantity: 50, location: "Near Bus Stand" }
+        { name: "Janta Medical Store", inStock: true, quantity: 50, location: "Near Bus Stand" }
     ],
   },
   {
@@ -444,6 +445,14 @@ const MedicineCard = ({ med, locale }: { med: Medicine; locale: string; }) => {
         });
     };
 
+    const handleAddToCart = (medicineName: string) => {
+        toast({
+            variant: "success",
+            title: "Added to Cart",
+            description: `${medicineName} has been added to your cart.`,
+        });
+    }
+
     return (
         <Card key={med.name}>
             <CardHeader className="flex flex-col md:flex-row gap-4">
@@ -502,10 +511,15 @@ const MedicineCard = ({ med, locale }: { med: Medicine; locale: string; }) => {
                     </div>
                 </div>
                 
+                <div className="flex flex-wrap gap-2">
                 {isAvailableOverall ? (
+                <>
+                <Button variant="outline" className="flex-grow" onClick={() => handleAddToCart(med.name)}>
+                    <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
+                </Button>
                 <Dialog>
                     <DialogTrigger asChild>
-                         <Button className="w-full sm:w-auto">
+                         <Button className="flex-grow">
                             <Truck className="mr-2 h-4 w-4" /> Request Home Delivery
                         </Button>
                     </DialogTrigger>
@@ -545,11 +559,13 @@ const MedicineCard = ({ med, locale }: { med: Medicine; locale: string; }) => {
                         </form>
                     </DialogContent>
                 </Dialog>
+                </>
                 ) : (
                 <Button variant="outline" className="w-full sm:w-auto" onClick={() => handleNotify(med.name)}>
                     <Bell className="mr-2 h-4 w-4" /> Notify when available
                 </Button>
                 )}
+                </div>
             </div>
             </CardContent>
         </Card>
