@@ -10,6 +10,8 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle, Loader2, Store, MapPin } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { useLocale } from "next-intl";
 
 const mockMedicines = [
   { 
@@ -46,7 +48,7 @@ const mockMedicines = [
 
 type Medicine = typeof mockMedicines[0];
 
-const MedicineCard = ({ med }: { med: Medicine }) => {
+const MedicineCard = ({ med, locale }: { med: Medicine; locale: string; }) => {
     const { toast } = useToast();
     const isAvailableOverall = med.stores.some(s => s.inStock);
     const totalQuantity = med.stores.reduce((acc, store) => acc + store.quantity, 0);
@@ -94,10 +96,12 @@ const MedicineCard = ({ med }: { med: Medicine }) => {
                                 <div key={store.name} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-2 rounded-md border gap-2">
                                     <div className="flex flex-col">
                                       <span className="font-medium">{store.name}</span>
-                                      <span className="text-xs text-muted-foreground flex items-center gap-1">
+                                      <div className="text-xs text-muted-foreground flex items-center gap-1">
                                         <MapPin className="h-3 w-3" />
-                                        {store.location}
-                                      </span>
+                                        <Link href={`/${locale}/map`} className="hover:underline hover:text-primary">
+                                            {store.location}
+                                        </Link>
+                                      </div>
                                     </div>
                                     {store.inStock ? (
                                         <Badge variant="outline" className="text-green-700 border-green-300">
@@ -134,6 +138,7 @@ export default function MedicinesPage() {
   const [searchResults, setSearchResults] = useState<Medicine[]>([]);
   const [searched, setSearched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const locale = useLocale();
 
   const handleSearch = () => {
     if (!searchTerm.trim()) {
@@ -205,7 +210,7 @@ export default function MedicinesPage() {
           </Card>
         )}
         {searchResults.map((med) => (
-          <MedicineCard key={med.name} med={med} />
+          <MedicineCard key={med.name} med={med} locale={locale} />
         ))}
       </div>
     </div>
