@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,9 +14,17 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const doctors = [
@@ -157,7 +166,7 @@ const DoctorCard = ({ doctor }: { doctor: typeof doctors[0] }) => (
             Consult Now
           </Button>
         </AlertDialogTrigger>
-        <AlertDialogContent>
+        <AlertDialogContent className="max-h-[90vh] overflow-y-auto">
           <AlertDialogHeader>
             <AlertDialogTitle>Complete Your Consultation</AlertDialogTitle>
             <AlertDialogDescription>
@@ -165,24 +174,78 @@ const DoctorCard = ({ doctor }: { doctor: typeof doctors[0] }) => (
             </AlertDialogDescription>
           </AlertDialogHeader>
           <div className="py-4">
-            <RadioGroup defaultValue="upi">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="upi" id="upi" />
-                <Label htmlFor="upi">UPI (GPay, PhonePe, etc.)</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="card" id="card" />
-                <Label htmlFor="card">Credit/Debit Card</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="netbanking" id="netbanking" />
-                <Label htmlFor="netbanking">Net Banking</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="wallet" id="wallet" />
-                <Label htmlFor="wallet">Pay through wallet</Label>
-              </div>
-            </RadioGroup>
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="upi">
+                <AccordionTrigger>UPI</AccordionTrigger>
+                <AccordionContent className="space-y-2">
+                    <Button variant="outline" className="w-full justify-start">
+                        <Image src="https://picsum.photos/id/13/20/20" width={20} height={20} alt="gpay" className="mr-2" data-ai-hint="gpay logo" />
+                        GPay
+                    </Button>
+                    <Button variant="outline" className="w-full justify-start">
+                        <Image src="https://picsum.photos/id/14/20/20" width={20} height={20} alt="phonepe" className="mr-2" data-ai-hint="phonepe logo" />
+                        PhonePe
+                    </Button>
+                    <Button variant="outline" className="w-full justify-start">
+                        <Image src="https://picsum.photos/id/15/20/20" width={20} height={20} alt="paytm" className="mr-2" data-ai-hint="paytm logo" />
+                        Paytm
+                    </Button>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="card">
+                <AccordionTrigger>Credit/Debit Card</AccordionTrigger>
+                <AccordionContent className="space-y-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="card-number">Card Number</Label>
+                        <Input id="card-number" placeholder="0000 0000 0000 0000" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="expiry">Expiry</Label>
+                            <Input id="expiry" placeholder="MM/YY" />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="cvv">CVV</Label>
+                            <Input id="cvv" placeholder="123" />
+                        </div>
+                    </div>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="netbanking">
+                <AccordionTrigger>Net Banking</AccordionTrigger>
+                <AccordionContent>
+                    <Select>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select Bank" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="sbi">State Bank of India</SelectItem>
+                            <SelectItem value="hdfc">HDFC Bank</SelectItem>
+                            <SelectItem value="icici">ICICI Bank</SelectItem>
+                            <SelectItem value="axis">Axis Bank</SelectItem>
+                            <SelectItem value="pnb">Punjab National Bank</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </AccordionContent>
+              </AccordionItem>
+               <AccordionItem value="wallet">
+                <AccordionTrigger>Pay through wallet</AccordionTrigger>
+                <AccordionContent className="space-y-2">
+                   <Button variant="outline" className="w-full justify-start">
+                        <Image src="https://picsum.photos/id/15/20/20" width={20} height={20} alt="paytm wallet" className="mr-2" data-ai-hint="paytm logo" />
+                        Paytm Wallet
+                    </Button>
+                    <Button variant="outline" className="w-full justify-start">
+                        <Image src="https://picsum.photos/id/20/20/20" width={20} height={20} alt="amazon pay" className="mr-2" data-ai-hint="amazon logo" />
+                        Amazon Pay
+                    </Button>
+                     <Button variant="outline" className="w-full justify-start">
+                        <Image src="https://picsum.photos/id/18/20/20" width={20} height={20} alt="mobikwik" className="mr-2" data-ai-hint="mobikwik logo" />
+                        MobiKwik
+                    </Button>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
