@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle, Loader2, Store } from "lucide-react";
+import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle, Loader2, Store, MapPin } from "lucide-react";
 import Image from "next/image";
 
 const mockMedicines = [
@@ -18,18 +18,18 @@ const mockMedicines = [
     usage: "For fever and pain relief.", 
     image: 'https://picsum.photos/200/200?random=6', 
     stores: [
-      { name: "Janta Medical Store", inStock: true, quantity: 30 },
-      { name: "Gupta Pharmacy", inStock: true, quantity: 20 }
+      { name: "Janta Medical Store", inStock: true, quantity: 30, location: "Near Bus Stand" },
+      { name: "Gupta Pharmacy", inStock: true, quantity: 20, location: "Main Bazaar" }
     ],
   },
   { 
-    name: "Amoxicillin 250mg", 
+    name: "Amoxicillin 250mg",
     price: "₹85.00", 
     usage: "Antibiotic for bacterial infections.", 
     image: 'https://picsum.photos/200/200?random=7', 
     stores: [
-        { name: "Nabha Medical Hall", inStock: true, quantity: 25 },
-        { name: "Apollo Pharmacy", inStock: false, quantity: 0 }
+        { name: "Nabha Medical Hall", inStock: true, quantity: 25, location: "Patiala Gate" },
+        { name: "Apollo Pharmacy", inStock: false, quantity: 0, location: "Opposite Civil Hospital" }
     ],
   },
   { 
@@ -38,8 +38,8 @@ const mockMedicines = [
     usage: "For allergies and hay fever.", 
     image: 'https://picsum.photos/200/200?random=8', 
     stores: [
-        { name: "Janta Medical Store", inStock: false, quantity: 0 },
-        { name: "Gupta Pharmacy", inStock: false, quantity: 0 }
+        { name: "Janta Medical Store", inStock: false, quantity: 0, location: "Near Bus Stand" },
+        { name: "Gupta Pharmacy", inStock: false, quantity: 0, location: "Main Bazaar" }
     ],
   },
 ];
@@ -91,8 +91,14 @@ const MedicineCard = ({ med }: { med: Medicine }) => {
                         <p className="font-semibold">Availability:</p>
                         <div className="mt-2 space-y-2">
                             {med.stores.map(store => (
-                                <div key={store.name} className="flex items-center justify-between p-2 rounded-md border">
-                                    <span>{store.name}</span>
+                                <div key={store.name} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-2 rounded-md border gap-2">
+                                    <div className="flex flex-col">
+                                      <span className="font-medium">{store.name}</span>
+                                      <span className="text-xs text-muted-foreground flex items-center gap-1">
+                                        <MapPin className="h-3 w-3" />
+                                        {store.location}
+                                      </span>
+                                    </div>
                                     {store.inStock ? (
                                         <Badge variant="outline" className="text-green-700 border-green-300">
                                             <CheckCircle className="mr-1 h-3 w-3" /> In Stock ({store.quantity} left)
