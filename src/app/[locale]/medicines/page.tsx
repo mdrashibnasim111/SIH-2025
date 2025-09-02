@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle, Loader2, Store, MapPin, ShoppingCart, Trash2, Plus, Minus, Bike, LocateFixed, Wallet } from "lucide-react";
+import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle, Loader2, Store, MapPin, ShoppingCart, Trash2, Plus, Minus, Bike, LocateFixed, Wallet, ClipboardList } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale } from "next-intl";
@@ -26,6 +26,7 @@ import {
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 
 const mockMedicines = [
@@ -423,6 +424,11 @@ const mockMedicines = [
   },
 ];
 
+const mockPrescriptions: { [key: string]: string[] } = {
+    "PRES12345": ["Paracetamol 500mg", "Amoxicillin 250mg", "Cetirizine 10mg"],
+    "PRES67890": ["Atorvastatin 10mg", "Metformin 500mg", "Aspirin 75mg"],
+};
+
 
 type Medicine = typeof mockMedicines[0];
 type CartItem = {
@@ -544,6 +550,11 @@ export default function MedicinesPage() {
   const cartRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
+  const [prescriptionId, setPrescriptionId] = useState("");
+  const [prescriptionMedicines, setPrescriptionMedicines] = useState<Medicine[]>([]);
+  const [isPrescriptionLoading, setIsPrescriptionLoading] = useState(false);
+  const [prescriptionSearched, setPrescriptionSearched] = useState(false);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
@@ -592,6 +603,27 @@ export default function MedicinesPage() {
   const handleSuggestionClick = (suggestion: Medicine) => {
     setSearchTerm(suggestion.name);
     handleSearch(suggestion.name);
+  };
+  
+  const handlePrescriptionSearch = () => {
+    if (!prescriptionId.trim()) {
+      setPrescriptionMedicines([]);
+      setPrescriptionSearched(false);
+      return;
+    }
+    setIsPrescriptionLoading(true);
+    setPrescriptionSearched(false);
+    setTimeout(() => {
+        const prescriptionMeds = mockPrescriptions[prescriptionId.toUpperCase()];
+        if (prescriptionMeds) {
+            const results = mockMedicines.filter(med => prescriptionMeds.includes(med.name));
+            setPrescriptionMedicines(results);
+        } else {
+            setPrescriptionMedicines([]);
+        }
+        setPrescriptionSearched(true);
+        setIsPrescriptionLoading(false);
+    }, 500);
   };
 
   const handleAddToCart = (med: Medicine) => {
@@ -684,9 +716,10 @@ export default function MedicinesPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         <div className="lg:col-span-2 space-y-8">
             <Tabs defaultValue="search" className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="search">Search by Name</TabsTrigger>
-                <TabsTrigger value="upload">Upload Prescription</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-3">
+                    <TabsTrigger value="search">Search by Name</TabsTrigger>
+                    <TabsTrigger value="prescription">Order from Prescription</TabsTrigger>
+                    <TabsTrigger value="upload">Upload Prescription</TabsTrigger>
                 </TabsList>
                 <TabsContent value="search">
                 <div className="relative" ref={searchContainerRef}>
@@ -725,6 +758,34 @@ export default function MedicinesPage() {
                     )}
                 </div>
                 </TabsContent>
+                <TabsContent value="prescription">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Order from Your Prescription</CardTitle>
+                            <CardDescription>Enter your prescription ID to find your medicines and add them to your cart.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="flex w-full items-center space-x-2">
+                                <Input
+                                    type="text"
+                                    placeholder="Enter Prescription ID (e.g., PRES12345)"
+                                    value={prescriptionId}
+                                    onChange={(e) => setPrescriptionId(e.target.value)}
+                                    onKeyDown={(e) => e.key === 'Enter' && handlePrescriptionSearch()}
+                                    disabled={isPrescriptionLoading}
+                                />
+                                <Button onClick={handlePrescriptionSearch} disabled={isPrescriptionLoading}>
+                                    {isPrescriptionLoading ? (
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    ) : (
+                                    <ClipboardList className="mr-2 h-4 w-4" />
+                                    )}
+                                    Fetch Medicines
+                                </Button>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </TabsContent>
                 <TabsContent value="upload">
                 <Card>
                     <CardContent className="pt-6">
@@ -757,6 +818,33 @@ export default function MedicinesPage() {
                         />
                     )
                 })}
+
+                {prescriptionSearched && prescriptionMedicines.length === 0 && (
+                    <Alert variant="destructive">
+                        <AlertTitle>Prescription Not Found</AlertTitle>
+                        <AlertDescription>
+                            No prescription found for the ID "{prescriptionId}". Please check the ID and try again.
+                        </AlertDescription>
+                    </Alert>
+                )}
+                {prescriptionMedicines.length > 0 && (
+                     <div className="space-y-4">
+                        <h3 className="text-xl font-bold tracking-tight">Medicines for Prescription ID: {prescriptionId.toUpperCase()}</h3>
+                        {prescriptionMedicines.map((med) => {
+                            const cartItem = cart.find(item => item.medicine.name === med.name);
+                            return (
+                                <MedicineCard 
+                                    key={med.name} 
+                                    med={med} 
+                                    locale={locale} 
+                                    onAddToCart={handleAddToCart}
+                                    cartQuantity={cartItem ? cartItem.quantity : 0}
+                                    onQuantityChange={handleQuantityChange}
+                                />
+                            )
+                        })}
+                     </div>
+                )}
             </div>
         </div>
 
@@ -881,3 +969,5 @@ export default function MedicinesPage() {
     </div>
   );
 }
+
+    
