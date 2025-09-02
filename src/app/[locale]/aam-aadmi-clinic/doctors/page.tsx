@@ -1,7 +1,10 @@
+
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Stethoscope, Clock, Video, CalendarDays, CheckCircle, Star, Check } from "lucide-react";
+import { Stethoscope, Clock, Video, CalendarDays, CheckCircle, Star, Check, Loader2 } from "lucide-react";
 import Image from "next/image";
 import {
   AlertDialog,
@@ -14,9 +17,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useTranslations } from "next-intl";
+import { useState, useEffect } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 
 const doctors = [
@@ -63,81 +66,145 @@ const sortLogic = (a: any, b: any) => {
 
 const sortedDoctors = doctors.sort(sortLogic);
 
-const DoctorCard = ({ doctor }: { doctor: typeof doctors[0] }) => (
-  <Card key={doctor.name} className="flex flex-col">
-    <CardHeader className="flex flex-row items-center gap-4">
-      <Image
-        src={doctor.image}
-        alt={`Photo of ${doctor.name}`}
-        width={80}
-        height={80}
-        className="rounded-full"
-        data-ai-hint={doctor.dataAiHint}
-      />
-      <div className="flex-1">
-        <CardTitle className="whitespace-normal">{doctor.name}</CardTitle>
-        <CardDescription className="flex items-center gap-2">
-          <Stethoscope className="h-4 w-4" />
-          {doctor.specialization}
-        </CardDescription>
-        <div className="mt-2 flex items-center gap-4 text-xs text-muted-foreground">
-            <div className="flex items-center gap-1">
-                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
-                <span className="font-semibold">{doctor.rating}</span>
-            </div>
-            <div className="flex items-center gap-1">
-                <Check className="h-4 w-4 text-green-500" />
-                <span className="font-semibold">{doctor.onlineCheckups}+</span>
-                <span className="text-xs">Consultations</span>
-            </div>
+const DoctorCard = ({ doctor }: { doctor: typeof doctors[0] }) => {
+  const [isBooked, setIsBooked] = useState(false);
+  const [waitingTime, setWaitingTime] = useState(0);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isBooked && waitingTime > 0) {
+      timer = setTimeout(() => {
+        setWaitingTime(prevTime => prevTime - 1);
+      }, 1000);
+    } else if (isBooked && waitingTime === 0) {
+      setIsDialogOpen(false);
+      setIsBooked(false);
+      toast({
+        title: "Ready for Consultation",
+        description: `Connecting you with ${doctor.name} now.`,
+        variant: "success",
+      });
+    }
+    return () => clearTimeout(timer);
+  }, [isBooked, waitingTime, doctor.name, toast]);
+
+  const handleConfirmAppointment = () => {
+    const randomWaitTime = Math.floor(Math.random() * 15 * 60) + 1; // Random time up to 15 mins
+    setWaitingTime(randomWaitTime);
+    setIsBooked(true);
+  };
+  
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      // Reset state when dialog is closed manually
+      setIsBooked(false);
+      setWaitingTime(0);
+    }
+    setIsDialogOpen(open);
+  }
+
+  return (
+    <Card key={doctor.name} className="flex flex-col">
+      <CardHeader className="flex flex-row items-center gap-4">
+        <Image
+          src={doctor.image}
+          alt={`Photo of ${doctor.name}`}
+          width={80}
+          height={80}
+          className="rounded-full"
+          data-ai-hint={doctor.dataAiHint}
+        />
+        <div className="flex-1">
+          <CardTitle className="whitespace-normal">{doctor.name}</CardTitle>
+          <CardDescription className="flex items-center gap-2">
+            <Stethoscope className="h-4 w-4" />
+            {doctor.specialization}
+          </CardDescription>
+          <div className="mt-2 flex items-center gap-4 text-xs text-muted-foreground">
+              <div className="flex items-center gap-1">
+                  <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                  <span className="font-semibold">{doctor.rating}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                  <Check className="h-4 w-4 text-green-500" />
+                  <span className="font-semibold">{doctor.onlineCheckups}+</span>
+                  <span className="text-xs">Consultations</span>
+              </div>
+          </div>
         </div>
-      </div>
-    </CardHeader>
-    <CardContent className="flex flex-1 flex-col justify-between">
-      <div>
-        <div className="mb-4 space-y-2 text-sm text-muted-foreground">
-          <p className="flex items-center gap-2">
-            <Clock className="h-4 w-4 text-primary/70" /> {doctor.availability}
-          </p>
-          <p className="flex items-center gap-2">
-            <CalendarDays className="h-4 w-4 text-primary/70" /> {doctor.days}
-          </p>
+      </CardHeader>
+      <CardContent className="flex flex-1 flex-col justify-between">
+        <div>
+          <div className="mb-4 space-y-2 text-sm text-muted-foreground">
+            <p className="flex items-center gap-2">
+              <Clock className="h-4 w-4 text-primary/70" /> {doctor.availability}
+            </p>
+            <p className="flex items-center gap-2">
+              <CalendarDays className="h-4 w-4 text-primary/70" /> {doctor.days}
+            </p>
+          </div>
+          {doctor.status === 'Available' ? (
+            <Badge className="bg-green-600/10 text-green-700 shadow-neon-green hover:bg-green-600/20">
+              <CheckCircle className="mr-1 h-3 w-3" />
+              {doctor.status}
+            </Badge>
+          ) : (
+            <Badge variant="outline">{doctor.status}</Badge>
+          )}
         </div>
-        {doctor.status === 'Available' ? (
-          <Badge className="bg-green-600/10 text-green-700 shadow-neon-green hover:bg-green-600/20">
-            <CheckCircle className="mr-1 h-3 w-3" />
-            {doctor.status}
-          </Badge>
-        ) : (
-          <Badge variant="outline">{doctor.status}</Badge>
-        )}
-      </div>
-      <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <Button
-            className="mt-4 w-full"
-            disabled={doctor.status !== "Available"}
-          >
-            <Video className="mr-2 h-4 w-4" />
-            Consult Now
-          </Button>
-        </AlertDialogTrigger>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Book Appointment</AlertDialogTitle>
-            <AlertDialogDescription>
-              Appointments at Aam Aadmi Clinics are free of charge. Please confirm to book your slot.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction>Confirm Appointment</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </CardContent>
-  </Card>
-)
+        <AlertDialog open={isDialogOpen} onOpenChange={handleOpenChange}>
+          <AlertDialogTrigger asChild>
+            <Button
+              className="mt-4 w-full"
+              disabled={doctor.status !== "Available"}
+            >
+              <Video className="mr-2 h-4 w-4" />
+              Consult Now
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            {isBooked ? (
+              <>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Appointment Confirmed!</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Please wait while we connect you with {doctor.name}.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <div className="flex flex-col items-center justify-center gap-4 py-8">
+                    <Loader2 className="h-12 w-12 animate-spin text-primary" />
+                    <p className="text-lg font-semibold">Your consultation will begin in:</p>
+                    <p className="text-4xl font-bold text-primary tabular-nums">{formatTime(waitingTime)}</p>
+                </div>
+              </>
+            ) : (
+              <>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Book Appointment</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Appointments at Aam Aadmi Clinics are free of charge. Please confirm to book your slot.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleConfirmAppointment}>Confirm Appointment</AlertDialogAction>
+                </AlertDialogFooter>
+              </>
+            )}
+          </AlertDialogContent>
+        </AlertDialog>
+      </CardContent>
+    </Card>
+  )
+}
 
 export default function AamAadmiClinicDoctorsPage() {
     const t = useTranslations("AamAadmiClinic");
