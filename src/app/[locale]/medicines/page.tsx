@@ -14,37 +14,400 @@ import Link from "next/link";
 import { useLocale } from "next-intl";
 
 const mockMedicines = [
-  { 
-    name: "Paracetamol 500mg", 
-    price: "₹20.50", 
-    usage: "For fever and pain relief.", 
-    image: 'https://picsum.photos/200/200?random=6', 
+  // Existing
+  {
+    name: "Paracetamol 500mg",
+    price: "₹20.50",
+    usage: "For fever and pain relief.",
+    image: 'https://picsum.photos/200/200?random=6',
     stores: [
       { name: "Janta Medical Store", inStock: true, quantity: 30, location: "Near Bus Stand" },
       { name: "Gupta Pharmacy", inStock: true, quantity: 20, location: "Main Bazaar" }
     ],
   },
-  { 
+  {
     name: "Amoxicillin 250mg",
-    price: "₹85.00", 
-    usage: "Antibiotic for bacterial infections.", 
-    image: 'https://picsum.photos/200/200?random=7', 
+    price: "₹85.00",
+    usage: "Antibiotic for bacterial infections.",
+    image: 'https://picsum.photos/200/200?random=7',
     stores: [
-        { name: "Nabha Medical Hall", inStock: true, quantity: 25, location: "Patiala Gate" },
+      { name: "Nabha Medical Hall", inStock: true, quantity: 25, location: "Patiala Gate" },
+      { name: "Apollo Pharmacy", inStock: false, quantity: 0, location: "Opposite Civil Hospital" }
+    ],
+  },
+  {
+    name: "Cetirizine 10mg",
+    price: "₹30.00",
+    usage: "For allergies and hay fever.",
+    image: 'https://picsum.photos/200/200?random=8',
+    stores: [
+      { name: "Janta Medical Store", inStock: false, quantity: 0, location: "Near Bus Stand" },
+      { name: "Gupta Pharmacy", inStock: false, quantity: 0, location: "Main Bazaar" }
+    ],
+  },
+  // Added
+  {
+    name: "Aspirin 75mg",
+    price: "₹10.00",
+    usage: "Blood thinner, pain relief.",
+    image: 'https://picsum.photos/200/200?random=50',
+    stores: [
+        { name: "Janta Medical Store", inStock: true, quantity: 100, location: "Near Bus Stand" },
+        { name: "Gupta Pharmacy", inStock: true, quantity: 50, location: "Main Bazaar" }
+    ],
+  },
+  {
+    name: "Atorvastatin 10mg",
+    price: "₹55.00",
+    usage: "Lowers cholesterol.",
+    image: 'https://picsum.photos/200/200?random=51',
+    stores: [
+        { name: "Nabha Medical Hall", inStock: true, quantity: 40, location: "Patiala Gate" },
+        { name: "Apollo Pharmacy", inStock: true, quantity: 30, location: "Opposite Civil Hospital" }
+    ],
+  },
+  {
+    name: "Azithromycin 500mg",
+    price: "₹115.00",
+    usage: "Antibiotic for bacterial infections.",
+    image: 'https://picsum.photos/200/200?random=52',
+    stores: [
+        { name: "Janta Medical Store", inStock: false, quantity: 0, location: "Near Bus Stand" },
+        { name: "Gupta Pharmacy", inStock: true, quantity: 15, location: "Main Bazaar" }
+    ],
+  },
+  {
+    name: "Brufen 400mg",
+    price: "₹15.00",
+    usage: "Pain relief, anti-inflammatory.",
+    image: 'https://picsum.photos/200/200?random=53',
+    stores: [
+        { name: "Janta Medical Store", inStock: true, quantity: 80, location: "Near Bus Stand" },
+        { name: "Nabha Medical Hall", inStock: true, quantity: 60, location: "Patiala Gate" }
+    ],
+  },
+  {
+    name: "Bisoprolol 2.5mg",
+    price: "₹40.00",
+    usage: "For high blood pressure.",
+    image: 'https://picsum.photos/200/200?random=54',
+    stores: [
+        { name: "Apollo Pharmacy", inStock: true, quantity: 25, location: "Opposite Civil Hospital" },
+        { name: "Gupta Pharmacy", inStock: true, quantity: 20, location: "Main Bazaar" }
+    ],
+  },
+  {
+    name: "Combiflam",
+    price: "₹25.00",
+    usage: "Pain and fever relief.",
+    image: 'https://picsum.photos/200/200?random=55',
+    stores: [
+        { name: "Janta Medical Store", inStock: true, quantity: 150, location: "Near Bus Stand" },
+        { name: "Gupta Pharmacy", inStock: true, quantity: 100, location: "Main Bazaar" }
+    ],
+  },
+  {
+    name: "Clopidogrel 75mg",
+    price: "₹60.00",
+    usage: "Blood thinner to prevent clots.",
+    image: 'https://picsum.photos/200/200?random=56',
+    stores: [
+        { name: "Nabha Medical Hall", inStock: true, quantity: 35, location: "Patiala Gate" },
         { name: "Apollo Pharmacy", inStock: false, quantity: 0, location: "Opposite Civil Hospital" }
     ],
   },
-  { 
-    name: "Cetirizine 10mg", 
-    price: "₹30.00", 
-    usage: "For allergies and hay fever.", 
-    image: 'https://picsum.photos/200/200?random=8', 
+  {
+    name: "Diclofenac Gel",
+    price: "₹70.00",
+    usage: "Topical pain relief.",
+    image: 'https://picsum.photos/200/200?random=57',
+    stores: [
+        { name: "Gupta Pharmacy", inStock: true, quantity: 40, location: "Main Bazaar" },
+        { name: "Janta Medical Store", in_stock: true, quantity: 50, location: "Near Bus Stand" }
+    ],
+  },
+  {
+    name: "Domperidone 10mg",
+    price: "₹45.00",
+    usage: "For nausea and vomiting.",
+    image: 'https://picsum.photos/200/200?random=58',
+    stores: [
+        { name: "Apollo Pharmacy", inStock: true, quantity: 30, location: "Opposite Civil Hospital" },
+        { name: "Nabha Medical Hall", inStock: true, quantity: 20, location: "Patiala Gate" }
+    ],
+  },
+  {
+    name: "Ecosprin 75mg",
+    price: "₹12.00",
+    usage: "Blood thinner (Aspirin).",
+    image: 'https://picsum.photos/200/200?random=59',
+    stores: [
+        { name: "Janta Medical Store", inStock: true, quantity: 200, location: "Near Bus Stand" },
+        { name: "Gupta Pharmacy", inStock: true, quantity: 150, location: "Main Bazaar" }
+    ],
+  },
+  {
+    name: "Enalapril 5mg",
+    price: "₹35.00",
+    usage: "For high blood pressure.",
+    image: 'https://picsum.photos/200/200?random=60',
+    stores: [
+        { name: "Nabha Medical Hall", inStock: false, quantity: 0, location: "Patiala Gate" },
+        { name: "Apollo Pharmacy", inStock: true, quantity: 22, location: "Opposite Civil Hospital" }
+    ],
+  },
+  {
+    name: "Folic Acid 5mg",
+    price: "₹22.00",
+    usage: "Vitamin supplement.",
+    image: 'https://picsum.photos/200/200?random=61',
+    stores: [
+        { name: "Janta Medical Store", inStock: true, quantity: 300, location: "Near Bus Stand" },
+        { name: "Gupta Pharmacy", inStock: true, quantity: 250, location: "Main Bazaar" }
+    ],
+  },
+  {
+    name: "Fluconazole 150mg",
+    price: "₹30.00",
+    usage: "Antifungal medication.",
+    image: 'https://picsum.photos/200/200?random=62',
+    stores: [
+        { name: "Apollo Pharmacy", inStock: true, quantity: 15, location: "Opposite Civil Hospital" },
+        { name: "Nabha Medical Hall", inStock: true, quantity: 10, location: "Patiala Gate" }
+    ],
+  },
+  {
+    name: "Glimipride 1mg",
+    price: "₹50.00",
+    usage: "For type 2 diabetes.",
+    image: 'https://picsum.photos/200/200?random=63',
+    stores: [
+        { name: "Gupta Pharmacy", inStock: true, quantity: 33, location: "Main Bazaar" },
+        { name: "Janta Medical Store", inStock: true, quantity: 45, location: "Near Bus Stand" }
+    ],
+  },
+  {
+    name: "Gaviscon Syrup",
+    price: "₹120.00",
+    usage: "For heartburn and indigestion.",
+    image: 'https://picsum.photos/200/200?random=64',
+    stores: [
+        { name: "Nabha Medical Hall", inStock: true, quantity: 25, location: "Patiala Gate" },
+        { name: "Apollo Pharmacy", inStock: true, quantity: 30, location: "Opposite Civil Hospital" }
+    ],
+  },
+  {
+    name: "Hydrochlorothiazide 12.5mg",
+    price: "₹28.00",
+    usage: "Diuretic, for high blood pressure.",
+    image: 'https://picsum.photos/200/200?random=65',
     stores: [
         { name: "Janta Medical Store", inStock: false, quantity: 0, location: "Near Bus Stand" },
+        { name: "Gupta Pharmacy", inStock: true, quantity: 18, location: "Main Bazaar" }
+    ],
+  },
+  {
+    name: "Ibuprofen 200mg",
+    price: "₹10.00",
+    usage: "Pain relief.",
+    image: 'https://picsum.photos/200/200?random=66',
+    stores: [
+        { name: "Janta Medical Store", inStock: true, quantity: 120, location: "Near Bus Stand" },
+        { name: "Nabha Medical Hall", inStock: true, quantity: 90, location: "Patiala Gate" }
+    ],
+  },
+  {
+    name: "Itraconazole 100mg",
+    price: "₹150.00",
+    usage: "Antifungal medication.",
+    image: 'https://picsum.photos/200/200?random=67',
+    stores: [
+        { name: "Apollo Pharmacy", inStock: true, quantity: 12, location: "Opposite Civil Hospital" },
         { name: "Gupta Pharmacy", inStock: false, quantity: 0, location: "Main Bazaar" }
     ],
   },
+  {
+    name: "Levocetirizine 5mg",
+    price: "₹35.00",
+    usage: "For allergies.",
+    image: 'https://picsum.photos/200/200?random=68',
+    stores: [
+        { name: "Janta Medical Store", inStock: true, quantity: 70, location: "Near Bus Stand" },
+        { name: "Gupta Pharmacy", inStock: true, quantity: 60, location: "Main Bazaar" }
+    ],
+  },
+  {
+    name: "Losartan 50mg",
+    price: "₹75.00",
+    usage: "For high blood pressure.",
+    image: 'https://picsum.photos/200/200?random=69',
+    stores: [
+        { name: "Nabha Medical Hall", inStock: true, quantity: 45, location: "Patiala Gate" },
+        { name: "Apollo Pharmacy", inStock: true, quantity: 35, location: "Opposite Civil Hospital" }
+    ],
+  },
+  {
+    name: "Metformin 500mg",
+    price: "₹18.00",
+    usage: "For type 2 diabetes.",
+    image: 'https://picsum.photos/200/200?random=70',
+    stores: [
+        { name: "Janta Medical Store", inStock: true, quantity: 250, location: "Near Bus Stand" },
+        { name: "Gupta Pharmacy", inStock: true, quantity: 200, location: "Main Bazaar" }
+    ],
+  },
+  {
+    name: "Montelukast 10mg",
+    price: "₹90.00",
+    usage: "For asthma and allergies.",
+    image: 'https://picsum.photos/200/200?random=71',
+    stores: [
+        { name: "Apollo Pharmacy", inStock: true, quantity: 28, location: "Opposite Civil Hospital" },
+        { name: "Nabha Medical Hall", inStock: true, quantity: 20, location: "Patiala Gate" }
+    ],
+  },
+  {
+    name: "Nimesulide 100mg",
+    price: "₹32.00",
+    usage: "Pain relief, anti-inflammatory.",
+    image: 'https://picsum.photos/200/200?random=72',
+    stores: [
+        { name: "Gupta Pharmacy", inStock: false, quantity: 0, location: "Main Bazaar" },
+        { name: "Janta Medical Store", inStock: true, quantity: 40, location: "Near Bus Stand" }
+    ],
+  },
+  {
+    name: "Norfloxacin 400mg",
+    price: "₹55.00",
+    usage: "Antibiotic for infections.",
+    image: 'https://picsum.photos/200/200?random=73',
+    stores: [
+        { name: "Nabha Medical Hall", inStock: true, quantity: 15, location: "Patiala Gate" },
+        { name: "Apollo Pharmacy", inStock: true, quantity: 10, location: "Opposite Civil Hospital" }
+    ],
+  },
+  {
+    name: "Ofloxacin 200mg",
+    price: "₹48.00",
+    usage: "Antibiotic for infections.",
+    image: 'https://picsum.photos/200/200?random=74',
+    stores: [
+        { name: "Janta Medical Store", inStock: true, quantity: 25, location: "Near Bus Stand" },
+        { name: "Gupta Pharmacy", inStock: true, quantity: 20, location: "Main Bazaar" }
+    ],
+  },
+  {
+    name: "Omeprazole 20mg",
+    price: "₹30.00",
+    usage: "For acidity and heartburn.",
+    image: 'https://picsum.photos/200/200?random=75',
+    stores: [
+        { name: "Janta Medical Store", inStock: true, quantity: 90, location: "Near Bus Stand" },
+        { name: "Apollo Pharmacy", inStock: true, quantity: 70, location: "Opposite Civil Hospital" }
+    ],
+  },
+  {
+    name: "Pantoprazole 40mg",
+    price: "₹55.00",
+    usage: "For acidity, GERD.",
+    image: 'https://picsum.photos/200/200?random=76',
+    stores: [
+        { name: "Nabha Medical Hall", inStock: true, quantity: 80, location: "Patiala Gate" },
+        { name: "Gupta Pharmacy", inStock: true, quantity: 60, location: "Main Bazaar" }
+    ],
+  },
+  {
+    name: "Ranitidine 150mg",
+    price: "₹20.00",
+    usage: "For acidity and stomach ulcers.",
+    image: 'https://picsum.photos/200/200?random=77',
+    stores: [
+        { name: "Janta Medical Store", inStock: true, quantity: 110, location: "Near Bus Stand" },
+        { name: "Apollo Pharmacy", inStock: false, quantity: 0, location: "Opposite Civil Hospital" }
+    ],
+  },
+  {
+    name: "Rosuvastatin 10mg",
+    price: "₹95.00",
+    usage: "Lowers cholesterol.",
+    image: 'https://picsum.photos/200/200?random=78',
+    stores: [
+        { name: "Gupta Pharmacy", inStock: true, quantity: 30, location: "Main Bazaar" },
+        { name: "Nabha Medical Hall", inStock: true, quantity: 25, location: "Patiala Gate" }
+    ],
+  },
+  {
+    name: "Sertraline 50mg",
+    price: "₹110.00",
+    usage: "Antidepressant, for anxiety.",
+    image: 'https://picsum.photos/200/200?random=79',
+    stores: [
+        { name: "Apollo Pharmacy", inStock: true, quantity: 18, location: "Opposite Civil Hospital" },
+        { name: "Gupta Pharmacy", inStock: true, quantity: 15, location: "Main Bazaar" }
+    ],
+  },
+  {
+    name: "Sumatriptan 50mg",
+    price: "₹130.00",
+    usage: "For migraine attacks.",
+    image: 'https://picsum.photos/200/200?random=80',
+    stores: [
+        { name: "Nabha Medical Hall", inStock: true, quantity: 8, location: "Patiala Gate" },
+        { name: "Janta Medical Store", inStock: false, quantity: 0, location: "Near Bus Stand" }
+    ],
+  },
+  {
+    name: "Telmisartan 40mg",
+    price: "₹80.00",
+    usage: "For high blood pressure.",
+    image: 'https://picsum.photos/200/200?random=81',
+    stores: [
+        { name: "Janta Medical Store", inStock: true, quantity: 50, location: "Near Bus Stand" },
+        { name: "Apollo Pharmacy", inStock: true, quantity: 40, location: "Opposite Civil Hospital" }
+    ],
+  },
+  {
+    name: "Tramadol 50mg",
+    price: "₹65.00",
+    usage: "Moderate to severe pain relief.",
+    image: 'https://picsum.photos/200/200?random=82',
+    stores: [
+        { name: "Gupta Pharmacy", inStock: true, quantity: 20, location: "Main Bazaar" },
+        { name: "Nabha Medical Hall", inStock: true, quantity: 15, location: "Patiala Gate" }
+    ],
+  },
+  {
+    name: "Voglibose 0.2mg",
+    price: "₹70.00",
+    usage: "For type 2 diabetes.",
+    image: 'https://picsum.photos/200/200?random=83',
+    stores: [
+        { name: "Apollo Pharmacy", inStock: true, quantity: 25, location: "Opposite Civil Hospital" },
+        { name: "Janta Medical Store", inStock: true, quantity: 30, location: "Near Bus Stand" }
+    ],
+  },
+  {
+    name: "Warfarin 5mg",
+    price: "₹40.00",
+    usage: "Blood thinner.",
+    image: 'https://picsum.photos/200/200?random=84',
+    stores: [
+        { name: "Nabha Medical Hall", inStock: true, quantity: 10, location: "Patiala Gate" },
+        { name: "Gupta Pharmacy", inStock: false, quantity: 0, location: "Main Bazaar" }
+    ],
+  },
+  {
+    name: "Zincovit Tablet",
+    price: "₹105.00",
+    usage: "Multivitamin and mineral supplement.",
+    image: 'https://picsum.photos/200/200?random=85',
+    stores: [
+        { name: "Janta Medical Store", inStock: true, quantity: 150, location: "Near Bus Stand" },
+        { name: "Gupta Pharmacy", inStock: true, quantity: 120, location: "Main Bazaar" }
+    ],
+  },
 ];
+
 
 type Medicine = typeof mockMedicines[0];
 
@@ -267,3 +630,5 @@ export default function MedicinesPage() {
     </div>
   );
 }
+
+    
