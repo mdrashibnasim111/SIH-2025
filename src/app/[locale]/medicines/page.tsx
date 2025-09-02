@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle, Loader2, Store, MapPin, ShoppingCart, Trash2, Plus, Minus, Bike, LocateFixed, Wallet, ClipboardList } from "lucide-react";
+import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle, Loader2, Store, MapPin, ShoppingCart, Trash2, Plus, Minus, Bike, LocateFixed, Wallet, ClipboardList, Pill, ClockIcon, CalendarDays } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale } from "next-intl";
@@ -424,19 +424,33 @@ const mockMedicines = [
   },
 ];
 
-const mockPrescriptions: { [key: string]: string[] } = {
-    "PRES12345": ["Paracetamol 500mg", "Amoxicillin 250mg", "Cetirizine 10mg"],
-    "PRES67890": ["Atorvastatin 10mg", "Metformin 500mg", "Aspirin 75mg"],
+const mockPrescriptions: { [key: string]: { name: string; dosage: string; frequency: string; duration: string; }[] } = {
+    "PRES12345": [
+        { name: "Paracetamol 500mg", dosage: "1 tablet", frequency: "3 times a day", duration: "5 days" },
+        { name: "Amoxicillin 250mg", dosage: "1 capsule", frequency: "Twice a day", duration: "7 days" },
+        { name: "Cetirizine 10mg", dosage: "1 tablet", frequency: "Once at night", duration: "10 days" },
+    ],
+    "PRES67890": [
+        { name: "Atorvastatin 10mg", dosage: "1 tablet", frequency: "Once a day", duration: "30 days" },
+        { name: "Metformin 500mg", dosage: "1 tablet", frequency: "Twice a day", duration: "30 days" },
+        { name: "Aspirin 75mg", dosage: "1 tablet", frequency: "Once a day", duration: "30 days" },
+    ],
 };
 
 
 type Medicine = typeof mockMedicines[0];
+type PrescriptionMedicine = {
+    medicineDetails: Medicine;
+    dosage: string;
+    frequency: string;
+    duration: string;
+}
 type CartItem = {
     medicine: Medicine;
     quantity: number;
 }
 
-const MedicineCard = ({ med, locale, onAddToCart, cartQuantity, onQuantityChange }: { med: Medicine; locale: string; onAddToCart: (med: Medicine) => void; cartQuantity: number; onQuantityChange: (medicineName: string, delta: number) => void; }) => {
+const MedicineCard = ({ med, prescriptionInfo, locale, onAddToCart, cartQuantity, onQuantityChange }: { med: Medicine; prescriptionInfo?: Omit<PrescriptionMedicine, 'medicineDetails'>; locale: string; onAddToCart: (med: Medicine) => void; cartQuantity: number; onQuantityChange: (medicineName: string, delta: number) => void; }) => {
     const { toast } = useToast();
     const isAvailableOverall = med.stores.some(s => s.inStock);
     const totalQuantity = med.stores.reduce((acc, store) => acc + store.quantity, 0);
@@ -475,6 +489,24 @@ const MedicineCard = ({ med, locale, onAddToCart, cartQuantity, onQuantityChange
                 <p><span className="font-semibold">Usage:</span> {med.usage}</p>
                 </div>
                 
+                {prescriptionInfo && (
+                    <div className="bg-blue-50 border-l-4 border-blue-400 p-3 rounded-r-lg space-y-2">
+                         <h4 className="font-semibold text-base text-blue-900">Prescription Details</h4>
+                        <div className="flex items-start gap-2 text-sm">
+                            <Pill className="h-4 w-4 mt-1 shrink-0 text-blue-600" />
+                            <p><span className="font-semibold text-blue-800">Dosage:</span> {prescriptionInfo.dosage}</p>
+                        </div>
+                         <div className="flex items-start gap-2 text-sm">
+                            <ClockIcon className="h-4 w-4 mt-1 shrink-0 text-blue-600" />
+                            <p><span className="font-semibold text-blue-800">Frequency:</span> {prescriptionInfo.frequency}</p>
+                        </div>
+                         <div className="flex items-start gap-2 text-sm">
+                            <CalendarDays className="h-4 w-4 mt-1 shrink-0 text-blue-600" />
+                            <p><span className="font-semibold text-blue-800">Duration:</span> {prescriptionInfo.duration}</p>
+                        </div>
+                    </div>
+                )}
+
                 <div className="flex items-start gap-2 text-sm">
                     <Store className="h-4 w-4 mt-1 shrink-0 text-muted-foreground" />
                     <div>
@@ -551,7 +583,7 @@ export default function MedicinesPage() {
   const { toast } = useToast();
 
   const [prescriptionId, setPrescriptionId] = useState("");
-  const [prescriptionMedicines, setPrescriptionMedicines] = useState<Medicine[]>([]);
+  const [prescriptionMedicines, setPrescriptionMedicines] = useState<PrescriptionMedicine[]>([]);
   const [isPrescriptionLoading, setIsPrescriptionLoading] = useState(false);
   const [prescriptionSearched, setPrescriptionSearched] = useState(false);
 
@@ -616,7 +648,15 @@ export default function MedicinesPage() {
     setTimeout(() => {
         const prescriptionMeds = mockPrescriptions[prescriptionId.toUpperCase()];
         if (prescriptionMeds) {
-            const results = mockMedicines.filter(med => prescriptionMeds.includes(med.name));
+            const results: PrescriptionMedicine[] = prescriptionMeds.map(pMed => {
+                const medicineDetails = mockMedicines.find(m => m.name === pMed.name);
+                return {
+                    medicineDetails: medicineDetails!,
+                    dosage: pMed.dosage,
+                    frequency: pMed.frequency,
+                    duration: pMed.duration,
+                }
+            }).filter(item => item.medicineDetails); // Filter out any not found
             setPrescriptionMedicines(results);
         } else {
             setPrescriptionMedicines([]);
@@ -830,12 +870,13 @@ export default function MedicinesPage() {
                 {prescriptionMedicines.length > 0 && (
                      <div className="space-y-4">
                         <h3 className="text-xl font-bold tracking-tight">Medicines for Prescription ID: {prescriptionId.toUpperCase()}</h3>
-                        {prescriptionMedicines.map((med) => {
-                            const cartItem = cart.find(item => item.medicine.name === med.name);
+                        {prescriptionMedicines.map((pMed) => {
+                            const cartItem = cart.find(item => item.medicine.name === pMed.medicineDetails.name);
                             return (
                                 <MedicineCard 
-                                    key={med.name} 
-                                    med={med} 
+                                    key={pMed.medicineDetails.name} 
+                                    med={pMed.medicineDetails}
+                                    prescriptionInfo={{dosage: pMed.dosage, frequency: pMed.frequency, duration: pMed.duration}}
                                     locale={locale} 
                                     onAddToCart={handleAddToCart}
                                     cartQuantity={cartItem ? cartItem.quantity : 0}
@@ -969,5 +1010,3 @@ export default function MedicinesPage() {
     </div>
   );
 }
-
-    
