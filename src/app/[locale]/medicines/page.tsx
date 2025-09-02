@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -7,13 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle, Loader2 } from "lucide-react";
+import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle, Loader2, Store } from "lucide-react";
 import Image from "next/image";
 
 const mockMedicines = [
-  { name: "Paracetamol 500mg", price: "₹20.50", quantity: 50, usage: "For fever and pain relief.", available: true, image: 'https://picsum.photos/200/200?random=6' },
-  { name: "Amoxicillin 250mg", price: "₹85.00", quantity: 25, usage: "Antibiotic for bacterial infections.", available: true, image: 'https://picsum.photos/200/200?random=7' },
-  { name: "Cetirizine 10mg", price: "₹30.00", quantity: 0, usage: "For allergies and hay fever.", available: false, image: 'https://picsum.photos/200/200?random=8' },
+  { name: "Paracetamol 500mg", price: "₹20.50", quantity: 50, usage: "For fever and pain relief.", available: true, image: 'https://picsum.photos/200/200?random=6', availableIn: ["Janta Medical Store", "Gupta Pharmacy"], storeCount: 2 },
+  { name: "Amoxicillin 250mg", price: "₹85.00", quantity: 25, usage: "Antibiotic for bacterial infections.", available: true, image: 'https://picsum.photos/200/200?random=7', availableIn: ["Nabha Medical Hall"], storeCount: 1 },
+  { name: "Cetirizine 10mg", price: "₹30.00", quantity: 0, usage: "For allergies and hay fever.", available: false, image: 'https://picsum.photos/200/200?random=8', availableIn: [], storeCount: 0 },
 ];
 
 type Medicine = typeof mockMedicines[0];
@@ -127,6 +128,17 @@ export default function MedicinesPage() {
                   <Info className="h-4 w-4 mt-1 shrink-0 text-muted-foreground" />
                   <p><span className="font-semibold">Usage:</span> {med.usage}</p>
                 </div>
+                {med.available && (
+                   <div className="flex items-start gap-2 text-sm">
+                        <Store className="h-4 w-4 mt-1 shrink-0 text-muted-foreground" />
+                        <div>
+                            <p className="font-semibold">Available at {med.storeCount} store(s):</p>
+                            <ul className="list-disc list-inside">
+                                {med.availableIn.map(store => <li key={store}>{store}</li>)}
+                            </ul>
+                        </div>
+                    </div>
+                )}
                 {med.available ? (
                   <Button className="w-full sm:w-auto">
                     <Truck className="mr-2 h-4 w-4" /> Request Home Delivery
