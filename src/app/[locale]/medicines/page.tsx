@@ -429,7 +429,7 @@ type CartItem = {
     quantity: number;
 }
 
-const MedicineCard = ({ med, locale, onAddToCart }: { med: Medicine; locale: string; onAddToCart: (med: Medicine) => void; }) => {
+const MedicineCard = ({ med, locale, onAddToCart, cartQuantity }: { med: Medicine; locale: string; onAddToCart: (med: Medicine) => void; cartQuantity: number; }) => {
     const { toast } = useToast();
     const isAvailableOverall = med.stores.some(s => s.inStock);
     const totalQuantity = med.stores.reduce((acc, store) => acc + store.quantity, 0);
@@ -438,15 +438,6 @@ const MedicineCard = ({ med, locale, onAddToCart }: { med: Medicine; locale: str
         toast({
         title: "Notification Set!",
         description: `We'll notify you via SMS and a call when ${medicineName} is back in stock.`,
-        });
-    };
-    
-    const handleDeliveryConfirm = (event: React.FormEvent, medicineName: string) => {
-        event.preventDefault();
-        toast({
-            variant: "success",
-            title: "Delivery Request Confirmed",
-            description: `Your order for ${medicineName} has been placed and will be delivered within 24 hours.`,
         });
     };
 
@@ -510,53 +501,16 @@ const MedicineCard = ({ med, locale, onAddToCart }: { med: Medicine; locale: str
                 
                 <div className="flex flex-wrap gap-2">
                 {isAvailableOverall ? (
-                <>
-                <Button variant="outline" className="flex-grow" onClick={() => onAddToCart(med)}>
-                    <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
-                </Button>
-                <Dialog>
-                    <DialogTrigger asChild>
-                         <Button className="flex-grow">
-                            <Truck className="mr-2 h-4 w-4" /> Request Home Delivery
-                        </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader>
-                        <DialogTitle>Home Delivery Request</DialogTitle>
-                        <DialogDescription>
-                            Please fill in your details to request home delivery for {med.name}.
-                        </DialogDescription>
-                        </DialogHeader>
-                        <form onSubmit={(e) => handleDeliveryConfirm(e, med.name)}>
-                            <div className="grid gap-4 py-4">
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="name" className="text-right">
-                                        Full Name
-                                    </Label>
-                                    <Input id="name" required className="col-span-3" />
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="phone" className="text-right">
-                                        Phone
-                                    </Label>
-                                    <Input id="phone" type="tel" required className="col-span-3" />
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="address" className="text-right">
-                                        Address
-                                    </Label>
-                                    <Input id="address" required className="col-span-3" />
-                                </div>
-                            </div>
-                            <DialogFooter>
-                                <DialogClose asChild>
-                                    <Button type="submit">Confirm Delivery</Button>
-                                </DialogClose>
-                            </DialogFooter>
-                        </form>
-                    </DialogContent>
-                </Dialog>
-                </>
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" className="flex-grow" onClick={() => onAddToCart(med)}>
+                        <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
+                    </Button>
+                    {cartQuantity > 0 && (
+                        <Badge variant="secondary" className="px-3 py-1 text-base">
+                            {cartQuantity} in cart
+                        </Badge>
+                    )}
+                  </div>
                 ) : (
                 <Button variant="outline" className="w-full sm:w-auto" onClick={() => handleNotify(med.name)}>
                     <Bell className="mr-2 h-4 w-4" /> Notify when available
@@ -769,9 +723,18 @@ export default function MedicinesPage() {
                     </CardContent>
                 </Card>
                 )}
-                {searchResults.map((med) => (
-                    <MedicineCard key={med.name} med={med} locale={locale} onAddToCart={handleAddToCart} />
-                ))}
+                {searchResults.map((med) => {
+                    const cartItem = cart.find(item => item.medicine.name === med.name);
+                    return (
+                        <MedicineCard 
+                            key={med.name} 
+                            med={med} 
+                            locale={locale} 
+                            onAddToCart={handleAddToCart}
+                            cartQuantity={cartItem ? cartItem.quantity : 0}
+                        />
+                    )
+                })}
             </div>
         </div>
 
