@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle, Loader2, Store, MapPin, ShoppingCart, Trash2 } from "lucide-react";
+import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle, Loader2, Store, MapPin, ShoppingCart, Trash2, Plus, Minus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale } from "next-intl";
@@ -424,6 +424,10 @@ const mockMedicines = [
 
 
 type Medicine = typeof mockMedicines[0];
+type CartItem = {
+    medicine: Medicine;
+    quantity: number;
+}
 
 const MedicineCard = ({ med, locale, onAddToCart }: { med: Medicine; locale: string; onAddToCart: (med: Medicine) => void; }) => {
     const { toast } = useToast();
@@ -571,7 +575,7 @@ export default function MedicinesPage() {
   const [searchResults, setSearchResults] = useState<Medicine[]>([]);
   const [searched, setSearched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [cart, setCart] = useState<Medicine[]>([]);
+  const [cart, setCart] = useState<CartItem[]>([]);
   const locale = useLocale();
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
@@ -627,13 +631,34 @@ export default function MedicinesPage() {
   };
 
   const handleAddToCart = (med: Medicine) => {
-    setCart(prevCart => [...prevCart, med]);
+    setCart(prevCart => {
+        const existingItem = prevCart.find(item => item.medicine.name === med.name);
+        if (existingItem) {
+            return prevCart.map(item => 
+                item.medicine.name === med.name 
+                ? { ...item, quantity: item.quantity + 1 }
+                : item
+            );
+        } else {
+            return [...prevCart, { medicine: med, quantity: 1 }];
+        }
+    });
     toast({
         variant: "success",
         title: "Added to Cart",
         description: `${med.name} has been added to your cart.`,
     });
   };
+
+  const handleQuantityChange = (medicineName: string, delta: number) => {
+    setCart(prevCart => {
+        return prevCart.map(item =>
+            item.medicine.name === medicineName
+            ? { ...item, quantity: Math.max(0, item.quantity + delta) }
+            : item
+        ).filter(item => item.quantity > 0);
+    });
+  }
 
   const handleClearCart = () => {
     setCart([]);
@@ -654,7 +679,7 @@ export default function MedicinesPage() {
   };
 
   const calculateTotalPrice = () => {
-    return cart.reduce((total, item) => total + parseFloat(item.price.replace('₹', '')), 0).toFixed(2);
+    return cart.reduce((total, item) => total + (parseFloat(item.medicine.price.replace('₹', '')) * item.quantity), 0).toFixed(2);
   };
 
   return (
@@ -745,8 +770,19 @@ export default function MedicinesPage() {
                         <div className="max-h-60 overflow-y-auto pr-2 space-y-2">
                             {cart.map((item, index) => (
                                 <div key={index} className="flex justify-between items-center text-sm">
-                                    <span>{item.name}</span>
-                                    <span className="font-semibold">{item.price}</span>
+                                    <div className="flex-1">
+                                        <p>{item.medicine.name}</p>
+                                        <p className="text-xs text-muted-foreground">{item.medicine.price}</p>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <Button variant="outline" size="icon" className="h-6 w-6" onClick={() => handleQuantityChange(item.medicine.name, -1)}>
+                                            <Minus className="h-3 w-3" />
+                                        </Button>
+                                        <span className="font-semibold w-4 text-center">{item.quantity}</span>
+                                        <Button variant="outline" size="icon" className="h-6 w-6" onClick={() => handleQuantityChange(item.medicine.name, 1)}>
+                                            <Plus className="h-3 w-3" />
+                                        </Button>
+                                    </div>
                                 </div>
                             ))}
                         </div>
