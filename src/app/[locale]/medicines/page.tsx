@@ -1,5 +1,4 @@
 
-
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -586,6 +585,7 @@ export default function MedicinesPage() {
   const [prescriptionMedicines, setPrescriptionMedicines] = useState<PrescriptionMedicine[]>([]);
   const [isPrescriptionLoading, setIsPrescriptionLoading] = useState(false);
   const [prescriptionSearched, setPrescriptionSearched] = useState(false);
+  const [activeTab, setActiveTab] = useState("search");
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -745,6 +745,16 @@ export default function MedicinesPage() {
   const subtotal = calculateSubtotal();
   const totalPrice = subtotal + deliveryCharge;
 
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    setSearchResults([]);
+    setSearched(false);
+    setSearchTerm("");
+    setPrescriptionMedicines([]);
+    setPrescriptionSearched(false);
+    setPrescriptionId("");
+  }
+
 
   return (
     <div className="space-y-8">
@@ -755,48 +765,70 @@ export default function MedicinesPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         <div className="lg:col-span-2 space-y-8">
-            <Tabs defaultValue="search" className="w-full">
+            <Tabs defaultValue="search" className="w-full" onValueChange={handleTabChange}>
                 <TabsList className="grid w-full grid-cols-3">
                     <TabsTrigger value="search">Search by Name</TabsTrigger>
                     <TabsTrigger value="prescription">Order from Prescription</TabsTrigger>
                     <TabsTrigger value="upload">Upload Prescription</TabsTrigger>
                 </TabsList>
                 <TabsContent value="search">
-                <div className="relative" ref={searchContainerRef}>
-                    <div className="flex w-full items-center space-x-2">
-                    <Input
-                        type="text"
-                        placeholder="e.g., Paracetamol"
-                        value={searchTerm}
-                        onChange={handleInputChange}
-                        onKeyDown={(e) => e.key === 'Enter' && handleSearch(searchTerm)}
-                        disabled={isLoading}
-                    />
-                    <Button onClick={() => handleSearch(searchTerm)} disabled={isLoading}>
-                        {isLoading ? (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        ) : (
-                        <Search className="mr-2 h-4 w-4" />
+                    <div className="relative" ref={searchContainerRef}>
+                        <div className="flex w-full items-center space-x-2">
+                        <Input
+                            type="text"
+                            placeholder="e.g., Paracetamol"
+                            value={searchTerm}
+                            onChange={handleInputChange}
+                            onKeyDown={(e) => e.key === 'Enter' && handleSearch(searchTerm)}
+                            disabled={isLoading}
+                        />
+                        <Button onClick={() => handleSearch(searchTerm)} disabled={isLoading}>
+                            {isLoading ? (
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            ) : (
+                            <Search className="mr-2 h-4 w-4" />
+                            )}
+                            Search
+                        </Button>
+                        </div>
+                        {suggestions.length > 0 && (
+                        <div className="absolute z-10 w-full mt-1 border bg-background rounded-md shadow-lg">
+                            <ul className="py-1">
+                            {suggestions.map((suggestion) => (
+                                <li
+                                key={suggestion.name}
+                                className="px-3 py-2 cursor-pointer hover:bg-accent"
+                                onClick={() => handleSuggestionClick(suggestion)}
+                                >
+                                {suggestion.name}
+                                </li>
+                            ))}
+                            </ul>
+                        </div>
                         )}
-                        Search
-                    </Button>
                     </div>
-                    {suggestions.length > 0 && (
-                    <div className="absolute z-10 w-full mt-1 border bg-background rounded-md shadow-lg">
-                        <ul className="py-1">
-                        {suggestions.map((suggestion) => (
-                            <li
-                            key={suggestion.name}
-                            className="px-3 py-2 cursor-pointer hover:bg-accent"
-                            onClick={() => handleSuggestionClick(suggestion)}
-                            >
-                            {suggestion.name}
-                            </li>
-                        ))}
-                        </ul>
+                     <div className="space-y-4 mt-4">
+                        {searched && searchResults.length === 0 && (
+                        <Card className="text-center">
+                            <CardContent className="pt-6">
+                            <p>No results found for "{searchTerm}".</p>
+                            </CardContent>
+                        </Card>
+                        )}
+                        {searchResults.map((med) => {
+                            const cartItem = cart.find(item => item.medicine.name === med.name);
+                            return (
+                                <MedicineCard 
+                                    key={med.name} 
+                                    med={med} 
+                                    locale={locale} 
+                                    onAddToCart={handleAddToCart}
+                                    cartQuantity={cartItem ? cartItem.quantity : 0}
+                                    onQuantityChange={handleQuantityChange}
+                                />
+                            )
+                        })}
                     </div>
-                    )}
-                </div>
                 </TabsContent>
                 <TabsContent value="prescription">
                     <Card>
@@ -825,68 +857,46 @@ export default function MedicinesPage() {
                             </div>
                         </CardContent>
                     </Card>
+                    <div className="space-y-4 mt-4">
+                        {prescriptionSearched && prescriptionMedicines.length === 0 && (
+                            <Alert variant="destructive">
+                                <AlertTitle>Prescription Not Found</AlertTitle>
+                                <AlertDescription>
+                                    No prescription found for the ID "{prescriptionId}". Please check the ID and try again.
+                                </AlertDescription>
+                            </Alert>
+                        )}
+                        {prescriptionMedicines.length > 0 && (
+                            <div className="space-y-4">
+                                <h3 className="text-xl font-bold tracking-tight">Medicines for Prescription ID: {prescriptionId.toUpperCase()}</h3>
+                                {prescriptionMedicines.map((pMed) => {
+                                    const cartItem = cart.find(item => item.medicine.name === pMed.medicineDetails.name);
+                                    return (
+                                        <MedicineCard 
+                                            key={pMed.medicineDetails.name} 
+                                            med={pMed.medicineDetails}
+                                            prescriptionInfo={{dosage: pMed.dosage, frequency: pMed.frequency, duration: pMed.duration}}
+                                            locale={locale} 
+                                            onAddToCart={handleAddToCart}
+                                            cartQuantity={cartItem ? cartItem.quantity : 0}
+                                            onQuantityChange={handleQuantityChange}
+                                        />
+                                    )
+                                })}
+                            </div>
+                        )}
+                    </div>
                 </TabsContent>
                 <TabsContent value="upload">
-                <Card>
-                    <CardContent className="pt-6">
-                    <Button variant="outline" className="w-full">
-                        <Upload className="mr-2 h-4 w-4" /> Upload a photo of your prescription
-                    </Button>
-                    </CardContent>
-                </Card>
+                    <Card>
+                        <CardContent className="pt-6">
+                        <Button variant="outline" className="w-full">
+                            <Upload className="mr-2 h-4 w-4" /> Upload a photo of your prescription
+                        </Button>
+                        </CardContent>
+                    </Card>
                 </TabsContent>
             </Tabs>
-
-            <div className="space-y-4">
-                {searched && searchResults.length === 0 && (
-                <Card className="text-center">
-                    <CardContent className="pt-6">
-                    <p>No results found for "{searchTerm}".</p>
-                    </CardContent>
-                </Card>
-                )}
-                {searchResults.map((med) => {
-                    const cartItem = cart.find(item => item.medicine.name === med.name);
-                    return (
-                        <MedicineCard 
-                            key={med.name} 
-                            med={med} 
-                            locale={locale} 
-                            onAddToCart={handleAddToCart}
-                            cartQuantity={cartItem ? cartItem.quantity : 0}
-                            onQuantityChange={handleQuantityChange}
-                        />
-                    )
-                })}
-
-                {prescriptionSearched && prescriptionMedicines.length === 0 && (
-                    <Alert variant="destructive">
-                        <AlertTitle>Prescription Not Found</AlertTitle>
-                        <AlertDescription>
-                            No prescription found for the ID "{prescriptionId}". Please check the ID and try again.
-                        </AlertDescription>
-                    </Alert>
-                )}
-                {prescriptionMedicines.length > 0 && (
-                     <div className="space-y-4">
-                        <h3 className="text-xl font-bold tracking-tight">Medicines for Prescription ID: {prescriptionId.toUpperCase()}</h3>
-                        {prescriptionMedicines.map((pMed) => {
-                            const cartItem = cart.find(item => item.medicine.name === pMed.medicineDetails.name);
-                            return (
-                                <MedicineCard 
-                                    key={pMed.medicineDetails.name} 
-                                    med={pMed.medicineDetails}
-                                    prescriptionInfo={{dosage: pMed.dosage, frequency: pMed.frequency, duration: pMed.duration}}
-                                    locale={locale} 
-                                    onAddToCart={handleAddToCart}
-                                    cartQuantity={cartItem ? cartItem.quantity : 0}
-                                    onQuantityChange={handleQuantityChange}
-                                />
-                            )
-                        })}
-                     </div>
-                )}
-            </div>
         </div>
 
         {cart.length > 0 && (
@@ -1010,3 +1020,5 @@ export default function MedicinesPage() {
     </div>
   );
 }
+
+    
