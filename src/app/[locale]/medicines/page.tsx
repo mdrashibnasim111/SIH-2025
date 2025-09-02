@@ -12,19 +12,122 @@ import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle, Loader2, Store
 import Image from "next/image";
 
 const mockMedicines = [
-  { name: "Paracetamol 500mg", price: "₹20.50", quantity: 50, usage: "For fever and pain relief.", available: true, image: 'https://picsum.photos/200/200?random=6', availableIn: ["Janta Medical Store", "Gupta Pharmacy"], storeCount: 2 },
-  { name: "Amoxicillin 250mg", price: "₹85.00", quantity: 25, usage: "Antibiotic for bacterial infections.", available: true, image: 'https://picsum.photos/200/200?random=7', availableIn: ["Nabha Medical Hall"], storeCount: 1 },
-  { name: "Cetirizine 10mg", price: "₹30.00", quantity: 0, usage: "For allergies and hay fever.", available: false, image: 'https://picsum.photos/200/200?random=8', availableIn: [], storeCount: 0 },
+  { 
+    name: "Paracetamol 500mg", 
+    price: "₹20.50", 
+    usage: "For fever and pain relief.", 
+    image: 'https://picsum.photos/200/200?random=6', 
+    stores: [
+      { name: "Janta Medical Store", inStock: true, quantity: 30 },
+      { name: "Gupta Pharmacy", inStock: true, quantity: 20 }
+    ],
+  },
+  { 
+    name: "Amoxicillin 250mg", 
+    price: "₹85.00", 
+    usage: "Antibiotic for bacterial infections.", 
+    image: 'https://picsum.photos/200/200?random=7', 
+    stores: [
+        { name: "Nabha Medical Hall", inStock: true, quantity: 25 },
+        { name: "Apollo Pharmacy", inStock: false, quantity: 0 }
+    ],
+  },
+  { 
+    name: "Cetirizine 10mg", 
+    price: "₹30.00", 
+    usage: "For allergies and hay fever.", 
+    image: 'https://picsum.photos/200/200?random=8', 
+    stores: [
+        { name: "Janta Medical Store", inStock: false, quantity: 0 },
+        { name: "Gupta Pharmacy", inStock: false, quantity: 0 }
+    ],
+  },
 ];
 
 type Medicine = typeof mockMedicines[0];
+
+const MedicineCard = ({ med }: { med: Medicine }) => {
+    const { toast } = useToast();
+    const isAvailableOverall = med.stores.some(s => s.inStock);
+    const totalQuantity = med.stores.reduce((acc, store) => acc + store.quantity, 0);
+
+    const handleNotify = (medicineName: string) => {
+        toast({
+        title: "Notification Set!",
+        description: `We'll notify you when ${medicineName} is back in stock.`,
+        });
+    };
+
+    return (
+        <Card key={med.name}>
+            <CardHeader className="flex flex-col md:flex-row gap-4">
+            <Image src={med.image} alt={med.name} width={100} height={100} className="rounded-md object-cover" data-ai-hint="medicine pill" />
+            <div className="flex-1">
+                <CardTitle>{med.name}</CardTitle>
+                <CardDescription className="font-bold text-lg text-primary">{med.price}</CardDescription>
+                {isAvailableOverall ? (
+                    <Badge className="mt-2 bg-green-100 text-green-800 hover:bg-green-200">
+                        <CheckCircle className="mr-1 h-3 w-3" />
+                        In Stock ({totalQuantity} left)
+                    </Badge>
+                ) : (
+                    <Badge variant="destructive" className="mt-2">
+                        <XCircle className="mr-1 h-3 w-3" />
+                        Out of Stock
+                    </Badge>
+                )}
+            </div>
+            </CardHeader>
+            <CardContent>
+            <div className="space-y-4">
+                <div className="flex items-start gap-2 text-sm">
+                <Info className="h-4 w-4 mt-1 shrink-0 text-muted-foreground" />
+                <p><span className="font-semibold">Usage:</span> {med.usage}</p>
+                </div>
+                
+                <div className="flex items-start gap-2 text-sm">
+                    <Store className="h-4 w-4 mt-1 shrink-0 text-muted-foreground" />
+                    <div>
+                        <p className="font-semibold">Availability:</p>
+                        <div className="mt-2 space-y-2">
+                            {med.stores.map(store => (
+                                <div key={store.name} className="flex items-center justify-between p-2 rounded-md border">
+                                    <span>{store.name}</span>
+                                    {store.inStock ? (
+                                        <Badge variant="outline" className="text-green-700 border-green-300">
+                                            <CheckCircle className="mr-1 h-3 w-3" /> In Stock
+                                        </Badge>
+                                    ) : (
+                                        <Badge variant="destructive" className="bg-red-100 text-red-800">
+                                            <XCircle className="mr-1 h-3 w-3" /> Out of Stock
+                                        </Badge>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+                
+                {isAvailableOverall ? (
+                <Button className="w-full sm:w-auto">
+                    <Truck className="mr-2 h-4 w-4" /> Request Home Delivery
+                </Button>
+                ) : (
+                <Button variant="outline" className="w-full sm:w-auto" onClick={() => handleNotify(med.name)}>
+                    <Bell className="mr-2 h-4 w-4" /> Notify when available
+                </Button>
+                )}
+            </div>
+            </CardContent>
+        </Card>
+    )
+}
 
 export default function MedicinesPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<Medicine[]>([]);
   const [searched, setSearched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
 
   const handleSearch = () => {
     if (!searchTerm.trim()) {
@@ -42,13 +145,6 @@ export default function MedicinesPage() {
       setSearched(true);
       setIsLoading(false);
     }, 500); // Simulate network delay
-  };
-
-  const handleNotify = (medicineName: string) => {
-    toast({
-      title: "Notification Set!",
-      description: `We'll notify you when ${medicineName} is back in stock.`,
-    });
   };
 
   return (
@@ -103,54 +199,7 @@ export default function MedicinesPage() {
           </Card>
         )}
         {searchResults.map((med) => (
-          <Card key={med.name}>
-            <CardHeader className="flex flex-col md:flex-row gap-4">
-              <Image src={med.image} alt={med.name} width={100} height={100} className="rounded-md object-cover" data-ai-hint="medicine pill" />
-              <div className="flex-1">
-                <CardTitle>{med.name}</CardTitle>
-                <CardDescription className="font-bold text-lg text-primary">{med.price}</CardDescription>
-                {med.available ? (
-                    <Badge className="mt-2 bg-green-100 text-green-800 hover:bg-green-200">
-                        <CheckCircle className="mr-1 h-3 w-3" />
-                        In Stock ({med.quantity} left)
-                    </Badge>
-                ) : (
-                    <Badge variant="destructive" className="mt-2">
-                        <XCircle className="mr-1 h-3 w-3" />
-                        Out of Stock
-                    </Badge>
-                )}
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-start gap-2 text-sm">
-                  <Info className="h-4 w-4 mt-1 shrink-0 text-muted-foreground" />
-                  <p><span className="font-semibold">Usage:</span> {med.usage}</p>
-                </div>
-                {med.available && (
-                   <div className="flex items-start gap-2 text-sm">
-                        <Store className="h-4 w-4 mt-1 shrink-0 text-muted-foreground" />
-                        <div>
-                            <p className="font-semibold">Available at {med.storeCount} store(s):</p>
-                            <ul className="list-disc list-inside">
-                                {med.availableIn.map(store => <li key={store}>{store}</li>)}
-                            </ul>
-                        </div>
-                    </div>
-                )}
-                {med.available ? (
-                  <Button className="w-full sm:w-auto">
-                    <Truck className="mr-2 h-4 w-4" /> Request Home Delivery
-                  </Button>
-                ) : (
-                  <Button variant="outline" className="w-full sm:w-auto" onClick={() => handleNotify(med.name)}>
-                    <Bell className="mr-2 h-4 w-4" /> Notify when available
-                  </Button>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+          <MedicineCard key={med.name} med={med} />
         ))}
       </div>
     </div>
