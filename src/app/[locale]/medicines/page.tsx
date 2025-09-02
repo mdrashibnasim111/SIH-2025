@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle, Loader2, Store, MapPin, ShoppingCart, Trash2, Plus, Minus } from "lucide-react";
+import { Search, Upload, Bell, Truck, Info, CheckCircle, XCircle, Loader2, Store, MapPin, ShoppingCart, Trash2, Plus, Minus, Bike } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale } from "next-intl";
@@ -576,6 +576,7 @@ export default function MedicinesPage() {
   const [searched, setSearched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [distance, setDistance] = useState(0);
   const locale = useLocale();
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
@@ -631,6 +632,10 @@ export default function MedicinesPage() {
   };
 
   const handleAddToCart = (med: Medicine) => {
+    if (cart.length === 0) {
+      setDistance(Math.floor(Math.random() * 10) + 1); // Random distance 1-10km
+    }
+
     setCart(prevCart => {
         const existingItem = prevCart.find(item => item.medicine.name === med.name);
         if (existingItem) {
@@ -662,6 +667,7 @@ export default function MedicinesPage() {
 
   const handleClearCart = () => {
     setCart([]);
+    setDistance(0);
     toast({
         title: "Cart Cleared",
         description: "Your shopping cart has been emptied.",
@@ -676,11 +682,17 @@ export default function MedicinesPage() {
         description: `Your order for ${cart.length} item(s) has been placed and will be delivered within 24 hours.`,
     });
     setCart([]); // Clear cart after order
+    setDistance(0);
   };
 
-  const calculateTotalPrice = () => {
-    return cart.reduce((total, item) => total + (parseFloat(item.medicine.price.replace('₹', '')) * item.quantity), 0).toFixed(2);
+  const calculateSubtotal = () => {
+    return cart.reduce((total, item) => total + (parseFloat(item.medicine.price.replace('₹', '')) * item.quantity), 0);
   };
+
+  const deliveryCharge = distance * 6;
+  const subtotal = calculateSubtotal();
+  const totalPrice = subtotal + deliveryCharge;
+
 
   return (
     <div className="space-y-8">
@@ -787,9 +799,20 @@ export default function MedicinesPage() {
                             ))}
                         </div>
                         <Separator />
+                        <div className="space-y-2 text-sm">
+                            <div className="flex justify-between">
+                                <span>Subtotal</span>
+                                <span>₹{subtotal.toFixed(2)}</span>
+                            </div>
+                             <div className="flex justify-between text-muted-foreground">
+                                <span className="flex items-center gap-1"><Bike className="h-4 w-4" /> Delivery ({distance} km)</span>
+                                <span>₹{deliveryCharge.toFixed(2)}</span>
+                            </div>
+                        </div>
+                        <Separator />
                         <div className="flex justify-between font-bold text-lg">
                             <span>Total</span>
-                            <span>₹{calculateTotalPrice()}</span>
+                            <span>₹{totalPrice.toFixed(2)}</span>
                         </div>
                         <Separator />
                         <Dialog>
