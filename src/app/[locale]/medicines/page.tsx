@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -135,27 +135,61 @@ const MedicineCard = ({ med, locale }: { med: Medicine; locale: string; }) => {
 
 export default function MedicinesPage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [suggestions, setSuggestions] = useState<Medicine[]>([]);
   const [searchResults, setSearchResults] = useState<Medicine[]>([]);
   const [searched, setSearched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const locale = useLocale();
+  const searchContainerRef = useRef<HTMLDivElement>(null);
 
-  const handleSearch = () => {
-    if (!searchTerm.trim()) {
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
+        setSuggestions([]);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    if (value.trim()) {
+      const filteredSuggestions = mockMedicines.filter((med) =>
+        med.name.toLowerCase().includes(value.toLowerCase())
+      );
+      setSuggestions(filteredSuggestions);
+    } else {
+      setSuggestions([]);
+    }
+  };
+
+  const handleSearch = (term: string) => {
+    if (!term.trim()) {
       setSearchResults([]);
       setSearched(false);
       return;
     }
     setIsLoading(true);
     setSearched(false);
+    setSuggestions([]);
     setTimeout(() => {
       const results = mockMedicines.filter((med) =>
-        med.name.toLowerCase().includes(searchTerm.toLowerCase())
+        med.name.toLowerCase().includes(term.toLowerCase())
       );
       setSearchResults(results);
       setSearched(true);
       setIsLoading(false);
     }, 500); // Simulate network delay
+  };
+
+  const handleSuggestionClick = (suggestion: Medicine) => {
+    setSearchTerm(suggestion.name);
+    handleSearch(suggestion.name);
   };
 
   return (
@@ -171,23 +205,40 @@ export default function MedicinesPage() {
           <TabsTrigger value="upload">Upload Prescription</TabsTrigger>
         </TabsList>
         <TabsContent value="search">
-          <div className="flex w-full items-center space-x-2">
-            <Input
-              type="text"
-              placeholder="e.g., Paracetamol"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-              disabled={isLoading}
-            />
-            <Button onClick={handleSearch} disabled={isLoading}>
-              {isLoading ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <Search className="mr-2 h-4 w-4" />
-              )}
-              Search
-            </Button>
+          <div className="relative" ref={searchContainerRef}>
+            <div className="flex w-full items-center space-x-2">
+              <Input
+                type="text"
+                placeholder="e.g., Paracetamol"
+                value={searchTerm}
+                onChange={handleInputChange}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch(searchTerm)}
+                disabled={isLoading}
+              />
+              <Button onClick={() => handleSearch(searchTerm)} disabled={isLoading}>
+                {isLoading ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Search className="mr-2 h-4 w-4" />
+                )}
+                Search
+              </Button>
+            </div>
+            {suggestions.length > 0 && (
+              <div className="absolute z-10 w-full mt-1 border bg-background rounded-md shadow-lg">
+                <ul className="py-1">
+                  {suggestions.map((suggestion) => (
+                    <li
+                      key={suggestion.name}
+                      className="px-3 py-2 cursor-pointer hover:bg-accent"
+                      onClick={() => handleSuggestionClick(suggestion)}
+                    >
+                      {suggestion.name}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </TabsContent>
         <TabsContent value="upload">
