@@ -73,34 +73,39 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
-        <div className="md:hidden">
-            <Sheet>
+        <div className="flex flex-1 items-center justify-start">
+          <div className="md:hidden">
+            <UserNav />
+          </div>
+        </div>
+        <div className="flex flex-1 items-center justify-end md:hidden">
+          <Sheet>
             <SheetTrigger asChild>
-                <Button variant="outline" size="icon" className="shrink-0">
+              <Button variant="outline" size="icon" className="shrink-0">
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle navigation menu</span>
-                </Button>
+              </Button>
             </SheetTrigger>
             <SheetContent side="left" className="flex flex-col p-0">
-                <SheetHeader className="border-b px-4">
-                  <SheetTitle>
-                    <Link
+              <SheetHeader className="border-b px-4">
+                <SheetTitle>
+                  <Link
                     href={`/${locale}`}
                     className="flex items-center gap-2 font-bold"
-                    >
+                  >
                     <HeartPulse className="h-6 w-6 text-primary" />
                     <span className="font-bold">NabhaCare</span>
-                    </Link>
-                  </SheetTitle>
-                </SheetHeader>
-                <nav className="flex-1 space-y-2 p-4">
+                  </Link>
+                </SheetTitle>
+              </SheetHeader>
+              <nav className="flex-1 space-y-2 p-4">
                 <NavLinks />
-                </nav>
+              </nav>
             </SheetContent>
-            </Sheet>
+          </Sheet>
         </div>
-        <div className="flex flex-1 items-center justify-end">
-            <UserNav />
+        <div className="hidden flex-1 items-center justify-end md:flex">
+          <UserNav />
         </div>
       </div>
     </header>
