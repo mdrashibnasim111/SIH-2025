@@ -35,7 +35,8 @@ const mockMedicines = [
     name: "Paracetamol 500mg",
     price: "₹20.50",
     usage: "For fever and pain relief.",
-    image: 'https://picsum.photos/200/200?random=6',
+    image: 'https://picsum.photos/id/30/200/200',
+    dataAiHint: "paracetamol tablet",
     stores: [
       { name: "Janta Medical Store", inStock: true, quantity: 30, location: "Near Bus Stand" },
       { name: "Gupta Pharmacy", inStock: true, quantity: 20, location: "Main Bazaar" }
@@ -46,6 +47,7 @@ const mockMedicines = [
     price: "₹85.00",
     usage: "Antibiotic for bacterial infections.",
     image: 'https://picsum.photos/200/200?random=7',
+    dataAiHint: "medicine capsules",
     stores: [
       { name: "Nabha Medical Hall", inStock: true, quantity: 25, location: "Patiala Gate" },
       { name: "Apollo Pharmacy", inStock: false, quantity: 0, location: "Opposite Civil Hospital" }
@@ -56,6 +58,7 @@ const mockMedicines = [
     price: "₹30.00",
     usage: "For allergies and hay fever.",
     image: 'https://picsum.photos/200/200?random=8',
+    dataAiHint: "allergy pills",
     stores: [
       { name: "Janta Medical Store", inStock: false, quantity: 0, location: "Near Bus Stand" },
       { name: "Gupta Pharmacy", inStock: false, quantity: 0, location: "Main Bazaar" }
@@ -67,6 +70,7 @@ const mockMedicines = [
     price: "₹10.00",
     usage: "Blood thinner, pain relief.",
     image: 'https://picsum.photos/200/200?random=50',
+    dataAiHint: "aspirin tablets",
     stores: [
         { name: "Janta Medical Store", inStock: true, quantity: 100, location: "Near Bus Stand" },
         { name: "Gupta Pharmacy", inStock: true, quantity: 50, location: "Main Bazaar" }
@@ -77,6 +81,7 @@ const mockMedicines = [
     price: "₹55.00",
     usage: "Lowers cholesterol.",
     image: 'https://picsum.photos/200/200?random=51',
+    dataAiHint: "cholesterol pills",
     stores: [
         { name: "Nabha Medical Hall", inStock: true, quantity: 40, location: "Patiala Gate" },
         { name: "Apollo Pharmacy", inStock: true, quantity: 30, location: "Opposite Civil Hospital" }
@@ -87,6 +92,7 @@ const mockMedicines = [
     price: "₹115.00",
     usage: "Antibiotic for bacterial infections.",
     image: 'https://picsum.photos/200/200?random=52',
+    dataAiHint: "antibiotic capsules",
     stores: [
         { name: "Janta Medical Store", inStock: false, quantity: 0, location: "Near Bus Stand" },
         { name: "Gupta Pharmacy", inStock: true, quantity: 15, location: "Main Bazaar" }
@@ -97,6 +103,7 @@ const mockMedicines = [
     price: "₹15.00",
     usage: "Pain relief, anti-inflammatory.",
     image: 'https://picsum.photos/200/200?random=53',
+    dataAiHint: "painkiller tablets",
     stores: [
         { name: "Janta Medical Store", inStock: true, quantity: 80, location: "Near Bus Stand" },
         { name: "Nabha Medical Hall", inStock: true, quantity: 60, location: "Patiala Gate" }
@@ -107,6 +114,7 @@ const mockMedicines = [
     price: "₹40.00",
     usage: "For high blood pressure.",
     image: 'https://picsum.photos/200/200?random=54',
+    dataAiHint: "blood pressure pills",
     stores: [
         { name: "Apollo Pharmacy", inStock: true, quantity: 25, location: "Opposite Civil Hospital" },
         { name: "Gupta Pharmacy", inStock: true, quantity: 20, location: "Main Bazaar" }
@@ -117,6 +125,7 @@ const mockMedicines = [
     price: "₹25.00",
     usage: "Pain and fever relief.",
     image: 'https://picsum.photos/200/200?random=55',
+    dataAiHint: "combiflam tablet",
     stores: [
         { name: "Janta Medical Store", inStock: true, quantity: 150, location: "Near Bus Stand" },
         { name: "Gupta Pharmacy", inStock: true, quantity: 100, location: "Main Bazaar" }
@@ -127,6 +136,7 @@ const mockMedicines = [
     price: "₹60.00",
     usage: "Blood thinner to prevent clots.",
     image: 'https://picsum.photos/200/200?random=56',
+    dataAiHint: "blood thinner pills",
     stores: [
         { name: "Nabha Medical Hall", inStock: true, quantity: 35, location: "Patiala Gate" },
         { name: "Apollo Pharmacy", inStock: false, quantity: 0, location: "Opposite Civil Hospital" }
@@ -137,6 +147,7 @@ const mockMedicines = [
     price: "₹70.00",
     usage: "Topical pain relief.",
     image: 'https://picsum.photos/200/200?random=57',
+    dataAiHint: "pain relief gel",
     stores: [
         { name: "Gupta Pharmacy", inStock: true, quantity: 40, location: "Main Bazaar" },
         { name: "Janta Medical Store", inStock: true, quantity: 50, location: "Near Bus Stand" }
@@ -147,6 +158,7 @@ const mockMedicines = [
     price: "₹45.00",
     usage: "For nausea and vomiting.",
     image: 'https://picsum.photos/200/200?random=58',
+    dataAiHint: "nausea pills",
     stores: [
         { name: "Apollo Pharmacy", inStock: true, quantity: 30, location: "Opposite Civil Hospital" },
         { name: "Nabha Medical Hall", inStock: true, quantity: 20, location: "Patiala Gate" }
@@ -157,6 +169,7 @@ const mockMedicines = [
     price: "₹12.00",
     usage: "Blood thinner (Aspirin).",
     image: 'https://picsum.photos/200/200?random=59',
+    dataAiHint: "ecosprin tablets",
     stores: [
         { name: "Janta Medical Store", inStock: true, quantity: 200, location: "Near Bus Stand" },
         { name: "Gupta Pharmacy", inStock: true, quantity: 150, location: "Main Bazaar" }
@@ -167,6 +180,7 @@ const mockMedicines = [
     price: "₹35.00",
     usage: "For high blood pressure.",
     image: 'https://picsum.photos/200/200?random=60',
+    dataAiHint: "enalapril tablets",
     stores: [
         { name: "Nabha Medical Hall", inStock: false, quantity: 0, location: "Patiala Gate" },
         { name: "Apollo Pharmacy", inStock: true, quantity: 22, location: "Opposite Civil Hospital" }
@@ -177,6 +191,7 @@ const mockMedicines = [
     price: "₹22.00",
     usage: "Vitamin supplement.",
     image: 'https://picsum.photos/200/200?random=61',
+    dataAiHint: "folic acid pills",
     stores: [
         { name: "Janta Medical Store", inStock: true, quantity: 300, location: "Near Bus Stand" },
         { name: "Gupta Pharmacy", inStock: true, quantity: 250, location: "Main Bazaar" }
@@ -187,6 +202,7 @@ const mockMedicines = [
     price: "₹30.00",
     usage: "Antifungal medication.",
     image: 'https://picsum.photos/200/200?random=62',
+    dataAiHint: "antifungal pills",
     stores: [
         { name: "Apollo Pharmacy", inStock: true, quantity: 15, location: "Opposite Civil Hospital" },
         { name: "Nabha Medical Hall", inStock: true, quantity: 10, location: "Patiala Gate" }
@@ -197,6 +213,7 @@ const mockMedicines = [
     price: "₹50.00",
     usage: "For type 2 diabetes.",
     image: 'https://picsum.photos/200/200?random=63',
+    dataAiHint: "diabetes pills",
     stores: [
         { name: "Gupta Pharmacy", inStock: true, quantity: 33, location: "Main Bazaar" },
         { name: "Janta Medical Store", inStock: true, quantity: 45, location: "Near Bus Stand" }
@@ -207,6 +224,7 @@ const mockMedicines = [
     price: "₹120.00",
     usage: "For heartburn and indigestion.",
     image: 'https://picsum.photos/200/200?random=64',
+    dataAiHint: "indigestion syrup",
     stores: [
         { name: "Nabha Medical Hall", inStock: true, quantity: 25, location: "Patiala Gate" },
         { name: "Apollo Pharmacy", inStock: true, quantity: 30, location: "Opposite Civil Hospital" }
@@ -217,6 +235,7 @@ const mockMedicines = [
     price: "₹28.00",
     usage: "Diuretic, for high blood pressure.",
     image: 'https://picsum.photos/200/200?random=65',
+    dataAiHint: "diuretic pills",
     stores: [
         { name: "Janta Medical Store", inStock: false, quantity: 0, location: "Near Bus Stand" },
         { name: "Gupta Pharmacy", inStock: true, quantity: 18, location: "Main Bazaar" }
@@ -227,6 +246,7 @@ const mockMedicines = [
     price: "₹10.00",
     usage: "Pain relief.",
     image: 'https://picsum.photos/200/200?random=66',
+    dataAiHint: "ibuprofen tablets",
     stores: [
         { name: "Janta Medical Store", inStock: true, quantity: 120, location: "Near Bus Stand" },
         { name: "Nabha Medical Hall", inStock: true, quantity: 90, location: "Patiala Gate" }
@@ -237,6 +257,7 @@ const mockMedicines = [
     price: "₹150.00",
     usage: "Antifungal medication.",
     image: 'https://picsum.photos/200/200?random=67',
+    dataAiHint: "antifungal capsules",
     stores: [
         { name: "Apollo Pharmacy", inStock: true, quantity: 12, location: "Opposite Civil Hospital" },
         { name: "Gupta Pharmacy", inStock: false, quantity: 0, location: "Main Bazaar" }
@@ -247,6 +268,7 @@ const mockMedicines = [
     price: "₹35.00",
     usage: "For allergies.",
     image: 'https://picsum.photos/200/200?random=68',
+    dataAiHint: "allergy tablets",
     stores: [
         { name: "Janta Medical Store", inStock: true, quantity: 70, location: "Near Bus Stand" },
         { name: "Gupta Pharmacy", inStock: true, quantity: 60, location: "Main Bazaar" }
@@ -257,6 +279,7 @@ const mockMedicines = [
     price: "₹75.00",
     usage: "For high blood pressure.",
     image: 'https://picsum.photos/200/200?random=69',
+    dataAiHint: "losartan tablets",
     stores: [
         { name: "Nabha Medical Hall", inStock: true, quantity: 45, location: "Patiala Gate" },
         { name: "Apollo Pharmacy", inStock: true, quantity: 35, location: "Opposite Civil Hospital" }
@@ -267,6 +290,7 @@ const mockMedicines = [
     price: "₹18.00",
     usage: "For type 2 diabetes.",
     image: 'https://picsum.photos/200/200?random=70',
+    dataAiHint: "metformin tablets",
     stores: [
         { name: "Janta Medical Store", inStock: true, quantity: 250, location: "Near Bus Stand" },
         { name: "Gupta Pharmacy", inStock: true, quantity: 200, location: "Main Bazaar" }
@@ -277,6 +301,7 @@ const mockMedicines = [
     price: "₹90.00",
     usage: "For asthma and allergies.",
     image: 'https://picsum.photos/200/200?random=71',
+    dataAiHint: "asthma pills",
     stores: [
         { name: "Apollo Pharmacy", inStock: true, quantity: 28, location: "Opposite Civil Hospital" },
         { name: "Nabha Medical Hall", inStock: true, quantity: 20, location: "Patiala Gate" }
@@ -287,6 +312,7 @@ const mockMedicines = [
     price: "₹32.00",
     usage: "Pain relief, anti-inflammatory.",
     image: 'https://picsum.photos/200/200?random=72',
+    dataAiHint: "nimesulide tablets",
     stores: [
         { name: "Gupta Pharmacy", inStock: false, quantity: 0, location: "Main Bazaar" },
         { name: "Janta Medical Store", inStock: true, quantity: 40, location: "Near Bus Stand" }
@@ -297,6 +323,7 @@ const mockMedicines = [
     price: "₹55.00",
     usage: "Antibiotic for infections.",
     image: 'https://picsum.photos/200/200?random=73',
+    dataAiHint: "norfloxacin tablets",
     stores: [
         { name: "Nabha Medical Hall", inStock: true, quantity: 15, location: "Patiala Gate" },
         { name: "Apollo Pharmacy", inStock: true, quantity: 10, location: "Opposite Civil Hospital" }
@@ -307,6 +334,7 @@ const mockMedicines = [
     price: "₹48.00",
     usage: "Antibiotic for infections.",
     image: 'https://picsum.photos/200/200?random=74',
+    dataAiHint: "ofloxacin tablets",
     stores: [
         { name: "Janta Medical Store", inStock: true, quantity: 25, location: "Near Bus Stand" },
         { name: "Gupta Pharmacy", inStock: true, quantity: 20, location: "Main Bazaar" }
@@ -317,6 +345,7 @@ const mockMedicines = [
     price: "₹30.00",
     usage: "For acidity and heartburn.",
     image: 'https://picsum.photos/200/200?random=75',
+    dataAiHint: "omeprazole capsules",
     stores: [
         { name: "Janta Medical Store", inStock: true, quantity: 90, location: "Near Bus Stand" },
         { name: "Apollo Pharmacy", inStock: true, quantity: 70, location: "Opposite Civil Hospital" }
@@ -327,6 +356,7 @@ const mockMedicines = [
     price: "₹55.00",
     usage: "For acidity, GERD.",
     image: 'https://picsum.photos/200/200?random=76',
+    dataAiHint: "pantoprazole tablets",
     stores: [
         { name: "Nabha Medical Hall", inStock: true, quantity: 80, location: "Patiala Gate" },
         { name: "Gupta Pharmacy", inStock: true, quantity: 60, location: "Main Bazaar" }
@@ -337,6 +367,7 @@ const mockMedicines = [
     price: "₹20.00",
     usage: "For acidity and stomach ulcers.",
     image: 'https://picsum.photos/200/200?random=77',
+    dataAiHint: "ranitidine tablets",
     stores: [
         { name: "Janta Medical Store", inStock: true, quantity: 110, location: "Near Bus Stand" },
         { name: "Apollo Pharmacy", inStock: false, quantity: 0, location: "Opposite Civil Hospital" }
@@ -347,6 +378,7 @@ const mockMedicines = [
     price: "₹95.00",
     usage: "Lowers cholesterol.",
     image: 'https://picsum.photos/200/200?random=78',
+    dataAiHint: "cholesterol medication",
     stores: [
         { name: "Gupta Pharmacy", inStock: true, quantity: 30, location: "Main Bazaar" },
         { name: "Nabha Medical Hall", inStock: true, quantity: 25, location: "Patiala Gate" }
@@ -357,6 +389,7 @@ const mockMedicines = [
     price: "₹110.00",
     usage: "Antidepressant, for anxiety.",
     image: 'https://picsum.photos/200/200?random=79',
+    dataAiHint: "antidepressant pills",
     stores: [
         { name: "Apollo Pharmacy", inStock: true, quantity: 18, location: "Opposite Civil Hospital" },
         { name: "Gupta Pharmacy", inStock: true, quantity: 15, location: "Main Bazaar" }
@@ -367,6 +400,7 @@ const mockMedicines = [
     price: "₹130.00",
     usage: "For migraine attacks.",
     image: 'https://picsum.photos/200/200?random=80',
+    dataAiHint: "migraine tablets",
     stores: [
         { name: "Nabha Medical Hall", inStock: true, quantity: 8, location: "Patiala Gate" },
         { name: "Janta Medical Store", inStock: false, quantity: 0, location: "Near Bus Stand" }
@@ -377,6 +411,7 @@ const mockMedicines = [
     price: "₹80.00",
     usage: "For high blood pressure.",
     image: 'https://picsum.photos/200/200?random=81',
+    dataAiHint: "telmisartan tablets",
     stores: [
         { name: "Janta Medical Store", inStock: true, quantity: 50, location: "Near Bus Stand" },
         { name: "Apollo Pharmacy", inStock: true, quantity: 40, location: "Opposite Civil Hospital" }
@@ -387,6 +422,7 @@ const mockMedicines = [
     price: "₹65.00",
     usage: "Moderate to severe pain relief.",
     image: 'https://picsum.photos/200/200?random=82',
+    dataAiHint: "painkiller pills",
     stores: [
         { name: "Gupta Pharmacy", inStock: true, quantity: 20, location: "Main Bazaar" },
         { name: "Nabha Medical Hall", inStock: true, quantity: 15, location: "Patiala Gate" }
@@ -397,6 +433,7 @@ const mockMedicines = [
     price: "₹70.00",
     usage: "For type 2 diabetes.",
     image: 'https://picsum.photos/200/200?random=83',
+    dataAiHint: "diabetes medication",
     stores: [
         { name: "Apollo Pharmacy", inStock: true, quantity: 25, location: "Opposite Civil Hospital" },
         { name: "Janta Medical Store", inStock: true, quantity: 30, location: "Near Bus Stand" }
@@ -407,6 +444,7 @@ const mockMedicines = [
     price: "₹40.00",
     usage: "Blood thinner.",
     image: 'https://picsum.photos/200/200?random=84',
+    dataAiHint: "warfarin pills",
     stores: [
         { name: "Nabha Medical Hall", inStock: true, quantity: 10, location: "Patiala Gate" },
         { name: "Gupta Pharmacy", inStock: false, quantity: 0, location: "Main Bazaar" }
@@ -417,6 +455,7 @@ const mockMedicines = [
     price: "₹105.00",
     usage: "Multivitamin and mineral supplement.",
     image: 'https://picsum.photos/200/200?random=85',
+    dataAiHint: "multivitamin tablets",
     stores: [
         { name: "Janta Medical Store", inStock: true, quantity: 150, location: "Near Bus Stand" },
         { name: "Gupta Pharmacy", inStock: true, quantity: 120, location: "Main Bazaar" }
@@ -465,7 +504,7 @@ const MedicineCard = ({ med, prescriptionInfo, locale, onAddToCart, cartQuantity
     return (
         <Card key={med.name}>
             <CardHeader className="flex flex-col md:flex-row gap-4">
-            <Image src={med.image} alt={med.name} width={100} height={100} className="rounded-md object-cover" data-ai-hint="medicine pill" />
+            <Image src={med.image} alt={med.name} width={100} height={100} className="rounded-md object-cover" data-ai-hint={med.dataAiHint} />
             <div className="flex-1">
                 <CardTitle>{med.name}</CardTitle>
                 <CardDescription className="font-bold text-lg text-primary">{med.price}</CardDescription>
@@ -1021,5 +1060,7 @@ export default function MedicinesPage() {
     </div>
   );
 }
+
+    
 
     
