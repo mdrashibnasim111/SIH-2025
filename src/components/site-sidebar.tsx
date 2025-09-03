@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -20,7 +21,7 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-export function NavLinks() {
+export function NavLinks({ onLinkClick }: { onLinkClick?: () => void }) {
   const pathname = usePathname();
   const t = useTranslations("NavLinks");
 
@@ -52,6 +53,7 @@ export function NavLinks() {
             asChild
             variant={isActive ? "default" : "ghost"}
             className="w-full justify-start"
+            onClick={onLinkClick}
           >
             <Link href={localizedHref}>
               <link.icon className="mr-2 h-4 w-4" />

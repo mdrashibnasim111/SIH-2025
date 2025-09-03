@@ -1,5 +1,7 @@
+
 "use client";
 
+import { useState } from "react";
 import {
   Sheet,
   SheetContent,
@@ -69,6 +71,7 @@ function UserNav() {
 export function SiteHeader() {
   const pathname = usePathname();
   const locale = pathname.split("/")[1] || "en";
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -79,7 +82,7 @@ export function SiteHeader() {
           </div>
         </div>
         <div className="flex flex-1 items-center justify-end md:hidden">
-          <Sheet>
+          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
               <Button variant="outline" size="icon" className="shrink-0">
                 <Menu className="h-5 w-5" />
@@ -99,7 +102,7 @@ export function SiteHeader() {
                 </SheetTitle>
               </SheetHeader>
               <nav className="flex-1 space-y-2 p-4">
-                <NavLinks />
+                <NavLinks onLinkClick={() => setIsSheetOpen(false)} />
               </nav>
             </SheetContent>
           </Sheet>
