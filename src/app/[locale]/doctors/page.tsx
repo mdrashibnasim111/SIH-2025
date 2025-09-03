@@ -1,4 +1,5 @@
 
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -101,8 +102,7 @@ const sortLogic = (a: any, b: any) => {
   return 0;
 };
 
-const governmentDoctors = doctors.filter(d => d.type === "Government").sort(sortLogic);
-const privateDoctors = doctors.filter(d => d.type === "Private").sort(sortLogic);
+const sortedDoctors = doctors.sort(sortLogic);
 
 const DoctorCard = ({ doctor }: { doctor: typeof doctors[0] }) => (
   <Card key={doctor.name} className="flex flex-col">
@@ -267,32 +267,12 @@ export default function DoctorsPage() {
         </p>
       </div>
 
-      <Tabs defaultValue="government" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="government">
-            <Building className="mr-2 h-4 w-4" />
-            Government Hospitals
-          </TabsTrigger>
-          <TabsTrigger value="private">
-            <Building className="mr-2 h-4 w-4" />
-            Private Hospitals & Clinics
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="government">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 pt-4">
-            {governmentDoctors.map((doctor) => (
-              <DoctorCard key={doctor.name} doctor={doctor} />
-            ))}
-          </div>
-        </TabsContent>
-        <TabsContent value="private">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 pt-4">
-            {privateDoctors.map((doctor) => (
-              <DoctorCard key={doctor.name} doctor={doctor} />
-            ))}
-          </div>
-        </TabsContent>
-      </Tabs>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 pt-4">
+        {sortedDoctors.map((doctor) => (
+          <DoctorCard key={doctor.name} doctor={doctor} />
+        ))}
+      </div>
     </div>
   );
 }
+
