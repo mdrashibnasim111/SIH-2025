@@ -79,16 +79,6 @@ export function SiteSidebar() {
           <span className="font-bold">NabhaCare</span>
         </Link>
       </div>
-      <div className="flex items-center justify-between p-2 border-b">
-        <Button variant="ghost" size="icon" onClick={() => router.back()}>
-          <ArrowLeft className="h-4 w-4" />
-          <span className="sr-only">Go back</span>
-        </Button>
-        <Button variant="ghost" size="icon" onClick={() => router.forward()}>
-          <ArrowRight className="h-4 w-4" />
-          <span className="sr-only">Go forward</span>
-        </Button>
-      </div>
       <nav className="flex-1 space-y-2 p-4">
         <NavLinks />
       </nav>
