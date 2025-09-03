@@ -94,6 +94,19 @@ const doctors = [
     rating: 4.8,
     onlineCheckups: 150,
   },
+  {
+    name: "Dr. Juwayria Ameer",
+    specialization: "Dentist",
+    hospital: "Ameer Dental Clinic",
+    availability: "Mon - Fri (10 AM - 6 PM)",
+    days: "5 days a week",
+    status: "Available",
+    image: "https://picsum.photos/200/200?random=6",
+    dataAiHint: "female dentist",
+    type: "Private",
+    rating: 4.9,
+    onlineCheckups: 90,
+  },
 ];
 
 const sortLogic = (a: any, b: any) => {
@@ -275,4 +288,5 @@ export default function DoctorsPage() {
     </div>
   );
 }
+
 
