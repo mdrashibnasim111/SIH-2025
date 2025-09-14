@@ -40,7 +40,7 @@ export default function DashboardPage() {
       title: t('aiSymptomChecker'),
       description: t('aiSymptomCheckerDescription'),
       href: '/symptom-checker',
-      icon: <Sparkles className="size-8 text-primary" />,
+      icon: <Sparkles className="size-8 text-white" />,
     },
     {
       title: t('bookOfflineVisit'),
@@ -59,7 +59,7 @@ export default function DashboardPage() {
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
         {features.map(feature => {
-          const isBlueCard = feature.title === t('checkMedicines') || feature.title === t('findDoctor') || feature.title === t('bookOfflineVisit');
+          const isBlueCard = true; // Apply to all feature cards
           return (
             <Card
               key={feature.href}
