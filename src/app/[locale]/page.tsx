@@ -59,25 +59,28 @@ export default function DashboardPage() {
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
         {features.map(feature => {
+          const isHighlighted = feature.title === t('findDoctor');
           return (
             <Card
               key={feature.href}
               className="flex flex-col justify-between transition-transform hover:scale-105 hover:shadow-neon-primary bg-card"
+              style={isHighlighted ? { backgroundColor: '#5DADEC' } : {}}
             >
               <CardHeader>
                 <div className="flex items-center gap-4">
-                  {feature.icon}
+                  {isHighlighted ? <Stethoscope className="size-8 text-white" /> : feature.icon}
                   <div className="flex-1">
-                    <CardTitle>{feature.title}</CardTitle>
+                    <CardTitle style={isHighlighted ? { color: 'white' } : {}}>{feature.title}</CardTitle>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
-                <CardDescription>{feature.description}</CardDescription>
+                <CardDescription style={isHighlighted ? { color: 'white' } : {}}>{feature.description}</CardDescription>
                 <Button
                   asChild
                   variant="ghost"
                   className="mt-4 w-full justify-start p-0 h-auto text-primary hover:text-primary rounded-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1"
+                  style={isHighlighted ? { color: 'white', hover: { color: 'white' } } : {}}
                 >
                   <Link href={`/${locale}${feature.href}`} className="p-2">
                     {t('checkNow')} <ArrowRight className="ml-2 size-4" />
