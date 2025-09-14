@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import {
   Card,
@@ -27,7 +28,7 @@ export default function DashboardPage() {
       title: t('findDoctor'),
       description: t('findDoctorDescription'),
       href: '/doctors',
-      icon: <Stethoscope className="size-8 text-primary" />,
+      icon: <Stethoscope className="size-8 text-white" />,
     },
     {
       title: t('checkMedicines'),
@@ -58,30 +59,30 @@ export default function DashboardPage() {
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
         {features.map(feature => {
-          const isCheckMedicines = feature.title === t('checkMedicines');
+          const isBlueCard = feature.title === t('checkMedicines') || feature.title === t('findDoctor');
           return (
             <Card
               key={feature.href}
               className="flex flex-col justify-between transition-transform hover:scale-105 hover:shadow-neon-primary"
               style={{
-                backgroundColor: isCheckMedicines ? '#5DADEC' : undefined,
+                backgroundColor: isBlueCard ? '#5DADEC' : undefined,
               }}
             >
               <CardHeader>
                 <div className="flex items-center gap-4">
                   {feature.icon}
                   <div className="flex-1">
-                    <CardTitle style={{ color: isCheckMedicines ? 'white' : undefined }}>{feature.title}</CardTitle>
+                    <CardTitle style={{ color: isBlueCard ? 'white' : undefined }}>{feature.title}</CardTitle>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
-                <CardDescription style={{ color: isCheckMedicines ? 'white' : undefined }}>{feature.description}</CardDescription>
+                <CardDescription style={{ color: isBlueCard ? 'white' : undefined }}>{feature.description}</CardDescription>
                 <Button
                   asChild
                   variant="ghost"
                   className="mt-4 w-full justify-start p-0 h-auto text-primary hover:text-primary rounded-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1"
-                  style={{ color: isCheckMedicines ? 'white' : undefined }}
+                  style={{ color: isBlueCard ? 'white' : undefined }}
                 >
                   <Link href={`/${locale}${feature.href}`} className="p-2">
                     {t('checkNow')} <ArrowRight className="ml-2 size-4" />
