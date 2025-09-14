@@ -33,7 +33,7 @@ export default function DashboardPage() {
       title: t('checkMedicines'),
       description: t('checkMedicinesDescription'),
       href: '/medicines',
-      icon: <Pill className="size-8 text-primary" />,
+      icon: <Pill className="size-8 text-white" />,
     },
     {
       title: t('aiSymptomChecker'),
