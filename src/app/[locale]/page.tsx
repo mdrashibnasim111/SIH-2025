@@ -28,25 +28,25 @@ export default function DashboardPage() {
       title: t('findDoctor'),
       description: t('findDoctorDescription'),
       href: '/doctors',
-      icon: <Stethoscope className="size-8 text-white" />,
+      icon: <Stethoscope className="size-8 text-primary" />,
     },
     {
       title: t('checkMedicines'),
       description: t('checkMedicinesDescription'),
       href: '/medicines',
-      icon: <Pill className="size-8 text-white" />,
+      icon: <Pill className="size-8 text-primary" />,
     },
     {
       title: t('aiSymptomChecker'),
       description: t('aiSymptomCheckerDescription'),
       href: '/symptom-checker',
-      icon: <Sparkles className="size-8 text-white" />,
+      icon: <Sparkles className="size-8 text-primary" />,
     },
     {
       title: t('bookOfflineVisit'),
       description: t('bookOfflineVisitDescription'),
       href: '/offline-booking',
-      icon: <CalendarCheck className="size-8 text-white" />,
+      icon: <CalendarCheck className="size-8 text-primary" />,
     }
   ];
 
@@ -59,30 +59,25 @@ export default function DashboardPage() {
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
         {features.map(feature => {
-          const isBlueCard = true; // Apply to all feature cards
           return (
             <Card
               key={feature.href}
-              className="flex flex-col justify-between transition-transform hover:scale-105 hover:shadow-neon-primary"
-              style={{
-                backgroundColor: isBlueCard ? '#5DADEC' : undefined,
-              }}
+              className="flex flex-col justify-between transition-transform hover:scale-105 hover:shadow-neon-primary bg-card"
             >
               <CardHeader>
                 <div className="flex items-center gap-4">
                   {feature.icon}
                   <div className="flex-1">
-                    <CardTitle style={{ color: isBlueCard ? 'white' : undefined }}>{feature.title}</CardTitle>
+                    <CardTitle>{feature.title}</CardTitle>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
-                <CardDescription style={{ color: isBlueCard ? 'white' : undefined }}>{feature.description}</CardDescription>
+                <CardDescription>{feature.description}</CardDescription>
                 <Button
                   asChild
                   variant="ghost"
                   className="mt-4 w-full justify-start p-0 h-auto text-primary hover:text-primary rounded-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1"
-                  style={{ color: isBlueCard ? 'white' : undefined }}
                 >
                   <Link href={`/${locale}${feature.href}`} className="p-2">
                     {t('checkNow')} <ArrowRight className="ml-2 size-4" />
