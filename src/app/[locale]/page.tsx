@@ -46,7 +46,7 @@ export default function DashboardPage() {
       title: t('bookOfflineVisit'),
       description: t('bookOfflineVisitDescription'),
       href: '/offline-booking',
-      icon: <CalendarCheck className="size-8 text-primary" />,
+      icon: <CalendarCheck className="size-8 text-white" />,
     }
   ];
 
@@ -59,7 +59,7 @@ export default function DashboardPage() {
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
         {features.map(feature => {
-          const isBlueCard = feature.title === t('checkMedicines') || feature.title === t('findDoctor');
+          const isBlueCard = feature.title === t('checkMedicines') || feature.title === t('findDoctor') || feature.title === t('bookOfflineVisit');
           return (
             <Card
               key={feature.href}
