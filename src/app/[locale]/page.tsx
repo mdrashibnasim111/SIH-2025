@@ -60,16 +60,9 @@ export default function DashboardPage() {
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
         {features.map(feature => {
-          let cardStyle = {};
-          if (feature.title === t('findDoctor')) {
-            cardStyle = {
-              backgroundImage: 'linear-gradient(to bottom, #35C9A7, #134E5E)',
-            };
-          } else {
-            cardStyle = {
-              backgroundColor: '#35C9A7',
-            };
-          }
+          const cardStyle = {
+            backgroundImage: 'linear-gradient(to bottom, #35C9A7, #134E5E)',
+          };
 
           const textColor = 'white';
           const icon = React.cloneElement(feature.icon, {
