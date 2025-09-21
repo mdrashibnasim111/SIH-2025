@@ -1,5 +1,6 @@
 
 import Link from 'next/link';
+import * as React from 'react';
 import {
   Card,
   CardHeader,
@@ -59,12 +60,13 @@ export default function DashboardPage() {
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
         {features.map(feature => {
-          const isHighlighted = feature.title === t('findDoctor');
           const cardStyle = {
-            backgroundColor: isHighlighted ? '#35C9A7' : '#FFFFFF',
+            backgroundColor: '#35C9A7',
           };
-          const textColor = isHighlighted ? 'white' : undefined;
-          const icon = isHighlighted ? <Stethoscope className="size-8 text-white" /> : feature.icon;
+          const textColor = 'white';
+          const icon = React.cloneElement(feature.icon, {
+            className: 'size-8 text-white',
+          });
 
           return (
             <Card
