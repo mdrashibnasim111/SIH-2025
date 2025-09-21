@@ -1,33 +1,39 @@
+
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard,
   Stethoscope,
   Pill,
-  FileText,
   Sparkles,
   Siren,
   HeartPulse,
   Map,
   User,
+  Hospital,
+  ArrowLeft,
+  ArrowRight,
+  CalendarCheck,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import Image from 'next/image';
 
-export function NavLinks() {
+export function NavLinks({ onLinkClick }: { onLinkClick?: () => void }) {
   const pathname = usePathname();
   const t = useTranslations("NavLinks");
 
   const links = [
     { name: t("Dashboard"), href: "/", icon: LayoutDashboard },
+    { name: t("AamAadmiClinic"), href: "/aam-aadmi-clinic", icon: Hospital },
     { name: t("Doctors"), href: "/doctors", icon: Stethoscope },
     { name: t("Medicines"), href: "/medicines", icon: Pill },
     { name: t("SymptomChecker"), href: "/symptom-checker", icon: Sparkles },
-    { name: t("HealthRecords"), href: "/records", icon: FileText },
     { name: t("PatientDetails"), href: "/patient-details", icon: User },
+    { name: t("OfflineBooking"), href: "/offline-booking", icon: CalendarCheck },
     { name: t("Map"), href: "/map", icon: Map },
     { name: t("Emergency"), href: "/emergency", icon: Siren },
   ];
@@ -48,6 +54,7 @@ export function NavLinks() {
             asChild
             variant={isActive ? "default" : "ghost"}
             className="w-full justify-start"
+            onClick={onLinkClick}
           >
             <Link href={localizedHref}>
               <link.icon className="mr-2 h-4 w-4" />
@@ -62,14 +69,14 @@ export function NavLinks() {
 
 export function SiteSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const locale = pathname.split("/")[1] || "en";
 
   return (
     <aside className="fixed top-0 left-0 z-50 hidden h-screen w-48 flex-col border-r bg-background md:flex">
-      <div className="flex h-16 items-center border-b px-6">
+      <div className="flex h-16 items-center border-b px-4 justify-start">
         <Link href={`/${locale}`} className="flex items-center gap-2 font-bold">
-          <HeartPulse className="h-6 w-6 text-primary" />
-          <span className="font-bold">NabhaCare</span>
+          <Image src="/logo.png" alt="NabhaCare Logo" width={140} height={40} />
         </Link>
       </div>
       <nav className="flex-1 space-y-2 p-4">

@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -20,9 +21,20 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
 
 export default function EmergencyPage() {
+  const { toast } = useToast();
+
+  const handleRequestConfirm = () => {
+    toast({
+      variant: "success",
+      title: "Emergency Request Confirmed",
+      description: "A doctor and ambulance have been dispatched. Estimated arrival time is 15-20 minutes.",
+    });
+  };
+
   return (
     <div className="space-y-8 max-w-2xl mx-auto">
       <div className="text-center">
@@ -74,7 +86,7 @@ export default function EmergencyPage() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction>Confirm and Request</AlertDialogAction>
+            <AlertDialogAction onClick={handleRequestConfirm}>Confirm and Request</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
