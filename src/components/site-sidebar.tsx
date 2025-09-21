@@ -20,6 +20,7 @@ import {
   CalendarCheck,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import Image from 'next/image';
 
 export function NavLinks({ onLinkClick }: { onLinkClick?: () => void }) {
   const pathname = usePathname();
@@ -73,10 +74,9 @@ export function SiteSidebar() {
 
   return (
     <aside className="fixed top-0 left-0 z-50 hidden h-screen w-48 flex-col border-r bg-background md:flex">
-      <div className="flex h-16 items-center border-b px-4 justify-between">
+      <div className="flex h-16 items-center border-b px-4 justify-start">
         <Link href={`/${locale}`} className="flex items-center gap-2 font-bold">
-          <HeartPulse className="h-6 w-6 text-primary" />
-          <span className="font-bold">NabhaCare</span>
+          <Image src="/logo.png" alt="NabhaCare Logo" width={140} height={40} />
         </Link>
       </div>
       <nav className="flex-1 space-y-2 p-4">

@@ -24,6 +24,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Image from "next/image";
 
 function UserNav() {
   return (
@@ -86,15 +87,14 @@ export function SiteHeader() {
                 </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="flex flex-col p-0">
-                <SheetHeader className="border-b px-4 h-16 flex items-center">
+                <SheetHeader className="border-b px-4 h-16 flex items-center justify-start">
                     <SheetTitle>
                     <Link
                         href={`/${locale}`}
                         className="flex items-center gap-2 font-bold"
                         onClick={() => setIsSheetOpen(false)}
                     >
-                        <HeartPulse className="h-6 w-6 text-primary" />
-                        <span className="font-bold">NabhaCare</span>
+                      <Image src="/logo.png" alt="NabhaCare Logo" width={140} height={40} />
                     </Link>
                     </SheetTitle>
                 </SheetHeader>
