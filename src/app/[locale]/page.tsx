@@ -64,7 +64,7 @@ export default function DashboardPage() {
             <Card
               key={feature.href}
               className="flex flex-col justify-between transition-transform hover:scale-105 hover:shadow-neon-primary bg-card"
-              style={isHighlighted ? { backgroundColor: '#5DADEC' } : {}}
+              style={isHighlighted ? { backgroundColor: '#35C9A7' } : {}}
             >
               <CardHeader>
                 <div className="flex items-center gap-4">
